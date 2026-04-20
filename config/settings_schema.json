@@ -489,6 +489,10 @@
             "label": "24px"
           },
           {
+            "value": "28",
+            "label": "28px"
+          },
+          {
             "value": "32",
             "label": "32px"
           },
@@ -635,6 +639,10 @@
           {
             "value": "24",
             "label": "24px"
+          },
+          {
+            "value": "28",
+            "label": "28px"
           },
           {
             "value": "32",
@@ -793,6 +801,10 @@
             "label": "24px"
           },
           {
+            "value": "28",
+            "label": "28px"
+          },
+          {
             "value": "32",
             "label": "32px"
           },
@@ -947,6 +959,10 @@
           {
             "value": "24",
             "label": "24px"
+          },
+          {
+            "value": "28",
+            "label": "28px"
           },
           {
             "value": "32",
@@ -1105,6 +1121,10 @@
             "label": "24px"
           },
           {
+            "value": "28",
+            "label": "28px"
+          },
+          {
             "value": "32",
             "label": "32px"
           },
@@ -1261,6 +1281,10 @@
             "label": "24px"
           },
           {
+            "value": "28",
+            "label": "28px"
+          },
+          {
             "value": "32",
             "label": "32px"
           },
@@ -1342,6 +1366,166 @@
       {
         "type": "select",
         "id": "type_case_h6",
+        "label": "t:settings.text_case",
+        "options": [
+          {
+            "value": "none",
+            "label": "t:options.default"
+          },
+          {
+            "value": "uppercase",
+            "label": "t:options.uppercase"
+          }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "header",
+        "content": "t:options.h7"
+      },
+      {
+        "type": "select",
+        "id": "type_font_h7",
+        "label": "t:settings.font",
+        "options": [
+          {
+            "value": "heading",
+            "label": "t:options.heading"
+          },
+          {
+            "value": "accent",
+            "label": "t:options.accent"
+          },
+          {
+            "value": "subheading",
+            "label": "t:options.subheading"
+          },
+          {
+            "value": "body",
+            "label": "t:options.body"
+          }
+        ],
+        "default": "subheading"
+      },
+      {
+        "type": "select",
+        "id": "type_size_h7",
+        "label": "t:settings.size",
+        "options": [
+          {
+            "value": "10",
+            "label": "10px"
+          },
+          {
+            "value": "12",
+            "label": "12px"
+          },
+          {
+            "value": "14",
+            "label": "14px"
+          },
+          {
+            "value": "16",
+            "label": "16px"
+          },
+          {
+            "value": "18",
+            "label": "18px"
+          },
+          {
+            "value": "20",
+            "label": "20px"
+          },
+          {
+            "value": "24",
+            "label": "24px"
+          },
+          {
+            "value": "28",
+            "label": "28px"
+          },
+          {
+            "value": "32",
+            "label": "32px"
+          },
+          {
+            "value": "40",
+            "label": "40px"
+          },
+          {
+            "value": "48",
+            "label": "48px"
+          },
+          {
+            "value": "56",
+            "label": "56px"
+          },
+          {
+            "value": "72",
+            "label": "72px"
+          },
+          {
+            "value": "88",
+            "label": "88px"
+          },
+          {
+            "value": "120",
+            "label": "120px"
+          },
+          {
+            "value": "152",
+            "label": "152px"
+          },
+          {
+            "value": "184",
+            "label": "184px"
+          }
+        ],
+        "default": "16"
+      },
+      {
+        "type": "select",
+        "id": "type_line_height_h7",
+        "label": "t:settings.line_height",
+        "options": [
+          {
+            "value": "display-tight",
+            "label": "t:options.tight"
+          },
+          {
+            "value": "display-normal",
+            "label": "t:options.normal"
+          },
+          {
+            "value": "display-loose",
+            "label": "t:options.loose"
+          }
+        ],
+        "default": "display-normal"
+      },
+      {
+        "type": "select",
+        "id": "type_letter_spacing_h7",
+        "label": "t:settings.letter_spacing",
+        "options": [
+          {
+            "value": "heading-tight",
+            "label": "t:options.tight"
+          },
+          {
+            "value": "heading-normal",
+            "label": "t:options.normal"
+          },
+          {
+            "value": "heading-loose",
+            "label": "t:options.loose"
+          }
+        ],
+        "default": "heading-normal"
+      },
+      {
+        "type": "select",
+        "id": "type_case_h7",
         "label": "t:settings.text_case",
         "options": [
           {

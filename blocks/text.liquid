@@ -141,7 +141,8 @@
       "type": "checkbox",
       "id": "enable_custom_font_weight",
       "label": "Custom font weight",
-      "default": false
+      "default": false,
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
     },
     {
       "type": "select",
