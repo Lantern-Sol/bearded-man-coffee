@@ -123,6 +123,26 @@
     {{ accent_font_bold_italic | font_face: font_display: 'swap' }}
   {% endif %}
 
+  {%- unless settings.use_shopify_heading_accent_fonts -%}
+  /* Founders Grotesk — self-hosted custom fonts for Heading (Semibold) & Accent (Regular) */
+  @font-face {
+    font-family: 'Founders Grotesk';
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    src: url('{{ 'FoundersGrotesk-Semibold.woff2' | asset_url }}') format('woff2'),
+         url('{{ 'FoundersGrotesk-Semibold.woff' | asset_url }}') format('woff');
+  }
+  @font-face {
+    font-family: 'Founders Grotesk';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url('{{ 'FoundersGrotesk-Regular.woff2' | asset_url }}') format('woff2'),
+         url('{{ 'FoundersGrotesk-Regular.woff' | asset_url }}') format('woff');
+  }
+  {%- endunless -%}
+
   @media only screen and (max-width: 1440px) and (min-width: 750px) { 
     html {
       font-size: calc(16 * 100vw / 1440);
@@ -159,7 +179,7 @@
     @media screen and (min-width: 60em) {
       --section-height-small: 50svh;
       --section-height-medium: 65svh;
-      --section-height-large: 80svh;
+      --section-height-large: 42.5rem;
     }
 
     /* Letter spacing */
@@ -173,12 +193,21 @@
     --font-subheading--family: {{ settings.type_subheading_font.family }}, {{ settings.type_subheading_font.fallback_families }};
     --font-subheading--style: {{ settings.type_subheading_font.style }};
     --font-subheading--weight: {{ settings.type_subheading_font.weight }};
-    --font-heading--family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
-    --font-heading--style: {{ settings.type_heading_font.style }};
-    --font-heading--weight: {{ settings.type_heading_font.weight }};
-    --font-accent--family: {{ settings.type_accent_font.family }}, {{ settings.type_accent_font.fallback_families }};
-    --font-accent--style: {{ settings.type_accent_font.style }};
-    --font-accent--weight: {{ settings.type_accent_font.weight }};
+    {% if settings.use_shopify_heading_accent_fonts %}
+      --font-heading--family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+      --font-heading--style: {{ settings.type_heading_font.style }};
+      --font-heading--weight: {{ settings.type_heading_font.weight }};
+      --font-accent--family: {{ settings.type_accent_font.family }}, {{ settings.type_accent_font.fallback_families }};
+      --font-accent--style: {{ settings.type_accent_font.style }};
+      --font-accent--weight: {{ settings.type_accent_font.weight }};
+    {% else %}
+      --font-heading--family: 'Founders Grotesk', sans-serif;
+      --font-heading--style: normal;
+      --font-heading--weight: 600;
+      --font-accent--family: 'Founders Grotesk', sans-serif;
+      --font-accent--style: normal;
+      --font-accent--weight: 400;
+    {% endif %}
 
     /* Margin sizes */
     --font-h1--spacing: 0.25em;

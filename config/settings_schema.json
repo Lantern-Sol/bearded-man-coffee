@@ -364,16 +364,25 @@
         "label": "t:options.subheading"
       },
       {
+        "type": "checkbox",
+        "id": "use_shopify_heading_accent_fonts",
+        "label": "Use Shopify fonts for Heading and Accent",
+        "default": false,
+        "info": "When enabled, the font pickers below control the Heading and Accent fonts. When disabled, Founders Grotesk Semibold is used instead."
+      },
+      {
         "type": "font_picker",
         "id": "type_heading_font",
         "default": "anonymous_pro_n4",
-        "label": "t:options.heading"
+        "label": "t:options.heading",
+        "visible_if": "{{ settings.use_shopify_heading_accent_fonts }}"
       },
       {
         "type": "font_picker",
         "id": "type_accent_font",
         "default": "anonymous_pro_n4",
-        "label": "t:options.accent"
+        "label": "t:options.accent",
+        "visible_if": "{{ settings.use_shopify_heading_accent_fonts }}"
       },
       {
         "type": "header",

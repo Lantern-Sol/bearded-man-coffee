@@ -69,6 +69,7 @@
       --text-corner-radius: {{ block_settings.corner_radius }}px;
       --text-padding: max(var(--padding-2xs), calc((var(--text-corner-radius) + var(--padding-xs)) * (1 - cos(45deg))));
     {% endif %}
+
   "
 
   {{ block.shopify_attributes }}
@@ -98,6 +99,25 @@
       {{ block.settings.text | replace: '®', '<sup>®</sup>' }}
     {% endif %}
   </{{ element }}>
+{% endif %}
+
+{% if block_settings.height_mode == 'custom' %}
+  <style>
+    {% if block_settings.desktop_height != blank %}
+      @media screen and (min-width: 750px) {
+        .text-block--{{ block.id }} > * {
+          --block-height: {{ block_settings.desktop_height | times: 1.0 | divided_by: 16 }}rem;
+        }
+      }
+    {% endif %}
+    {% if block_settings.mobile_height != blank %}
+      @media screen and (max-width: 749px) {
+        .text-block--{{ block.id }} > * {
+          --block-height: {{ block_settings.mobile_height | times: 1.0 | divided_by: 16 }}rem;
+        }
+      }
+    {% endif %}
+  </style>
 {% endif %}
 
 {% stylesheet %}
@@ -160,6 +180,7 @@
     max-inline-size: min(100%, var(--max-width, 100%));
     text-align: var(--text-align, var(--text-align-default));
     text-wrap: var(--text-wrap);
+    height: var(--block-height);
   }
 
   .text-block:not(.text-block--full-width).rte,

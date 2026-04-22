@@ -19,24 +19,59 @@
     fetchpriority="low"
   >
 {%- endunless -%}
-{%- unless settings.type_heading_font.system? -%}
+{%- if settings.use_shopify_heading_accent_fonts -%}
+  {%- unless settings.type_heading_font.system? -%}
+    <link
+      rel="preload"
+      as="font"
+      href="{{ settings.type_heading_font | font_url }}"
+      type="font/woff2"
+      crossorigin
+      fetchpriority="low"
+    >
+  {%- endunless -%}
+  {%- unless settings.type_accent_font.system? -%}
+    <link
+      rel="preload"
+      as="font"
+      href="{{ settings.type_accent_font | font_url }}"
+      type="font/woff2"
+      crossorigin
+      fetchpriority="low"
+    >
+  {%- endunless -%}
+{%- else -%}
   <link
     rel="preload"
     as="font"
-    href="{{ settings.type_heading_font | font_url }}"
+    href="{{ 'FoundersGrotesk-Semibold.woff2' | asset_url }}"
     type="font/woff2"
     crossorigin
     fetchpriority="low"
   >
-{%- endunless -%}
-{%- unless settings.type_accent_font.system? -%}
   <link
     rel="preload"
     as="font"
-    href="{{ settings.type_accent_font | font_url }}"
+    href="{{ 'FoundersGrotesk-Semibold.woff' | asset_url }}"
+    type="font/woff"
+    crossorigin
+    fetchpriority="low"
+  >
+  <link
+    rel="preload"
+    as="font"
+    href="{{ 'FoundersGrotesk-Regular.woff2' | asset_url }}"
     type="font/woff2"
     crossorigin
     fetchpriority="low"
   >
-{%- endunless -%}
+  <link
+    rel="preload"
+    as="font"
+    href="{{ 'FoundersGrotesk-Regular.woff' | asset_url }}"
+    type="font/woff"
+    crossorigin
+    fetchpriority="low"
+  >
+{%- endif -%}
 {% # theme-check-enable %}

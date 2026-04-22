@@ -65,6 +65,42 @@
     },
     {
       "type": "header",
+      "content": "Height"
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Height",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "text",
+      "id": "desktop_height",
+      "label": "Desktop height (px)",
+      "placeholder": "e.g. 600",
+      "info": "Enter a pixel value (no units). It will scale fluidly with the viewport.",
+      "visible_if": "{{ block.settings.height_mode == 'custom' }}"
+    },
+    {
+      "type": "text",
+      "id": "mobile_height",
+      "label": "Mobile height (px)",
+      "placeholder": "e.g. 300",
+      "info": "Enter a pixel value (no units). Overrides desktop height on mobile.",
+      "visible_if": "{{ block.settings.height_mode == 'custom' }}"
+    },
+    {
+      "type": "header",
       "content": "t:content.typography"
     },
     {
