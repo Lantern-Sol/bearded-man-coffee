@@ -1,0 +1,447 @@
+{% liquid
+  assign tabs_count = section.blocks.size
+%}
+
+{% capture children %}
+  {% content_for 'blocks' %}
+{% endcapture %}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="
+    section
+    section--{{ section.settings.section_width }}
+    color-{{ section.settings.color_scheme }}
+    section-collection-tab
+    spacing-style
+    gap-style
+  "
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    {% render 'gap-style', value: section.settings.gap %}
+  "
+  data-testid="collection-tab"
+>
+  <collection-tabs-component
+    class="collection-tabs"
+    style="
+      --collection-tabs-alignment: {{ section.settings.tabs_alignment }};
+      --collection-tabs-header-alignment: {{ section.settings.header_alignment }};
+    "
+  >
+    <div class="collection-tabs__header">
+      {% content_for 'block', type: 'text', id: 'static-heading' %}
+      {% content_for 'block', type: 'text', id: 'static-description' %}
+    </div>
+
+    {% if tabs_count > 0 %}
+      <div
+        class="collection-tabs__nav"
+        role="tablist"
+        ref="tablist"
+      >
+        {% for block in section.blocks %}
+          {% liquid
+            assign tab_label = block.settings.tab_label
+            if tab_label == blank and block.settings.collection != blank
+              assign tab_label = block.settings.collection.title
+            endif
+            if tab_label == blank
+              assign tab_label = 'Tab ' | append: forloop.index
+            endif
+          %}
+          <button
+            type="button"
+            class="collection-tabs__tab"
+            role="tab"
+            id="collection-tab-{{ section.id }}-{{ forloop.index0 }}"
+            aria-controls="collection-panel-{{ block.id }}"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+            ref="tabs[]"
+            on:click="/select/{{ forloop.index0 }}"
+            on:keydown="/onTabKeydown"
+          >
+            {{ tab_label }}
+          </button>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {{ children }}
+
+    {% if tabs_count == 0 %}
+      <div class="collection-tabs__empty">
+        {{- 'onboarding.no_content' | t -}}
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_dots and tabs_count > 1 %}
+      <ol class="collection-tabs__dots" aria-hidden="true">
+        {% for block in section.blocks %}
+          <li>
+            <button
+              type="button"
+              class="collection-tabs__dot"
+              aria-label="{{ 'accessibility.slide_status' | t: index: forloop.index, length: tabs_count }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              tabindex="-1"
+              ref="dots[]"
+              on:click="/select/{{ forloop.index0 }}"
+            ></button>
+          </li>
+        {% endfor %}
+      </ol>
+    {% endif %}
+  </collection-tabs-component>
+</div>
+
+{% stylesheet %}
+  .section-collection-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: var(--gap);
+  }
+
+  .collection-tabs {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    row-gap: var(--gap);
+  }
+
+  .collection-tabs__header {
+    display: flex;
+    flex-direction: column;
+    align-items: var(--collection-tabs-header-alignment, center);
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .collection-tabs__header:empty {
+    display: none;
+  }
+
+  .collection-tabs > .collection-grid-block {
+    width: 100%;
+  }
+
+  /*
+    Pre-hydration: hide every grid block that has another grid block
+    before it. Only the first one is visible on initial paint, so there
+    is no flash of all collections.
+  */
+  .collection-tabs:not([data-hydrated]) > .collection-grid-block ~ .collection-grid-block {
+    display: none;
+  }
+
+  /* Post-hydration: visibility driven entirely by the [hidden] attribute. */
+  .collection-tabs[data-hydrated] > .collection-grid-block[hidden] {
+    display: none;
+  }
+
+  .collection-tabs__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: var(--collection-tabs-alignment, center);
+    gap: clamp(1rem, 4vw, 2.5rem);
+    width: 100%;
+  }
+
+  .collection-tabs__tab {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    padding: 0.25rem 0;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    opacity: 0.55;
+    border-bottom: 2px solid transparent;
+    transition: opacity var(--animation-speed, 0.2s) ease, border-color var(--animation-speed, 0.2s) ease;
+  }
+
+  .collection-tabs__tab:hover,
+  .collection-tabs__tab:focus-visible {
+    opacity: 1;
+  }
+
+  .collection-tabs__tab[aria-selected='true'] {
+    opacity: 1;
+    border-bottom-color: currentColor;
+  }
+
+  .collection-tabs__dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .collection-tabs__dot {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: currentColor;
+    opacity: 0.25;
+    cursor: pointer;
+    transition: opacity var(--animation-speed, 0.2s) ease;
+  }
+
+  .collection-tabs__dot[aria-selected='true'] {
+    opacity: 0.85;
+  }
+
+  .collection-tabs__empty {
+    color: var(--color-foreground);
+    opacity: 0.6;
+    text-align: center;
+    padding: 1.5rem 0;
+  }
+
+  .collection-grid-block__list {
+    width: 100%;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection list: Tabs",
+  "class": "ui-test-collection-tab",
+  "blocks": [
+    {
+      "type": "_collection-grid"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Tabs"
+    },
+    {
+      "type": "select",
+      "id": "tabs_alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show dots",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:content.section_layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:settings.gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection list: Tabs",
+      "category": "t:categories.collections",
+      "settings": {
+        "header_alignment": "center",
+        "tabs_alignment": "center",
+        "show_dots": true,
+        "section_width": "page-width",
+        "gap": 28,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      },
+      "blocks": {
+        "static-heading": {
+          "type": "text",
+          "name": "t:names.heading",
+          "static": true,
+          "settings": {
+            "text": "<h2>Shop our products</h2>",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "center",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "static-description": {
+          "type": "text",
+          "name": "t:names.description",
+          "static": true,
+          "settings": {
+            "text": "<p>Browse coffee, apparel, and merch — all in one place.</p>",
+            "type_preset": "paragraph",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "center",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "grid_1": {
+          "type": "_collection-grid",
+          "name": "Tab 1",
+          "settings": {
+            "tab_label": "Coffee",
+            "max_products": 4,
+            "columns": 4,
+            "mobile_columns": "2",
+            "columns_gap": 16,
+            "rows_gap": 24
+          }
+        },
+        "grid_2": {
+          "type": "_collection-grid",
+          "name": "Tab 2",
+          "settings": {
+            "tab_label": "Apparel",
+            "max_products": 4,
+            "columns": 4,
+            "mobile_columns": "2",
+            "columns_gap": 16,
+            "rows_gap": 24
+          }
+        },
+        "grid_3": {
+          "type": "_collection-grid",
+          "name": "Tab 3",
+          "settings": {
+            "tab_label": "Merch",
+            "max_products": 4,
+            "columns": 4,
+            "mobile_columns": "2",
+            "columns_gap": 16,
+            "rows_gap": 24
+          }
+        }
+      },
+      "block_order": ["grid_1", "grid_2", "grid_3"]
+    }
+  ]
+}
+{% endschema %}
