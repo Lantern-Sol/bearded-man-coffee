@@ -77,6 +77,14 @@
   style="--menu-image-border-radius: {{ image_border_radius }}px;"
 >
   {% for link in parent_link.links %}
+    {%- liquid
+      # When the menu is in featured_collections mode, the collection-type links
+      # are already rendered as image cards on the right side of the mega menu,
+      # so skip them in the text/links column to avoid duplication.
+      if menu_content_type == 'featured_collections' and link.type == 'collection_link'
+        continue
+      endif
+    -%}
     {% liquid
       # Decide whether to open a column span, and how many columns of the grid to span
       if forloop.first or open_column_span == false
@@ -134,6 +142,9 @@
         <span class="wrap-text">
           {{- link.title -}}
         </span>
+        {%- if link.links != blank -%}
+          {% render 'icon-chevron-down' %}
+        {%- endif -%}
       </a>
       {% if link.links != blank %}
         <ul
@@ -330,13 +341,21 @@
           {% else %}
             {% assign collection_object = collections[handle] %}
           {% endif %}
-          <li class="mega-menu__content-list-item{% if forloop.index > max_featured_collections_tablet %} mega-menu__content-list-item--hidden-tablet{% endif %}">
+          <li
+            class="
+              mega-menu__content-list-item
+              {% if forloop.index > max_featured_collections_tablet %} mega-menu__content-list-item--hidden-tablet{% endif %}
+              {% if feature_color_scheme != blank %} color-{{ feature_color_scheme }}{% endif %}
+            "
+          >
             {% render 'resource-card',
               resource: collection_object,
               resource_type: 'collection',
               style: 'overlay',
               image_aspect_ratio: content_aspect_ratio,
-              image_sizes: image_sizes
+              image_sizes: image_sizes,
+              button_label: feature_button_label,
+              button_style_class: feature_button_style_class
             %}
           </li>
         {% endfor %}

@@ -9,6 +9,8 @@
   @param {string} [image_aspect_ratio] - The aspect ratio to display the image. Defaults to image's natural ratio
   @param {boolean} [image_hover] - Whether to show a secondary image on hover and focus
   @param {string} [image_sizes] - The sizes attribute for responsive images. Defaults to 'auto'
+  @param {string} [button_label] - Optional label; renders a button inside the overlay content.
+  @param {string} [button_style_class] - Button CSS class: 'button' (primary) or 'button-secondary'. Defaults to 'button-secondary'.
 {%- enddoc -%}
 
 {% liquid
@@ -154,6 +156,12 @@
         {{- resource.excerpt | default: resource.content | strip_html | truncate: 65 -}}
       </p>
     {% endif %}
+
+    {%- if button_label != blank -%}
+      <span class="{{ button_style_class | default: 'button-secondary' }} resource-card__button">
+        {{ button_label }}
+      </span>
+    {%- endif -%}
   </div>
 </div>
 {%- if resource_type == 'product' and settings.transition_to_main_product -%}

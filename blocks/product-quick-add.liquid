@@ -1,0 +1,182 @@
+{%- liquid
+  assign product = closest.product
+  assign block_settings = block.settings
+-%}
+
+<div
+  class="product-quick-add-block spacing-style"
+  style="{% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  {%- unless product == blank -%}
+    {% render 'quick-add',
+      product: product,
+      section_id: section.id,
+      block: block,
+      color_scheme: block_settings.color_scheme,
+      style_class: block_settings.style_class,
+      show_icon: block_settings.show_icon
+    %}
+  {%- endunless -%}
+</div>
+
+{% stylesheet %}
+  .product-quick-add-block {
+    width: 100%;
+  }
+
+  .product-quick-add-block .quick-add {
+    position: static;
+    inset: auto;
+    pointer-events: auto;
+  }
+
+  .product-quick-add-block .quick-add__product-form-component .shopify-product-form {
+    justify-content: stretch;
+    align-items: stretch;
+    height: auto;
+  }
+
+  .product-quick-add-block .quick-add__button {
+    --button-size-md: 3.1875rem;
+    position: static;
+    opacity: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: var(--button-size-md);
+    /* Reset overlay-only styles so theme button / button-secondary win */
+    border-radius: var(--style-border-radius-buttons);
+    border: none;
+    background: unset;
+    backdrop-filter: none;
+  }
+
+  .product-quick-add-block .quick-add__button .add-to-cart-text {
+    background: transparent;
+    height: auto;
+  }
+
+  .product-quick-add-block .quick-add__button .add-to-cart-text__content {
+    grid-template-columns: 1fr;
+  }
+
+  .product-quick-add-block .quick-add__button .add-to-cart-text__content span span {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0);
+    padding-right: 0;
+  }
+
+  .product-quick-add-block .quick-add__button:is(:hover, :focus-visible) {
+    scale: 1;
+  }
+
+  /* Restore the hide-the-wrong-button rules from base.css, which our block-scoped
+     display: flex above would otherwise override (equal specificity, later source order). */
+  .product-quick-add-block [data-quick-add-button='choose'] add-to-cart-component {
+    display: none;
+  }
+
+  .product-quick-add-block [data-quick-add-button='add'] .quick-add__button--choose {
+    display: none;
+  }
+
+  /* Make the visible "Add" button stretch like the "Choose" button does. */
+  .product-quick-add-block [data-quick-add-button='add'] add-to-cart-component,
+  .product-quick-add-block [data-quick-add-button='add'] add-to-cart-component .quick-add__button--add {
+    width: 100%;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Quick add",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Renders a Choose or Add button that opens the quick-add modal. Only active on products assigned to a card (works inside product card blocks)."
+    },
+    {
+      "type": "select",
+      "id": "style_class",
+      "label": "t:settings.style",
+      "options": [
+        { "value": "button", "label": "t:options.primary" },
+        { "value": "button-secondary", "label": "t:options.secondary" }
+      ],
+      "default": "button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show cart icon",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_color_scheme",
+      "label": "t:settings.inherit_color_scheme",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quick add",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

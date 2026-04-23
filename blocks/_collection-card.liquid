@@ -117,6 +117,14 @@
       "default": 8
     },
     {
+      "type": "checkbox",
+      "id": "reveal_on_hover",
+      "label": "Reveal extra content on hover",
+      "info": "First child block (e.g., Collection title) stays visible at the bottom. Any additional blocks (text, button) are hidden below the card and slide up on hover — same animation as the Media tile block.",
+      "default": false,
+      "visible_if": "{{ block.settings.placement == 'on_image' }}"
+    },
+    {
       "type": "header",
       "content": "t:content.appearance"
     },

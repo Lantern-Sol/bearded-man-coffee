@@ -7,7 +7,7 @@
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
-  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}{% if section.settings.floating_media != blank %} section--has-floating-media{% endif %}{% if section.settings.floating_media_hide_mobile %} section--floating-media-hide-mobile{% endif %}"
   data-testid="ui-test-section"
 
   {% if request.visual_preview_mode %}
@@ -37,6 +37,59 @@
       background_image_position: section.settings.background_image_position
     %}
   </div>
+
+  {%- if section.settings.floating_media != blank -%}
+    {%- liquid
+      # Map the 8 anchor values to independent vertical/horizontal tracks.
+      case section.settings.floating_media_anchor
+        when 'top-left'
+          assign v = 'top'
+          assign h = 'left'
+        when 'top-center'
+          assign v = 'top'
+          assign h = 'center'
+        when 'top-right'
+          assign v = 'top'
+          assign h = 'right'
+        when 'center-left'
+          assign v = 'center'
+          assign h = 'left'
+        when 'center-right'
+          assign v = 'center'
+          assign h = 'right'
+        when 'bottom-left'
+          assign v = 'bottom'
+          assign h = 'left'
+        when 'bottom-center'
+          assign v = 'bottom'
+          assign h = 'center'
+        else
+          assign v = 'bottom'
+          assign h = 'right'
+      endcase
+    -%}
+    {%- liquid
+      assign width_rem = section.settings.floating_media_width | divided_by: 16.0
+      assign offset_x_rem = section.settings.floating_media_offset_x | divided_by: 16.0
+      assign offset_y_rem = section.settings.floating_media_offset_y | divided_by: 16.0
+    -%}
+    <div
+      class="section-floating-media section-floating-media--v-{{ v }} section-floating-media--h-{{ h }}"
+      style="
+        --floating-media-width: {{ width_rem }}rem;
+        --floating-media-offset-x: {{ offset_x_rem }}rem;
+        --floating-media-offset-y: {{ offset_y_rem }}rem;
+        --floating-media-rotation: {{ section.settings.floating_media_rotation }}deg;
+      "
+      aria-hidden="true"
+    >
+      {{
+        section.settings.floating_media
+        | image_url: width: 800
+        | image_tag: loading: 'lazy', widths: '120, 240, 480, 800', sizes: '(min-width: 750px) 500px, 240px', alt: section.settings.floating_media.alt
+      }}
+    </div>
+  {%- endif -%}
 
   <div
     class="border-style custom-section-content"
@@ -93,5 +146,74 @@
 
   .custom-section-content {
     z-index: var(--layer-flat);
+  }
+
+  /* Floating media — spans full section, positioned absolutely above the content. */
+  .section--has-floating-media {
+    position: relative;
+  }
+
+  .section-floating-media {
+    /* Edge offset = 0 for full-width; page-margin for page-width (overridden below). */
+    --floating-media-edge-offset: 0px;
+    position: absolute;
+    grid-column: 1 / -1;
+    width: var(--floating-media-width, 7.5rem);
+    pointer-events: none;
+    z-index: var(--layer-raised, 10);
+    transform: translate(var(--floating-media-offset-x, 0), var(--floating-media-offset-y, 0))
+      rotate(var(--floating-media-rotation, 0));
+  }
+
+  /* When the section is page-width, anchor horizontally to the page-width
+     content edge rather than the viewport edge. `--util-page-margin-offset`
+     is defined on `.section` and equals the left/right gutter width. */
+  .section--page-width .section-floating-media {
+    --floating-media-edge-offset: var(--util-page-margin-offset);
+  }
+
+  .section-floating-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .section-floating-media--v-top {
+    top: 0;
+  }
+
+  .section-floating-media--v-bottom {
+    bottom: 0;
+  }
+
+  .section-floating-media--v-center {
+    top: 50%;
+    transform: translate(var(--floating-media-offset-x, 0), calc(-50% + var(--floating-media-offset-y, 0)))
+      rotate(var(--floating-media-rotation, 0));
+  }
+
+  .section-floating-media--h-left {
+    left: var(--floating-media-edge-offset);
+  }
+
+  .section-floating-media--h-right {
+    right: var(--floating-media-edge-offset);
+  }
+
+  .section-floating-media--h-center {
+    left: 50%;
+    transform: translate(calc(-50% + var(--floating-media-offset-x, 0)), var(--floating-media-offset-y, 0))
+      rotate(var(--floating-media-rotation, 0));
+  }
+
+  .section-floating-media--v-center.section-floating-media--h-center {
+    transform: translate(calc(-50% + var(--floating-media-offset-x, 0)), calc(-50% + var(--floating-media-offset-y, 0)))
+      rotate(var(--floating-media-rotation, 0));
+  }
+
+  @media screen and (max-width: 749px) {
+    .section--floating-media-hide-mobile .section-floating-media {
+      display: none;
+    }
   }
 {% endstylesheet %}

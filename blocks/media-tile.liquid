@@ -1,0 +1,336 @@
+{%- liquid
+  assign s = block.settings
+  assign height_mode = s.height_mode | default: 'image_ratio'
+  assign image = s.image
+
+  assign has_link = false
+  if s.link != blank
+    assign has_link = true
+  endif
+
+  assign aspect_ratio = image.aspect_ratio | default: 1.5
+  assign base_opacity = s.overlay_opacity | divided_by: 100.0
+  assign hover_opacity = s.hover_overlay_opacity | divided_by: 100.0
+-%}
+
+<{% if has_link %}a href="{{ s.link }}"{% else %}div{% endif %}
+  class="
+    media-tile
+    media-tile--height-{{ height_mode }}
+    {% if s.reveal_description_on_hover %}media-tile--reveal-on-hover{% endif %}
+  "
+  style="
+    --media-tile-overlay-color: {{ s.overlay_color }};
+    --media-tile-overlay-opacity: {{ base_opacity }};
+    --media-tile-overlay-opacity-hover: {{ hover_opacity }};
+    --media-tile-aspect-ratio: {{ aspect_ratio }};
+    {% if height_mode == 'custom' %}--media-tile-height: {{ s.custom_height }}svh;{% endif %}
+    {% if s.text_color != blank %}--media-tile-text-color: {{ s.text_color }};{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  {%- if image != blank -%}
+    <div class="media-tile__image">
+      {{
+        image
+        | image_url: width: 1600
+        | image_tag:
+            loading: 'lazy',
+            widths: '400, 800, 1200, 1600',
+            sizes: '(min-width: 750px) 50vw, 100vw',
+            alt: image.alt
+      }}
+    </div>
+  {%- else -%}
+    <div class="media-tile__image media-tile__image--placeholder">
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'media-tile__placeholder-svg' }}
+    </div>
+  {%- endif -%}
+
+  <div class="media-tile__overlay" aria-hidden="true"></div>
+
+  <div class="media-tile__content">
+    {%- if s.heading != blank -%}
+      <h4 class="media-tile__heading">{{ s.heading }}</h4>
+    {%- endif -%}
+    {%- if s.description != blank -%}
+      <div class="media-tile__description">{{ s.description }}</div>
+    {%- endif -%}
+    {%- if s.button_label != blank -%}
+      <span class="{{ s.button_style_class | default: 'button' }} media-tile__button">
+        {{ s.button_label }}
+      </span>
+    {%- endif -%}
+  </div>
+</{% if has_link %}a{% else %}div{% endif %}>
+
+{% stylesheet %}
+  .media-tile {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    /* Body/description/button inherit the parent section's foreground color
+       unless the block-level text color is explicitly set. */
+    color: var(--media-tile-text-color, var(--color-foreground));
+    text-decoration: none;
+    isolation: isolate;
+    width: 100%;
+  }
+
+  .media-tile--height-image_ratio {
+    aspect-ratio: var(--media-tile-aspect-ratio, 1.5);
+    height: auto;
+  }
+
+  .media-tile--height-custom {
+    height: var(--media-tile-height, 50svh);
+  }
+
+  .media-tile--height-fill {
+    height: 100%;
+    min-height: 300px;
+  }
+
+  .media-tile__image {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .media-tile__image img,
+  .media-tile__image svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /*
+    Base overlay: transparent at the top, fading to `overlay-color` at the 69.6% stop
+    (matching the spec'd `linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.30) 69.6%)`).
+    The whole layer's opacity is then driven by --media-tile-overlay-opacity,
+    so an opacity of 100% yields exactly that 30% black at the gradient's lower stop.
+  */
+  .media-tile__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+    pointer-events: none;
+  }
+
+  .media-tile:hover .media-tile__overlay,
+  .media-tile:focus-visible .media-tile__overlay {
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .media-tile__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: var(--media-tile-padding, 1.5rem);
+    display: flex;
+    flex-direction: column;
+    /* Heading sits at the bottom at rest. Description + button sit below it
+       in the DOM and are shifted off the tile via the transform below. */
+    justify-content: flex-end;
+    gap: 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  .media-tile__heading {
+    margin: 0;
+    font-family: var(--font-heading--family, inherit);
+    font-weight: var(--font-heading--weight, 700);
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    /* Pull from the section's color scheme heading color unless the block
+       explicitly overrides with a text color. */
+    color: var(--media-tile-text-color, var(--color-foreground-heading));
+  }
+
+  .media-tile__description {
+    max-width: 42ch;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .media-tile__button {
+    align-self: flex-start;
+  }
+
+  /* Kept invisible at rest (even while clipped); fade in in lockstep with the
+     content group's slide-up so they're only visible on hover. */
+  .media-tile--reveal-on-hover .media-tile__description,
+  .media-tile--reveal-on-hover .media-tile__button {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .media-tile--reveal-on-hover:hover .media-tile__description,
+  .media-tile--reveal-on-hover:focus-within .media-tile__description,
+  .media-tile--reveal-on-hover:hover .media-tile__button,
+  .media-tile--reveal-on-hover:focus-within .media-tile__button {
+    opacity: 1;
+  }
+
+  /*
+    At rest, push the whole content group DOWN by --media-tile-reveal-offset.
+    That puts the heading at the bottom of the tile (with padding) and parks
+    the description + button below the tile edge, clipped by overflow: hidden
+    on the outer .media-tile element. On hover, translate returns to 0 — the
+    whole group slides up as one, revealing description + button below the
+    (now higher) heading.
+
+    --media-tile-reveal-offset defaults to 7rem. Override per-instance via
+    the block's inline style if the description is much longer/shorter than
+    ~2 lines of text plus a single-line button.
+  */
+  .media-tile--reveal-on-hover .media-tile__content {
+    transform: translateY(var(--media-tile-reveal-offset, 4.25rem));
+  }
+
+  .media-tile--reveal-on-hover:hover .media-tile__content,
+  .media-tile--reveal-on-hover:focus-within .media-tile__content {
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .media-tile__overlay,
+    .media-tile__content {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Media tile",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "info": "Shown below the heading (or revealed on hover if that option is on)."
+    },
+    {
+      "type": "checkbox",
+      "id": "reveal_description_on_hover",
+      "label": "Reveal description and button on hover",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "info": "Leave empty to inherit from the section's color scheme."
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "select",
+      "id": "button_style_class",
+      "label": "Button style",
+      "options": [
+        { "value": "button", "label": "Primary" },
+        { "value": "button-secondary", "label": "Secondary" }
+      ],
+      "default": "button"
+    },
+    {
+      "type": "header",
+      "content": "Height"
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Height mode",
+      "options": [
+        { "value": "image_ratio", "label": "Match image aspect ratio" },
+        { "value": "custom", "label": "Custom height" },
+        { "value": "fill", "label": "Fill parent" }
+      ],
+      "default": "image_ratio"
+    },
+    {
+      "type": "range",
+      "id": "custom_height",
+      "label": "Custom height",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "svh",
+      "default": 50,
+      "visible_if": "{{ block.settings.height_mode == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Base opacity",
+      "info": "Opacity of the gradient layer at rest. 100% matches the design default.",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "hover_overlay_opacity",
+      "label": "Hover opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Media tile",
+      "category": "t:categories.storytelling"
+    }
+  ]
+}
+{% endschema %}

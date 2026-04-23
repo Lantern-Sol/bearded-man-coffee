@@ -129,8 +129,7 @@
 
     {% render 'search-modal' %}
 
-    {% if settings.quick_add or settings.mobile_quick_add %}
-      {% render 'quick-add-modal' %}
-    {% endif %}
+    {% comment %} Modal is rendered unconditionally so the Quick add block works without the theme-wide setting enabled. {% endcomment %}
+    {% render 'quick-add-modal' %}
   </body>
 </html>

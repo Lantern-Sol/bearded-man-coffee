@@ -1,11 +1,3 @@
-{% liquid
-  assign tabs_count = section.blocks.size
-%}
-
-{% capture children %}
-  {% content_for 'blocks' %}
-{% endcapture %}
-
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
   class="
@@ -24,6 +16,8 @@
 >
   <collection-tabs-component
     class="collection-tabs"
+    data-section-id="{{ section.id }}"
+    data-slide-label-template="{{ 'accessibility.slide_status' | t: index: '[index]', length: '[length]' | escape }}"
     style="
       --collection-tabs-alignment: {{ section.settings.tabs_alignment }};
       --collection-tabs-header-alignment: {{ section.settings.header_alignment }};
@@ -34,74 +28,48 @@
       {% content_for 'block', type: 'text', id: 'static-description' %}
     </div>
 
-    {% if tabs_count > 0 %}
-      <div
-        class="collection-tabs__nav"
-        role="tablist"
-        ref="tablist"
-      >
-        {% for block in section.blocks %}
-          {% liquid
-            assign tab_label = block.settings.tab_label
-            if tab_label == blank and block.settings.collection != blank
-              assign tab_label = block.settings.collection.title
-            endif
-            if tab_label == blank
-              assign tab_label = 'Tab ' | append: forloop.index
-            endif
-          %}
-          <button
-            type="button"
-            class="collection-tabs__tab"
-            role="tab"
-            id="collection-tab-{{ section.id }}-{{ forloop.index0 }}"
-            aria-controls="collection-panel-{{ block.id }}"
-            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-            tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
-            ref="tabs[]"
-            on:click="/select/{{ forloop.index0 }}"
-            on:keydown="/onTabKeydown"
-          >
-            {{ tab_label }}
-          </button>
-        {% endfor %}
-      </div>
-    {% endif %}
+    {%- comment -%}
+      Tablist + dots shells are always rendered so the component always finds its
+      refs. collection-tabs.js populates them from each panel's `data-tab-label`
+      and toggles the empty state based on how many panels were actually rendered.
+    {%- endcomment -%}
+    <div
+      class="collection-tabs__nav"
+      role="tablist"
+      ref="tablist"
+    ></div>
 
-    {{ children }}
+    {% content_for 'blocks' %}
 
-    {% if tabs_count == 0 %}
-      <div class="collection-tabs__empty">
-        {{- 'onboarding.no_content' | t -}}
-      </div>
-    {% endif %}
+    <div
+      class="collection-tabs__empty"
+      ref="emptyState"
+      hidden
+    >
+      {{- 'onboarding.no_content' | t -}}
+    </div>
 
-    {% if section.settings.show_dots and tabs_count > 1 %}
-      <ol class="collection-tabs__dots" aria-hidden="true">
-        {% for block in section.blocks %}
-          <li>
-            <button
-              type="button"
-              class="collection-tabs__dot"
-              aria-label="{{ 'accessibility.slide_status' | t: index: forloop.index, length: tabs_count }}"
-              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-              tabindex="-1"
-              ref="dots[]"
-              on:click="/select/{{ forloop.index0 }}"
-            ></button>
-          </li>
-        {% endfor %}
-      </ol>
+    {% if section.settings.show_dots %}
+      <ol
+        class="collection-tabs__dots"
+        aria-hidden="true"
+        ref="dotlist"
+      ></ol>
     {% endif %}
   </collection-tabs-component>
 </div>
 
 {% stylesheet %}
   .section-collection-tab {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     row-gap: var(--gap);
+    /*
+      The theme's `.spacing-style` class applies `padding-inline` here, but
+      this element is `display: grid` with fixed page-margin side columns —
+      so horizontal padding would be absorbed by the margin columns and
+      produce no visible change on page-width sections. We zero it here and
+      apply horizontal padding on the inner component instead.
+    */
+    padding-inline: 0;
   }
 
   .collection-tabs {
@@ -110,6 +78,19 @@
     align-items: stretch;
     width: 100%;
     row-gap: var(--gap);
+    padding-inline: var(--padding-inline-start, 0) var(--padding-inline-end, 0);
+  }
+
+  @media screen and (max-width: 749px) {
+    .section-collection-tab {
+      padding-inline: 0;
+    }
+
+    .collection-tabs {
+      padding-inline:
+        var(--padding-inline-start-mobile, var(--padding-inline-start, 0))
+        var(--padding-inline-end-mobile, var(--padding-inline-end, 0));
+    }
   }
 
   .collection-tabs__header {
@@ -154,7 +135,7 @@
     appearance: none;
     background: transparent;
     border: 0;
-    padding: 0.25rem 0;
+    padding: 0.5rem 0;
     cursor: pointer;
     font: inherit;
     font-weight: 600;
@@ -180,10 +161,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 1rem;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0;    
+    padding-top: 1rem;
   }
 
   .collection-tabs__dot {
@@ -342,6 +324,80 @@
       "step": 1,
       "unit": "px",
       "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_mobile_padding",
+      "label": "Use mobile padding",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start-mobile",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.use_mobile_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end-mobile",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.use_mobile_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start-mobile",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.use_mobile_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end-mobile",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.use_mobile_padding }}"
     }
   ],
   "presets": [

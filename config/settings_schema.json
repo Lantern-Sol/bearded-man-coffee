@@ -1683,6 +1683,12 @@
         "default": "scheme-5"
       },
       {
+        "type": "color_scheme",
+        "id": "badge_roast_color_scheme",
+        "label": "Roast label color scheme",
+        "default": "scheme-4"
+      },
+      {
         "type": "header",
         "content": "t:names.typography"
       },

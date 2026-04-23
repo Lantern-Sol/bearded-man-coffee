@@ -60,6 +60,12 @@
       assign current_color_scheme = block_settings.color_scheme
       assign parent_color_scheme = section.settings[color_scheme_setting_id]
 
+      # When `inherit_header_color_scheme` is enabled, force the submenu to use
+      # the header row's color scheme so its background matches the header.
+      if block_settings.inherit_header_color_scheme
+        assign current_color_scheme = parent_color_scheme
+      endif
+
       if parent_color_scheme.id != current_color_scheme.id
         assign color_scheme_classes = ' color-' | append: current_color_scheme
       endif
@@ -89,7 +95,7 @@
           <a
             href="{{ link.url }}"
             data-skip-node-update="true"
-            class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
+            class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}{% if link.links != blank %} menu-list__link--has-children{% endif %}"
             {%- if link.links != blank -%}
               aria-controls="submenu-{{ forloop.index }}"
               aria-haspopup="true"
@@ -101,6 +107,9 @@
             ref="menuitem"
           >
             <span class="menu-list__link-title">{{- link.title -}}</span>
+            {%- if link.links != blank -%}
+              {% render 'icon-chevron-down' %}
+            {%- endif -%}
           </a>
           {%- if link.links != blank -%}
             <div class="menu-list__submenu{{ color_scheme_classes }}" ref="submenu[]">
@@ -110,6 +119,14 @@
                 style="{% render 'submenu-font-styles', settings: block_settings %}"
               >
                 {% assign list_id = 'MegaMenuList-' | append: forloop.index %}
+                {% liquid
+                  # Widen the desktop grid when featuring collections so we can
+                  # fit more image cards (each takes 2 columns).
+                  assign desktop_columns = 6
+                  if menu_content_type == 'featured_collections'
+                    assign desktop_columns = 8
+                  endif
+                %}
                 <div class="mega-menu section section--full-width-margin section--{{ section.settings.section_width }}">
                   <div
                     class="mega-menu__grid"
@@ -119,12 +136,15 @@
                       parent_link: link,
                       id: list_id,
                       section: section,
-                      grid_columns_count: 6,
+                      grid_columns_count: desktop_columns,
                       grid_columns_count_tablet: 4,
                       grid_columns_count_collection_images: 8,
                       menu_content_type: menu_content_type,
                       content_aspect_ratio: ratio,
-                      image_border_radius: image_border_radius
+                      image_border_radius: image_border_radius,
+                      feature_button_label: block_settings.feature_button_label,
+                      feature_button_style_class: block_settings.feature_button_style_class,
+                      feature_color_scheme: block_settings.feature_color_scheme
                     %}
                   </div>
                 </div>
@@ -297,6 +317,7 @@
   }
 
   .menu-list__link-title {
+    --gap-xl: 1.5rem;
     padding-inline: calc(var(--gap-xl) / 2);
   }
   [slot='overflow'] .menu-list__link-title {
@@ -334,6 +355,16 @@
   .menu-list .menu-list__list-item:where(:hover, :focus-within) .menu-list__link,
   .menu-list .menu-list__list-item[slot='overflow'] .menu-list__link[aria-expanded='true'] {
     color: var(--menu-top-level-font-color);
+  }
+
+  .menu-list .menu-list__list-item .menu-list__link.menu-list__link--has-children {
+    --gap-xl: 1.5rem;
+    flex-direction: row;
+    padding-inline: calc(var(--gap-xl) / 2);
+  }
+
+  .menu-list__list-item .menu-list__link.menu-list__link--has-children .menu-list__link-title {
+    padding-inline: 0;
   }
 
   .overflow-menu::part(list) {
@@ -665,6 +696,86 @@
     /* preserves the inherited grid layout when this submenu wrapper is used */
     display: contents;
   }
+
+  /*
+    Featured-collection cards in the mega menu use the same hover-reveal
+    animation as the Media tile block: heading stays at the bottom at rest,
+    the whole content group transforms up on hover, revealing any trailing
+    children (subtext, button). Scoped to the mega menu so other resource-card
+    usages aren't affected.
+  */
+  .mega-menu__content-list--collections .resource-card--overlay {
+    overflow: hidden;
+  }
+
+  .mega-menu__content-list--collections .resource-card--overlay .resource-card__content {
+    transform: translateY(var(--mega-menu-card-reveal-offset, 3.5rem));
+    transition: transform 0.3s ease;
+  }
+
+  .mega-menu__content-list--collections .resource-card--overlay:hover .resource-card__content,
+  .mega-menu__content-list--collections .resource-card--overlay:focus-within .resource-card__content {
+    transform: translateY(0);
+  }
+
+  /* Title stays visible; any trailing children (subtext, button) fade in. */
+  .mega-menu__content-list--collections .resource-card--overlay .resource-card__content > *:not(:first-child) {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .mega-menu__content-list--collections .resource-card--overlay:hover .resource-card__content > *:not(:first-child),
+  .mega-menu__content-list--collections .resource-card--overlay:focus-within .resource-card__content > *:not(:first-child) {
+    opacity: 1;
+  }
+
+  /* Give the overlay button a little breathing room + consistent max-width. */
+  .mega-menu__content-list--collections .resource-card__button {
+    align-self: flex-start;
+    margin-top: var(--padding-xs);
+  }
+
+  /*
+    resource-card.liquid hardcodes the overlay title to --color-white. In the
+    mega menu we want the title to follow the Card color scheme instead, so
+    override with the scheme's foreground-heading token.
+  */
+  .mega-menu__content-list--collections .resource-card--overlay .resource-card__title {
+    color: var(--color-foreground-heading);
+  }
+
+  /*
+    Menu typography — top-level links and mega-menu text-column links share
+    a 16px bold treatment. Featured collection cards keep their own heading
+    styles since they're heading-like, not navigation links.
+  */
+  .menu-list__link,
+  .mega-menu__link {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  /* When a link has children, lay it out as inline-flex with the chevron gap. */
+  .menu-list__link--has-children,
+  .mega-menu__link--parent {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .icon-chevron-down {
+    flex-shrink: 0;
+    width: 13px;
+    height: 7px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mega-menu__content-list--collections .resource-card--overlay .resource-card__content,
+    .mega-menu__content-list--collections .resource-card--overlay .resource-card__content > *:not(:first-child) {
+      transition: none;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -679,10 +790,18 @@
       "default": "main-menu"
     },
     {
+      "type": "checkbox",
+      "id": "inherit_header_color_scheme",
+      "label": "Match header color scheme",
+      "info": "When on, the mega-menu background matches the header row's color scheme. Turn off to pick a distinct scheme below.",
+      "default": true
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:settings.color_scheme",
-      "default": "primary"
+      "default": "primary",
+      "visible_if": "{{ block.settings.inherit_header_color_scheme == false }}"
     },
     {
       "type": "header",
@@ -845,6 +964,32 @@
         }
       ],
       "default": "16 / 9",
+      "visible_if": "{{ block.settings.menu_style == 'featured_collections' }}"
+    },
+    {
+      "type": "text",
+      "id": "feature_button_label",
+      "label": "Card button label",
+      "info": "Label shown on each featured collection card. Leave empty for no button.",
+      "visible_if": "{{ block.settings.menu_style == 'featured_collections' }}"
+    },
+    {
+      "type": "select",
+      "id": "feature_button_style_class",
+      "label": "Card button style",
+      "options": [
+        { "value": "button", "label": "t:options.primary" },
+        { "value": "button-secondary", "label": "t:options.secondary" }
+      ],
+      "default": "button-secondary",
+      "visible_if": "{{ block.settings.menu_style == 'featured_collections' }}"
+    },
+    {
+      "type": "color_scheme",
+      "id": "feature_color_scheme",
+      "label": "Card color scheme",
+      "info": "Applied to each featured collection card (title, subtext, button).",
+      "default": "scheme-1",
       "visible_if": "{{ block.settings.menu_style == 'featured_collections' }}"
     },
     {
