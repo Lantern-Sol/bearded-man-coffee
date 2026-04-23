@@ -22,6 +22,16 @@ class HeaderMenu extends Component {
    */
   #submenuMutationObserver = null;
 
+  /**
+   * Timer used to delay `#deactivate` so the user has a moment to travel
+   * from the link to the submenu without the menu closing mid-move.
+   * @type {ReturnType<typeof setTimeout> | null}
+   */
+  #deactivateTimer = null;
+
+  /** Milliseconds to wait before actually closing the submenu. */
+  static DEACTIVATE_DELAY_MS = 200;
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -35,6 +45,10 @@ class HeaderMenu extends Component {
     window.removeEventListener('resize', this.#resizeListener);
     this.overflowMenu?.removeEventListener('pointerleave', this.#overflowSubmenuListener);
     this.#cleanupMutationObserver();
+    if (this.#deactivateTimer) {
+      clearTimeout(this.#deactivateTimer);
+      this.#deactivateTimer = null;
+    }
   }
 
   /**
@@ -80,6 +94,13 @@ class HeaderMenu extends Component {
    * @param {PointerEvent | FocusEvent} event
    */
   activate = (event) => {
+    // Cancel a pending close so re-entering while the grace-period timer is
+    // still running keeps the menu open seamlessly.
+    if (this.#deactivateTimer) {
+      clearTimeout(this.#deactivateTimer);
+      this.#deactivateTimer = null;
+    }
+
     this.dispatchEvent(new MegaMenuHoverEvent());
 
     if (!(event.target instanceof Element) || !this.headerComponent) return;
@@ -177,7 +198,16 @@ class HeaderMenu extends Component {
 
     if (isMovingWithinMenu || isMovingToOverflowMenu || isMovingToSubmenu) return;
 
-    this.#deactivate();
+    // Delay the close so the user can traverse the gap between the nav link
+    // and the submenu without it snapping shut. `activate` clears this timer
+    // when the pointer re-enters any menu item.
+    if (this.#deactivateTimer) {
+      clearTimeout(this.#deactivateTimer);
+    }
+    this.#deactivateTimer = setTimeout(() => {
+      this.#deactivateTimer = null;
+      this.#deactivate();
+    }, HeaderMenu.DEACTIVATE_DELAY_MS);
   }
 
   /**
