@@ -44,7 +44,18 @@
       "Bash(node scripts/search_docs.mjs \"idempotent directive inventoryAdjustQuantities referenceDocumentUri\" --model claude-opus-4-7 --client-name claude-code --client-version 1.0)",
       "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('C:/Projects/Breaded man coffee/bearded-man-coffee/templates/index.json','utf8'\\).replace\\(/^\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\//,''\\)\\); console.log\\('valid'\\)\")",
       "mcp__Claude_Preview__preview_start",
-      "mcp__Claude_in_Chrome__tabs_context_mcp"
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(shopify version *)",
+      "Bash(node \"C:\\\\Users\\\\jjtam\\\\.claude\\\\plugins\\\\cache\\\\shopify-ai-toolkit\\\\shopify-plugin\\\\1.1.0\\\\skills\\\\shopify-admin\\\\scripts\\\\search_docs.mjs\" \"menu linklist navigation\")",
+      "Bash(node \"C:\\\\Users\\\\jjtam\\\\.claude\\\\plugins\\\\cache\\\\shopify-ai-toolkit\\\\shopify-plugin\\\\1.1.0\\\\skills\\\\shopify-admin\\\\scripts\\\\search_docs.mjs\" \"menuCreate mutation\")",
+      "Bash(node \"C:\\\\Users\\\\jjtam\\\\.claude\\\\plugins\\\\cache\\\\shopify-ai-toolkit\\\\shopify-plugin\\\\1.1.0\\\\skills\\\\shopify-admin\\\\scripts\\\\search_docs.mjs\" \"menus query list\")",
+      "Bash(node \"C:\\\\Users\\\\jjtam\\\\.claude\\\\plugins\\\\cache\\\\shopify-ai-toolkit\\\\shopify-plugin\\\\1.1.0\\\\skills\\\\shopify-admin\\\\scripts\\\\validate.mjs\" --api admin --query 'query ListMenus { menus\\(first: 50\\) { nodes { id handle title isDefault } } }')",
+      "Bash(node \"C:\\\\Users\\\\jjtam\\\\.claude\\\\plugins\\\\cache\\\\shopify-ai-toolkit\\\\shopify-plugin\\\\1.1.0\\\\skills\\\\shopify-admin\\\\scripts\\\\validate.mjs\" --help)",
+      "Bash(node \"C:\\\\Users\\\\jjtam\\\\.claude\\\\plugins\\\\cache\\\\shopify-ai-toolkit\\\\shopify-plugin\\\\1.1.0\\\\skills\\\\shopify-admin\\\\scripts\\\\validate.mjs\")",
+      "Bash(node \"C:\\\\Users\\\\jjtam\\\\.claude\\\\plugins\\\\cache\\\\shopify-ai-toolkit\\\\shopify-plugin\\\\1.1.0\\\\skills\\\\shopify-admin\\\\scripts\\\\search_docs.mjs\" \"MenuItemType enum values\")",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('C:/Projects/Breaded man coffee/bearded-man-coffee/config/settings_schema.json','utf8'\\)\\); console.log\\('OK'\\);\")",
+      "Bash(node -e \"const s=require\\('fs'\\).readFileSync\\('C:/Projects/Breaded man coffee/bearded-man-coffee/sections/footer-group.json','utf8'\\); JSON.parse\\(s.replace\\(/^\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\//,''\\)\\); console.log\\('OK'\\);\")",
+      "Bash(node -e \"const s=require\\('fs'\\).readFileSync\\('C:/Projects/Breaded man coffee/bearded-man-coffee/blocks/menu.liquid','utf8'\\); const m=s.match\\(/\\\\{% schema %\\\\}\\([\\\\s\\\\S]*?\\)\\\\{% endschema %\\\\}/\\); JSON.parse\\(m[1]\\); console.log\\('OK'\\);\")"
     ]
   }
 }

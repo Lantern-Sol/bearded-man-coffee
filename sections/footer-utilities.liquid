@@ -21,7 +21,7 @@
     gap: var(--gap);
     text-wrap: nowrap;
     border-top: var(--border-width) solid var(--color-border);
-    color: var(--color-foreground-muted);
+    color: var(--color-foreground);
 
     @media screen and (min-width: 750px) {
       display: grid;
@@ -34,7 +34,8 @@
   }
 
   .utilities a {
-    color: var(--color-foreground-muted);
+    color: var(--color-foreground);
+    text-decoration: underline;
   }
 
   .utilities > * {
@@ -61,7 +62,7 @@
 
     /* 2 blocks: Two equal columns, start and end aligned */
     .utilities--blocks-2 {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 2fr 1fr;
     }
 
     .utilities--blocks-2 > *:nth-child(2) {
@@ -91,7 +92,7 @@
   "name": "t:names.policies_and_links",
   "tag": "div",
   "class": "footer-utilities",
-  "max_blocks": 3,
+  "max_blocks": 5,
   "enabled_on": {
     "groups": ["footer"]
   },
@@ -172,6 +173,15 @@
     },
     {
       "type": "social-links"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "payment-icons"
+    },
+    {
+      "type": "group"
     }
   ],
   "presets": [

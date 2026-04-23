@@ -14,173 +14,234 @@
     "footer_m9NzUG": {
       "type": "footer",
       "blocks": {
-        "group_H6VpwJ": {
+        "group_brand": {
           "type": "group",
           "settings": {
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
+            "vertical_alignment": "flex-start",
             "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 6,
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 16,
             "width": "fill",
-            "custom_width": 100,
             "width_mobile": "fill",
-            "custom_width_mobile": 100,
             "height": "fit",
-            "custom_height": 100,
             "inherit_color_scheme": true,
-            "color_scheme": "",
             "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
             "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_LWt8Pz": {
-              "type": "text",
+            "brand_logo": {
+              "type": "logo",
               "settings": {
-                "text": "<h2>Join our email list</h2>",
-                "mobile_text": "",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "height_mode": "auto",
-                "desktop_height": "",
-                "mobile_height": "",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "enable_custom_font_weight": false,
-                "weight": "400",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "custom_line_height": 1.5,
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "use_mobile_settings": false,
-                "mobile_font_size": "1rem",
-                "mobile_custom_line_height": 1.5,
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
+                "unit": "pixel",
+                "pixel_height": 72,
+                "custom_mobile_size": false,
                 "padding-block-start": 0,
-                "padding-block-end": 0,
+                "padding-block-end": 8,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0,
-                "use_mobile_padding": false,
-                "padding-block-start-mobile": 0,
-                "padding-block-end-mobile": 0,
-                "padding-inline-start-mobile": 0,
-                "padding-inline-end-mobile": 0
-              },
-              "blocks": {}
+                "padding-inline-end": 0
+              }
             },
-            "text_f9CFLH": {
+            "brand_address": {
               "type": "text",
               "settings": {
-                "text": "<p>Get exclusive deals and early access to new products.</p>",
-                "mobile_text": "",
+                "text": "<p>421 Perry Street, Castle Rock, CO 80104</p>",
                 "width": "100%",
-                "max_width": "normal",
                 "alignment": "left",
-                "height_mode": "auto",
-                "desktop_height": "",
-                "mobile_height": "",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "enable_custom_font_weight": false,
-                "weight": "400",
-                "font_size": "1rem",
+                "type_preset": "paragraph",
+                "font_size": "0.875rem",
                 "line_height": "normal",
-                "custom_line_height": 1.5,
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
                 "color": "var(--color-foreground)",
-                "use_mobile_settings": false,
-                "mobile_font_size": "1rem",
-                "mobile_custom_line_height": 1.5,
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0,
-                "use_mobile_padding": false,
-                "padding-block-start-mobile": 0,
-                "padding-block-end-mobile": 0,
-                "padding-inline-start-mobile": 0,
-                "padding-inline-end-mobile": 0
-              },
-              "blocks": {}
+                "padding-inline-end": 0
+              }
+            },
+            "brand_phone": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"tel:+17205122897\">720-512-2897</a></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "paragraph",
+                "font_size": "0.875rem",
+                "line_height": "normal",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 4,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "brand_socials": {
+              "type": "social-links",
+              "settings": {
+                "facebook_url": "https://www.facebook.com/",
+                "instagram_url": "https://www.instagram.com/",
+                "youtube_url": "https://www.youtube.com/",
+                "tiktok_url": "",
+                "twitter_url": "",
+                "threads_url": "",
+                "linkedin_url": "",
+                "bluesky_url": "",
+                "snapchat_url": "",
+                "pinterest_url": "",
+                "tumblr_url": "",
+                "vimeo_url": "",
+                "custom_url": ""
+              }
             }
           },
           "block_order": [
-            "text_LWt8Pz",
-            "text_f9CFLH"
+            "brand_logo",
+            "brand_address",
+            "brand_phone",
+            "brand_socials"
           ]
         },
-        "email_signup_crihX7": {
-          "type": "email-signup",
+        "menu_about": {
+          "type": "menu",
           "settings": {
-            "width": "fill",
-            "custom_width": 100,
+            "menu": "about",
+            "heading": "About",
+            "menu_spacing": 12,
+            "show_as_accordion": true,
+            "accordion_icon": "caret",
+            "accordion_dividers": false,
             "inherit_color_scheme": true,
-            "color_scheme": "",
-            "heading": "",
-            "heading_preset": "h3",
-            "border_style": "all",
-            "border_width": 1,
-            "border_radius": 100,
-            "input_type_preset": "paragraph",
-            "style_class": "button-unstyled",
-            "display_type": "arrow",
-            "label": "Sign up",
-            "integrated_button": true,
-            "button_type_preset": "paragraph",
+            "heading_preset": "h5",
+            "link_preset": "paragraph",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "menu_customer_care": {
+          "type": "menu",
+          "settings": {
+            "menu": "customer-care",
+            "heading": "Customer Care",
+            "menu_spacing": 12,
+            "show_as_accordion": true,
+            "accordion_icon": "caret",
+            "accordion_dividers": false,
+            "inherit_color_scheme": true,
+            "heading_preset": "h5",
+            "link_preset": "paragraph",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "group_newsletter": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 12,
+            "width": "fill",
+            "width_mobile": "fill",
+            "height": "fit",
+            "inherit_color_scheme": true,
+            "background_media": "none",
+            "border": "none",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {}
+          "blocks": {
+            "newsletter_heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>Join the Expedition</h3>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "h4",
+                "case": "uppercase",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "newsletter_text": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Get tips, exclusive offers plus <strong>10% OFF</strong> your first order.</p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font_size": "0.875rem",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "newsletter_form": {
+              "type": "email-signup",
+              "settings": {
+                "width": "fill",
+                "inherit_color_scheme": true,
+                "heading": "",
+                "heading_preset": "h3",
+                "border_style": "all",
+                "border_width": 1,
+                "border_radius": 0,
+                "input_type_preset": "paragraph",
+                "style_class": "button-primary",
+                "display_type": "text",
+                "label": "Subscribe",
+                "integrated_button": false,
+                "button_type_preset": "paragraph",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            }
+          },
+          "block_order": [
+            "newsletter_heading",
+            "newsletter_text",
+            "newsletter_form"
+          ]
         }
       },
       "block_order": [
-        "group_H6VpwJ",
-        "email_signup_crihX7"
+        "group_brand",
+        "menu_about",
+        "menu_customer_care",
+        "group_newsletter"
       ],
       "name": "t:names.footer",
       "settings": {
         "section_width": "page-width",
-        "gap": 20,
+        "gap": 40,
         "color_scheme": "scheme-2",
-        "padding-block-start": 30,
-        "padding-block-end": 30,
+        "padding-block-start": 56,
+        "padding-block-end": 32,
         "padding-inline-start": 0,
         "padding-inline-end": 0,
-        "use_mobile_padding": false,
-        "padding-block-start-mobile": 0,
-        "padding-block-end-mobile": 0,
+        "use_mobile_padding": true,
+        "padding-block-start-mobile": 40,
+        "padding-block-end-mobile": 24,
         "padding-inline-start-mobile": 0,
         "padding-inline-end-mobile": 0
       }
@@ -188,56 +249,79 @@
     "footer_utilities_jLGE8U": {
       "type": "footer-utilities",
       "blocks": {
-        "footer_copyright_jweRK8": {
-          "type": "footer-copyright",
+        "util_left_group": {
+          "type": "group",
           "settings": {
-            "show_powered_by": true,
-            "font_size": "0.75rem",
-            "case": "none"
+            "content_direction": "row",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "gap": 24,
+            "width": "fit-content",
+            "width_mobile": "fill",
+            "height": "fit",
+            "inherit_color_scheme": true,
+            "background_media": "none",
+            "border": "none",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
           },
-          "blocks": {}
+          "blocks": {
+            "util_copyright": {
+              "type": "footer-copyright",
+              "settings": {
+                "show_powered_by": false,
+                "font_size": "0.75rem",
+                "case": "none"
+              }
+            },
+            "util_designed_by": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Designed by <a href=\"https://lanternsol.com\" target=\"_blank\" rel=\"noopener\">Lantern Sol</a></p>",
+                "width": "fit-content",
+                "alignment": "left",
+                "type_preset": "paragraph",
+                "font_size": "0.75rem",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            }
+          },
+          "block_order": [
+            "util_copyright",
+            "util_designed_by"
+          ]
         },
-        "footer_policy_list_VCdnpa": {
-          "type": "footer-policy-list",
+        "util_payment_icons": {
+          "type": "payment-icons",
           "settings": {
-            "font_size": "0.75rem",
-            "case": "none"
-          },
-          "blocks": {}
-        },
-        "social_links_Ew63Kq": {
-          "type": "social-links",
-          "settings": {
-            "facebook_url": "https://www.facebook.com/",
-            "instagram_url": "https://www.instagram.com/",
-            "youtube_url": "https://www.youtube.com/",
-            "tiktok_url": "https://www.tiktok.com/",
-            "twitter_url": "https://x.com/",
-            "threads_url": "",
-            "linkedin_url": "",
-            "bluesky_url": "",
-            "snapchat_url": "",
-            "pinterest_url": "",
-            "tumblr_url": "",
-            "vimeo_url": "",
-            "custom_url": ""
-          },
-          "blocks": {}
+            "horizontal_alignment": "flex-end",
+            "gap": 8,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
         }
       },
       "block_order": [
-        "footer_copyright_jweRK8",
-        "footer_policy_list_VCdnpa",
-        "social_links_Ew63Kq"
+        "util_left_group",
+        "util_payment_icons"
       ],
       "name": "t:names.utilities",
       "settings": {
         "section_width": "page-width",
         "gap": 24,
-        "divider_thickness": 0,
+        "divider_thickness": 1,
         "color_scheme": "scheme-2",
         "padding-block-start": 20,
-        "padding-block-end": 48
+        "padding-block-end": 24
       }
     }
   },

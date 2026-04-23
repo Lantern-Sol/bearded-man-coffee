@@ -1,3 +1,27 @@
+{%- liquid
+  assign footer_bg_color = settings.footer_background_color
+  assign footer_bg_image = settings.footer_background_image
+-%}
+{%- if footer_bg_color != blank or footer_bg_image != blank -%}
+  <style>
+    body > footer {
+      position: relative;
+      isolation: isolate;
+      {%- if footer_bg_color != blank %}
+      background-color: {{ footer_bg_color }};
+      {%- endif %}
+      {%- if footer_bg_image != blank %}
+      background-image: url({{ footer_bg_image | image_url: width: 2400 }});
+      background-size: cover;
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      {%- endif %}
+    }
+    body > footer .shopify-section .section-background {
+      background: transparent !important;
+    }
+  </style>
+{%- endif -%}
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
   class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"

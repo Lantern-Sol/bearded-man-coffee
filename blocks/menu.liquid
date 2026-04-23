@@ -39,7 +39,30 @@
       {% endif %}
       {{ block.shopify_attributes }}
     >
-      <summary class="menu__heading{% if heading == blank %} menu__heading--empty{% endif %} {{ block_settings.heading_preset }}">
+      <summary
+        class="menu__heading{% if heading == blank %} menu__heading--empty{% endif %} {{ block_settings.heading_preset }}"
+        {%- if block_settings.heading_preset == 'custom' -%}
+          style="
+            font-family: {{ block_settings.heading_font }};
+            {%- if block_settings.heading_enable_custom_font_weight -%}
+              font-weight: {{ block_settings.heading_weight }};
+            {%- else -%}
+              font-weight: {{ block_settings.heading_font | replace: 'family', 'weight' }};
+            {%- endif -%}
+            {%- if block_settings.heading_font_size != blank -%}
+              font-size: {{ block_settings.heading_font_size }};
+            {%- endif -%}
+            {%- if block_settings.heading_line_height == 'custom' -%}
+              line-height: {{ block_settings.heading_custom_line_height }};
+            {%- else -%}
+              line-height: var(--line-height--heading-{{ block_settings.heading_line_height }});
+            {%- endif -%}
+            letter-spacing: var(--letter-spacing--heading-{{ block_settings.heading_letter_spacing }});
+            text-transform: {{ block_settings.heading_case }};
+            color: {{ block_settings.heading_color }};
+          "
+        {%- endif -%}
+      >
         <span class="menu__heading__default">{{ heading }}</span>
         <span class="menu__heading__accordion">
           {{ heading | default: menu.title }}
@@ -80,10 +103,12 @@
   }
 
   .menu:not(:has(.menu__heading--empty)) .details-content {
+    --spacing--size: 0.25rem;
     margin-block-start: var(--spacing--size);
   }
 
   .menu__item + .menu__item {
+    --spacing--size: 1.5rem;
     margin-block-start: var(--spacing--size);
   }
 
@@ -249,9 +274,144 @@
         {
           "value": "h6",
           "label": "t:options.h6"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
         }
       ],
       "default": "h3"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "t:settings.font",
+      "options": [
+        {
+          "value": "var(--font-body--family)",
+          "label": "t:options.body"
+        },
+        {
+          "value": "var(--font-subheading--family)",
+          "label": "t:options.subheading"
+        },
+        {
+          "value": "var(--font-heading--family)",
+          "label": "t:options.heading"
+        },
+        {
+          "value": "var(--font-accent--family)",
+          "label": "t:options.accent"
+        }
+      ],
+      "default": "var(--font-heading--family)",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_enable_custom_font_weight",
+      "label": "Custom font weight",
+      "default": false,
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black" }
+      ],
+      "default": "600",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' and block.settings.heading_enable_custom_font_weight }}"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_size",
+      "label": "t:settings.size",
+      "options": [
+        { "value": "", "label": "t:options.default" },
+        { "value": "0.625rem", "label": "10px" },
+        { "value": "0.75rem", "label": "12px" },
+        { "value": "0.875rem", "label": "14px" },
+        { "value": "0.9375rem", "label": "15px" },
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem", "label": "20px" },
+        { "value": "1.3125rem", "label": "21px" },
+        { "value": "1.5rem", "label": "24px" },
+        { "value": "1.875rem", "label": "30px" },
+        { "value": "2rem", "label": "32px" },
+        { "value": "2.5rem", "label": "40px" },
+        { "value": "3rem", "label": "48px" }
+      ],
+      "default": "1rem",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "heading_line_height",
+      "label": "t:settings.line_height",
+      "options": [
+        { "value": "tight", "label": "t:options.tight" },
+        { "value": "normal", "label": "t:options.normal" },
+        { "value": "loose", "label": "t:options.loose" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "normal",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "heading_custom_line_height",
+      "label": "Line height value",
+      "min": 1,
+      "max": 3,
+      "step": 0.1,
+      "default": 1.2,
+      "visible_if": "{{ block.settings.heading_preset == 'custom' and block.settings.heading_line_height == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "heading_letter_spacing",
+      "label": "t:settings.letter_spacing",
+      "options": [
+        { "value": "tight", "label": "t:options.tight" },
+        { "value": "normal", "label": "t:options.normal" },
+        { "value": "loose", "label": "t:options.loose" }
+      ],
+      "default": "normal",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "heading_case",
+      "label": "t:settings.case",
+      "options": [
+        { "value": "none", "label": "t:options.default" },
+        { "value": "uppercase", "label": "t:options.uppercase" }
+      ],
+      "default": "none",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "heading_color",
+      "label": "t:settings.color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "t:options.text" },
+        { "value": "var(--color-foreground-heading)", "label": "t:options.heading" },
+        { "value": "var(--color-primary)", "label": "t:options.link" }
+      ],
+      "default": "var(--color-foreground-heading)",
+      "visible_if": "{{ block.settings.heading_preset == 'custom' }}"
     },
     {
       "type": "select",
