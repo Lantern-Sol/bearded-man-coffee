@@ -11,23 +11,24 @@ page rendering that was deferred.
 
 Store: `vwzfnb-90.myshopify.com` (Bearded Man Coffee).
 
-**Metafield definitions** (all `ownerType: PRODUCT`, `storefront: PUBLIC_READ`,
-scoped to Shopify taxonomy category **`gid://shopify/TaxonomyCategory/fb-1-3`**
-— "Food, Beverages & Tobacco > Beverages > Coffee"). These are *category
-metafields*: they only surface in the admin for products assigned to that
-category, which keeps the Coffee PDP schema out of unrelated products like
-apparel/merch.
+**Metafield definitions** (all `ownerType: PRODUCT`, `storefront: PUBLIC_READ`).
+Most are *category metafields* scoped to Shopify taxonomy category
+**`gid://shopify/TaxonomyCategory/fb-1-3`** — "Food, Beverages & Tobacco >
+Beverages > Coffee" — so they only surface in the admin for products assigned
+to that category. `custom.card_flavor_notes` is intentionally *not* scoped,
+because it's a generic card-display label that any product (coffee, apparel,
+merch) may want to use.
 
-| Key | Type | Purpose | Example |
-|---|---|---|---|
-| `custom.roast_label` | `single_line_text_field` | Label shown on card + PDP gallery badge | `Light Roast` |
-| `custom.card_flavor_notes` | `single_line_text_field` | Short notes under product title on card | `Vanilla \| Cayenne` |
-| `custom.roast_profile` | `number_integer` (1–5) | PDP roast slider (light → dark) | `2` |
-| `custom.signature_infusion` | `single_line_text_field` | PDP "Signature Infusion" row | `Vanilla & Cayenne` |
-| `custom.tasting_notes` | `single_line_text_field` | PDP "Tasting Notes" row | `Vanilla, subtle cayenne heat, smooth, light-bodied` |
-| `custom.card_hover_background` | `color` | Background color shown on card hover panel | `#5c3a2a` |
-| `custom.card_hover_icon` | `file_reference` (image) | Icon shown on card hover panel | uploaded image |
-| `custom.card_hover_tagline` | `single_line_text_field` | Tagline shown on card hover panel | `Where smooth meets just enough edge.` |
+| Key | Scope | Type | Purpose | Example |
+|---|---|---|---|---|
+| `custom.roast_label` | Coffee category | `single_line_text_field` | Label shown on card + PDP gallery badge | `Light Roast` |
+| `custom.card_flavor_notes` | All products | `single_line_text_field` | Short label shown under product title on card. Display name in admin: "Card Notes - Label" | `Vanilla \| Cayenne` |
+| `custom.roast_profile` | Coffee category | `number_integer` (1–5) | PDP roast slider (light → dark) | `2` |
+| `custom.signature_infusion` | Coffee category | `single_line_text_field` | PDP "Signature Infusion" row | `Vanilla & Cayenne` |
+| `custom.tasting_notes` | Coffee category | `single_line_text_field` | PDP "Tasting Notes" row | `Vanilla, subtle cayenne heat, smooth, light-bodied` |
+| `custom.card_hover_background` | Coffee category | `color` | Background color shown on card hover panel | `#5c3a2a` |
+| `custom.card_hover_icon` | Coffee category | `file_reference` (image) | Icon shown on card hover panel | uploaded image |
+| `custom.card_hover_tagline` | Coffee category | `single_line_text_field` | Tagline shown on card hover panel | `Where smooth meets just enough edge.` |
 
 Populated values:
 - All four coffee products have `roast_label` and `card_flavor_notes` set.

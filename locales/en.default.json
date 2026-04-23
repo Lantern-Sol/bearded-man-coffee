@@ -67,7 +67,7 @@
     // Button to apply discount code to cart
     "apply": "Apply",
     "back": "Back",
-    "choose": "Choose",
+    "choose": "Choose Options",
     // Button to reset current selection or input
     "clear": "Clear",
     // Button to remove all applied product filters

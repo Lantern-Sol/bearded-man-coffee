@@ -35,10 +35,15 @@
     assign is_product_card = true
   endif
 
+  assign show_from_prefix = false
   if is_product_card
     assign price_min = product_resource.price_min
     assign price_max = product_resource.price_max
     assign has_volume_pricing = product_resource.quantity_price_breaks_configured? | default: false
+
+    if product_resource.price_varies and has_volume_pricing == false
+      assign show_from_prefix = true
+    endif
   else
     # Product page: only use selected variant's pricing
     if selected_variant.quantity_price_breaks.size > 0
@@ -87,6 +92,13 @@
     </span>
   {% else %}
     {% comment %} Standard pricing display {% endcomment %}
+    {%- liquid
+      if show_from_prefix
+        assign display_price = 'content.price_from' | t: price: price_min
+      else
+        assign display_price = price | default: '&nbsp;'
+      endif
+    -%}
     {% if show_sale_price_first == false and show_compare_price %}
       <span role="group">
         <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
@@ -97,10 +109,10 @@
     {% if show_compare_price %}
       <span role="group">
         <span class="visually-hidden">{{ 'content.price_sale' | t }}&nbsp;</span>
-        <span class="price">{{ price | default: '&nbsp;' }}</span>
+        <span class="price">{{ display_price }}</span>
       </span>
     {% else %}
-      <span class="price">{{ price | default: '&nbsp;' }}</span>
+      <span class="price">{{ display_price }}</span>
     {% endif %}
 
     {% if show_sale_price_first == true and show_compare_price %}

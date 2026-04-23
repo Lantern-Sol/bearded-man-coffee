@@ -196,6 +196,26 @@
   .collection-grid-block__list {
     width: 100%;
   }
+
+  /*
+    Align prices and CTAs across every card in a row regardless of title
+    wrapping or extra blocks (e.g. swatches). Two moves:
+    1. Reserve 2 lines of space for each title so the title area height is
+       uniform even when only one sibling wraps.
+    2. Push the price block to the bottom of the card's flex column via
+       `margin-top: auto`; anything after it (typically the quick-add
+       button) sticks to it, so prices and buttons share a baseline.
+    The card content is already stretched to the row's max height by the
+    outer grid, so "bottom" is well-defined.
+  */
+  .section-collection-tab .resource-list__item [ref='productTitleLink'] {
+    display: block;
+    min-height: 2lh;
+  }
+
+  .section-collection-tab .product-card__content > product-price {
+    margin-top: auto;
+  }
 {% endstylesheet %}
 
 {% schema %}

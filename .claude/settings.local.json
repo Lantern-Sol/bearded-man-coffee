@@ -42,7 +42,9 @@
       "Bash(node scripts/search_docs.mjs \"inventoryAdjustQuantities mutation available\" --model claude-opus-4-7 --client-name claude-code --client-version 1.0)",
       "Bash(node scripts/validate.mjs --code 'query CoffeeInventory { collectionByIdentifier\\(identifier: {handle: \"coffee\"}\\) { products\\(first: 20\\) { nodes { id title variants\\(first: 20\\) { nodes { id title inventoryItem { id tracked inventoryLevels\\(first: 5\\) { nodes { location { id name } quantities\\(names: [\"available\"]\\) { name quantity } } } } } } } } } locations\\(first: 5\\) { nodes { id name isPrimary } } }' --model claude-opus-4-7 --client-name claude-code --client-version 1.0 --artifact-id coffee-inventory --revision 1)",
       "Bash(node scripts/search_docs.mjs \"idempotent directive inventoryAdjustQuantities referenceDocumentUri\" --model claude-opus-4-7 --client-name claude-code --client-version 1.0)",
-      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('C:/Projects/Breaded man coffee/bearded-man-coffee/templates/index.json','utf8'\\).replace\\(/^\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\//,''\\)\\); console.log\\('valid'\\)\")"
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('C:/Projects/Breaded man coffee/bearded-man-coffee/templates/index.json','utf8'\\).replace\\(/^\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\//,''\\)\\); console.log\\('valid'\\)\")",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Claude_in_Chrome__tabs_context_mcp"
     ]
   }
 }
