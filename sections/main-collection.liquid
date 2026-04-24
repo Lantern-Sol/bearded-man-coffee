@@ -48,10 +48,32 @@
 
     {% paginate collection.products by products_per_page %}
       {% capture children %}
+        {%- liquid
+          assign featured_card_blocks = section.blocks | where: 'type', '_collection-featured-card'
+          assign card_positions = '|'
+          for card_block in featured_card_blocks
+            assign card_positions = card_positions | append: card_block.settings.position | append: '|'
+          endfor
+
+          assign slot = 0
+        -%}
+
         {% for product in collection.products %}
+          {%- assign slot = slot | plus: 1 -%}
+          {%- if paginate.current_page == 1 -%}
+            {%- for skip in (1..20) -%}
+              {%- assign token = '|' | append: slot | append: '|' -%}
+              {%- if card_positions contains token -%}
+                {%- assign slot = slot | plus: 1 -%}
+              {%- else -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
           <li
             id="{{ section.id }}-{{ product.id }}"
             class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+            style="order: {{ slot }};"
             data-page="{{ paginate.current_page }}"
             data-product-id="{{ product.id }}"
             ref="cards[]"
@@ -61,6 +83,10 @@
             {% # theme-check-enable %}
           </li>
         {% endfor %}
+
+        {%- if paginate.current_page == 1 -%}
+          {% content_for 'blocks' %}
+        {%- endif -%}
       {% endcapture %}
 
       {% render 'product-grid',
@@ -82,6 +108,43 @@
       grid-column: var(--grid-column--desktop);
     }
   }
+
+  .product-grid__item--featured-card {
+    display: flex;
+  }
+
+  .product-grid__item--featured-card > .collection-featured-card,
+  .product-grid__item--featured-card > .group-block {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+  }
+
+  .product-grid__item--featured-card[data-size='2x'] {
+    grid-column: span 2;
+  }
+
+  .product-grid__item--featured-card[data-size='3x'] {
+    grid-column: span 3;
+  }
+
+  @media screen and (max-width: 749px) {
+    /* Mobile caps the span at the mobile column count (2) */
+    .product-grid__item--featured-card[data-size='3x'] {
+      grid-column: span 2;
+    }
+
+    /* When mobile is forced to 1 column, keep cards single-cell */
+    .product-grid-mobile--large .product-grid__item--featured-card[data-size='2x'],
+    .product-grid-mobile--large .product-grid__item--featured-card[data-size='3x'] {
+      grid-column: span 1;
+    }
+
+    .product-grid__item--featured-card-hidden-mobile {
+      display: none;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -90,6 +153,11 @@
   "enabled_on": {
     "templates": ["collection"]
   },
+  "blocks": [
+    {
+      "type": "_collection-featured-card"
+    }
+  ],
   "settings": [
     {
       "type": "select",
