@@ -10,7 +10,7 @@
     endif
   endfor
 
-  assign roast_label = product.metafields.custom.roast_label.value
+  assign roast_label_list = product.metafields.shopify.coffee-roast.value
   assign hover_tagline = product.metafields.custom.card_hover_tagline.value
   assign hover_background = product.metafields.custom.card_hover_background.value
   assign hover_icon = product.metafields.custom.card_hover_icon.value
@@ -43,9 +43,12 @@
         --badge-font-family: var(--font-{{ settings.badge_font_family }}--family); --badge-font-weight: var(--font-{{ settings.badge_font_family }}--weight); --badge-text-transform: {{ settings.badge_text_transform }};
       "
     >
-      {%- if roast_label != blank -%}
+      {%- if roast_label_list != blank -%}
         <div class="product-badges__badge product-badges__badge--rectangle product-badges__badge--roast color-{{ settings.badge_roast_color_scheme }}">
-          {{ roast_label }}
+          {% for roast_label in roast_label_list %}
+            {{ roast_label.label | strip | upcase }}
+          {% endfor %}
+          {{ ' ROAST' }}
         </div>
       {%- elsif product.available == false or product.compare_at_price > product.price -%}
         <div

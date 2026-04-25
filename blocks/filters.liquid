@@ -445,7 +445,7 @@
           >
             <h2
               id="filters-drawer-heading"
-              class="facets-drawer__title h3"
+              class="facets-drawer__title h6"
             >
               {{ 'blocks.filter' | t }}
 
@@ -682,7 +682,7 @@
   }
 
   .facets {
-    --facets-form-horizontal-gap: 20px;
+    --facets-form-horizontal-gap: 1.5rem;
     --facets-horizontal-max-input-wrapper-height: 230px;
     --facets-upper-z-index: var(--layer-raised);
     --facets-open-z-index: var(--layer-heightened);
@@ -900,15 +900,22 @@
   }
 
   .facets__summary .icon-caret {
-    height: var(--icon-size-xs);
-    width: var(--icon-size-xs);
+    height: var(--icon-size-tiny);
+    width: var(--icon-size-2xs);
     color: rgb(var(--color-foreground-rgb) / var(--icon-opacity));
-    margin-block: var(--margin-2xs);
+    margin-block-start: var(--margin-3xs);
     transition: color var(--animation-speed) var(--animation-easing);
   }
 
   .facets--drawer .facets__summary .icon-caret {
     margin-inline-start: var(--margin-2xs);
+    height: var(--icon-size-xs);
+    width: var(--icon-size-xs);
+
+    svg {
+      height: var(--icon-size-xs);
+      width: var(--icon-size-xs);
+    }
   }
 
   /* Facets - Bubble */
@@ -977,7 +984,7 @@
     flex-direction: column;
 
     @media screen and (min-width: 750px) {
-      gap: var(--gap-sm);
+      gap: 1rem;
     }
   }
 
@@ -1091,6 +1098,7 @@
   }
 
   :is(.facets--drawer, .facets--vertical) :is(.facets__item, .sorting-filter)::before {
+    --color-border: #F2EDD7;
     content: '';
     display: block;
     height: 0;
@@ -1156,6 +1164,11 @@
   .facets__label,
   .products-count-wrapper {
     text-transform: var(--facet-label-transform);
+    font-size: 0.875rem;
+  }
+
+  .facets-drawer__filters .facets__label {
+    font-size: 1rem;
   }
 
   .clear-filter {
@@ -1419,6 +1432,15 @@
 
   .facets-desktop-toggle__button {
     box-shadow: none;
+  }
+  /* Custom styles for filter chips */
+  .facets-desktop-toggle button.button.facets-desktop-toggle__button.button-unstyled.button-unstyled--with-icon {
+        font-weight: 400;
+    text-transform: capitalize;
+    font-size: 0.875rem;
+  }
+  scroll-hint.facets-drawer__filters summary {
+    padding-block: 1rem;
   }
 {% endstylesheet %}
 

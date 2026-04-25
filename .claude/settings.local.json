@@ -55,7 +55,19 @@
       "Bash(node \"C:\\\\Users\\\\jjtam\\\\.claude\\\\plugins\\\\cache\\\\shopify-ai-toolkit\\\\shopify-plugin\\\\1.1.0\\\\skills\\\\shopify-admin\\\\scripts\\\\search_docs.mjs\" \"MenuItemType enum values\")",
       "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('C:/Projects/Breaded man coffee/bearded-man-coffee/config/settings_schema.json','utf8'\\)\\); console.log\\('OK'\\);\")",
       "Bash(node -e \"const s=require\\('fs'\\).readFileSync\\('C:/Projects/Breaded man coffee/bearded-man-coffee/sections/footer-group.json','utf8'\\); JSON.parse\\(s.replace\\(/^\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\//,''\\)\\); console.log\\('OK'\\);\")",
-      "Bash(node -e \"const s=require\\('fs'\\).readFileSync\\('C:/Projects/Breaded man coffee/bearded-man-coffee/blocks/menu.liquid','utf8'\\); const m=s.match\\(/\\\\{% schema %\\\\}\\([\\\\s\\\\S]*?\\)\\\\{% endschema %\\\\}/\\); JSON.parse\\(m[1]\\); console.log\\('OK'\\);\")"
+      "Bash(node -e \"const s=require\\('fs'\\).readFileSync\\('C:/Projects/Breaded man coffee/bearded-man-coffee/blocks/menu.liquid','utf8'\\); const m=s.match\\(/\\\\{% schema %\\\\}\\([\\\\s\\\\S]*?\\)\\\\{% endschema %\\\\}/\\); JSON.parse\\(m[1]\\); console.log\\('OK'\\);\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:9292/ --max-time 5)",
+      "Bash(curl -s \"http://127.0.0.1:9292/collections/all\" --max-time 30 -o /tmp/coll.html)",
+      "Bash(curl -s \"http://127.0.0.1:9292/collections/all?filter.v.option.grind=Whole+Bean\" --max-time 30 -o /tmp/coll_filtered.html)",
+      "Bash(curl -s \"http://127.0.0.1:9292/collections/apparel\" --max-time 30 -o /tmp/apparel.html)",
+      "Bash(curl -sI \"http://127.0.0.1:9292/cdn/shop/t/5/assets/coffee-roast-swap.js?v=100924722272016001571777140314\" --max-time 10)",
+      "Bash(curl -s \"http://127.0.0.1:9292/cdn/shop/t/5/assets/coffee-roast-swap.js?v=100924722272016001571777140314\" --max-time 10)",
+      "Bash(curl -s \"http://127.0.0.1:9292/products/babyface-decaf\" --max-time 30 -o /tmp/pdp.html)",
+      "Bash(curl -s \"http://127.0.0.1:9292/products/babyface-decaf?option_values=4514307277057,4514307408129\" --max-time 30 -o /tmp/pdp_a.html)",
+      "Bash(curl -s \"http://127.0.0.1:9292/products/babyface-decaf?option_values=4510734254337,4514307408129\" --max-time 30 -o /tmp/pdp_b.html)",
+      "Bash(curl -s \"http://127.0.0.1:9292/products/babyface-decaf?section_id=section-rendering-product-card&option_values=4514307277057,4514307408129\" --max-time 30 -o /tmp/pdp_c.html)",
+      "Bash(curl -s \"http://127.0.0.1:9292/products/babyface-decaf?variant=48652196282625\" --max-time 30 -o /tmp/pdp_v.html)",
+      "Bash(curl -s \"http://127.0.0.1:9292/products/babyface-decaf?option_values=4510734254337,4514307408129\" --max-time 30 -o /tmp/pdp_ov.html)"
     ]
   }
 }

@@ -52,6 +52,26 @@
   if product.id == empty or product == blank
     assign onboarding = true
   endif
+
+  # Coffee Roast Style filter sync: when a Coffee Roast Style filter is active, the card
+  # should reflect (and link to) the matching variant. Only opt in for products in the
+  # Shopify "Coffee" taxonomy category — apparel/merch is left untouched.
+  assign is_coffee_card = false
+  if onboarding == false and product.category.name == 'Coffee'
+    assign roast_option_index = null
+    for opt in product.options_with_values
+      assign opt_name = opt.name | downcase
+      if opt_name contains 'roast' or opt_name contains 'grind'
+        assign roast_option_index = forloop.index
+        assign roast_option_name = opt.name
+        break
+      endif
+    endfor
+
+    if roast_option_index != null
+      assign is_coffee_card = true
+    endif
+  endif
 %}
 
 <product-card
@@ -63,6 +83,12 @@
     data-product-transition="true"
     data-featured-media-url="{{ featured_media_url }}"
     on:click="/handleViewTransition"
+  {% endif %}
+  {% if is_coffee_card %}
+    data-coffee-card="true"
+    data-product-base-url="{{ product.url }}"
+    data-roast-option-name="{{ roast_option_name | escape }}"
+    data-roast-option-index="{{ roast_option_index }}"
   {% endif %}
   {{ block.shopify_attributes }}
   {% if onboarding %}
@@ -107,8 +133,44 @@
     "
   >
     {{ children }}
+    {%- if is_coffee_card -%}
+      {%- capture variants_json -%}
+        [
+          {%- for variant in product.variants -%}
+            {%- liquid
+              case roast_option_index
+                when 1
+                  assign roast_value = variant.option1
+                when 2
+                  assign roast_value = variant.option2
+                when 3
+                  assign roast_value = variant.option3
+              endcase
+              assign variant_image = variant.featured_image | default: variant.image | default: product.featured_media.preview_image
+            -%}
+            {
+              "id": {{ variant.id | json }},
+              "roast": {{ roast_value | default: '' | json }},
+              "url": {{ variant.url | json }},
+              "available": {{ variant.available | json }},
+              "price": {{ variant.price | money | json }},
+              "compare_at_price": {{ variant.compare_at_price | money | json }},
+              "image_src": {{ variant_image | image_url: width: 800 | json }},
+              "image_alt": {{ variant_image.alt | default: product.title | json }},
+              "image_width": {{ variant_image.width | default: 800 | json }},
+              "image_height": {{ variant_image.height | default: 800 | json }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      {%- endcapture -%}
+      <script type="application/json" data-coffee-variants>{{ variants_json | strip_newlines }}</script>
+    {%- endif -%}
   </div>
 </product-card>
+
+{%- if is_coffee_card -%}
+  <script src="{{ 'coffee-roast-swap.js' | asset_url }}" type="module" fetchpriority="low"></script>
+{%- endif -%}
 
 {% stylesheet %}
   .product-card__placeholder-image svg {
