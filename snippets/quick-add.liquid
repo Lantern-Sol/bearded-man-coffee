@@ -5,6 +5,7 @@
   @param {string} section_id - The section ID
   @param {object} [block] - The block object
   @param {string} [color_scheme] - The color scheme to use
+  @param {boolean} [inherit_color_scheme] - If true, omit the color-scheme class so the component inherits its parent's scheme.
   @param {string} [style_class] - Button style class: 'button' (primary) or 'button-secondary'. Defaults to 'button'.
   @param {boolean} [show_icon] - Whether to render the cart icon. Defaults to true.
 {%- enddoc -%}
@@ -13,7 +14,12 @@
   assign product_form_id = 'QuickAdd-ProductForm-' | append: product.id | append: '-' | append: block.id
   assign add_to_cart_text = 'actions.add' | t
   assign choose_options_text = 'actions.choose' | t
-  assign color_scheme = color_scheme | default: settings.quick_add_color_scheme
+  if inherit_color_scheme
+    assign color_scheme_class = ''
+  else
+    assign color_scheme = color_scheme | default: settings.quick_add_color_scheme
+    assign color_scheme_class = 'color-' | append: color_scheme
+  endif
   assign style_class = style_class | default: 'button'
   if show_icon == nil
     assign show_icon = true
@@ -35,7 +41,7 @@
 %}
 
 <quick-add-component
-  class="quick-add color-{{ color_scheme }} "
+  class="quick-add {{ color_scheme_class }} "
   ref="quickAdd"
   data-product-title="{{ product.title }}"
   data-quick-add-button="{{ quick_add_button }}"
@@ -82,7 +88,7 @@
       {% endcomment %}
       {% render 'add-to-cart-button',
         add_to_cart_text: add_to_cart_text,
-        class: 'quick-add__button quick-add__button--add add-to-cart-button',
+        class: 'quick-add__button quick-add__button--add add-to-cart-button button',
         style_class: style_class,
         show_icon: show_icon,
         can_add_to_cart: can_add_to_cart,
@@ -154,21 +160,6 @@
 
   .quick-add__button {
     display: var(--quick-add-mobile-display, none);
-    align-items: center;
-    background: linear-gradient(var(--color-background) 0 100%) padding-box;
-    padding: 0;
-    border-radius: 50px;
-    border: 2px solid hsl(0 0% 0% / 0.15);
-    height: var(--button-size-md);
-    cursor: pointer;
-    opacity: var(--quick-add-mobile-opacity, 0);
-    overflow: hidden;
-    color: var(--color-foreground);
-    pointer-events: all;
-    position: absolute;
-    right: max(var(--quick-add-right), calc((var(--border-radius) + var(--quick-add-right)) * (1 - cos(45deg))));
-    bottom: max(var(--quick-add-bottom), calc((var(--border-radius) + var(--quick-add-bottom)) * (1 - cos(45deg))));
-    backdrop-filter: blur(20px) saturate(180%);
 
     &:hover {
       scale: 1.03;
@@ -199,7 +190,6 @@
   .quick-add__button .add-to-cart-text {
     background: var(--color-background);
     overflow: hidden;
-    border-radius: 50px;
     height: 100%;
     gap: 0;
   }

@@ -11,6 +11,7 @@
 
 {%- liquid
   assign selected_product = closest.product
+  assign roast_label_list = selected_product.metafields.shopify.coffee-roast.value
   assign selected_variant_media = selected_product.selected_or_first_available_variant.featured_media
   assign first_3d_model = selected_product.media | where: 'media_type', 'model' | first
 
@@ -376,6 +377,17 @@
     arrows_position: icons_position,
     controls: controls
   %}
+
+  {%- if roast_label_list != blank -%}
+    <div class="product-media-gallery__badges">
+      <div class="product-media-gallery__badge product-media-gallery__badge--roast color-{{ settings.badge_roast_color_scheme }}">
+        {%- for roast_label in roast_label_list -%}
+          {{- roast_label.label | strip | upcase -}}
+        {%- endfor -%}
+        {{ ' ROAST' }}
+      </div>
+    </div>
+  {%- endif -%}
 
   {% if block_settings.media_presentation == 'grid' %}
     <ul

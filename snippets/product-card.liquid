@@ -7,9 +7,13 @@
   @param {object} children - The children of the product card
   @param {object} [block] - The block object
   @param {number} [product_card_gap] - The gap between the product card children (overrides block settings)
+  @param {string} [layout] - vertical (default) or horizontal
+  @param {number} [horizontal_image_width] - Image column width in px when layout is horizontal
 {%- enddoc -%}
 
 {% assign block_settings = block.settings %}
+{% assign card_layout = layout | default: 'vertical' %}
+{% assign card_horizontal_image_width = horizontal_image_width | default: 96 %}
 
 {% style %}
   {% if request.visual_preview_mode %}
@@ -75,8 +79,8 @@
 %}
 
 <product-card
-  class="product-card size-style"
-  style="{% render 'size-style', settings: block_settings %}"
+  class="product-card size-style product-card--{{ card_layout }}"
+  style="{% render 'size-style', settings: block_settings %} --product-card-horizontal-image-width: {{ card_horizontal_image_width }}px;"
   data-product-id="{{ product.id }}"
   id="product-card-{{ block.id }}"
   {% if settings.transition_to_main_product %}
@@ -181,5 +185,75 @@
     .product-card slideshow-arrows .slideshow-control {
       display: none;
     }
+  }
+
+  /* When cards inside a resource list are horizontal, force the parent grid
+     to a single column so cards stack vertically instead of fighting for
+     space side-by-side. */
+  .resource-list--grid:has(> .resource-list__item product-card.product-card--horizontal),
+  .resource-list--grid:has(> product-card.product-card--horizontal) {
+    grid-template-columns: 1fr;
+  }
+
+  @media screen and (min-width: 750px) {
+    .resource-list--grid:has(> .resource-list__item product-card.product-card--horizontal),
+    .resource-list--grid:has(> product-card.product-card--horizontal) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Horizontal layout: gallery on the left (absolute), middle column flows
+     as a flex stack so title + price hug each other naturally, quick-add on
+     the right (absolute). Padding reserves space for the absolute siblings. */
+  product-card.product-card--horizontal > .product-card__content {
+    --horizontal-image-width: var(--product-card-horizontal-image-width, 96px);
+    --horizontal-quick-add-width: 7rem;
+    --horizontal-side-gap: var(--padding-md, 16px);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    position: relative;
+    gap: var(--padding-2xs, 4px);
+    padding-inline-start: calc(var(--horizontal-image-width) + var(--horizontal-side-gap));
+    padding-inline-end: calc(var(--horizontal-quick-add-width) + var(--horizontal-side-gap));
+    min-height: var(--horizontal-image-width);
+  }
+
+  product-card.product-card--horizontal > .product-card__content > * {
+    min-width: 0;
+  }
+
+  /* Gallery: pinned to the left, vertically centered */
+  product-card.product-card--horizontal .card-gallery {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 50%;
+    transform: translateY(-50%);
+    width: var(--horizontal-image-width);
+    margin: 0;
+  }
+
+  /* Quick-add: pinned to the right, vertically centered */
+  product-card.product-card--horizontal .product-quick-add-block {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block-start: 50%;
+    transform: translateY(-50%);
+    width: var(--horizontal-quick-add-width);
+    padding-inline: 0;
+    margin: 0;
+  }
+
+  product-card.product-card--horizontal .product-quick-add-block .quick-add__button {
+    padding-inline: var(--padding-md, 16px);
+  }
+
+  /* Disable overlay quick-add and roast badge in horizontal mode —
+     there's a real ADD button, and the roast label clutters the small thumb. */
+  product-card.product-card--horizontal .card-gallery .quick-add,
+  product-card.product-card--horizontal .product-badges__badge--roast {
+    display: none;
   }
 {% endstylesheet %}

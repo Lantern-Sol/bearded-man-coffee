@@ -1,12 +1,18 @@
 {% liquid
   assign product = closest.product
+  assign block_settings = block.settings
 -%}
 
 {% capture children %}
   {% content_for 'blocks', closest.product: product %}
 {% endcapture %}
 
-{% render 'product-card', children: children, product: product %}
+{% render 'product-card',
+  children: children,
+  product: product,
+  layout: block_settings.layout,
+  horizontal_image_width: block_settings.horizontal_image_width
+%}
 
 {% schema %}
 {
@@ -57,6 +63,28 @@
     {
       "type": "paragraph",
       "content": "t:content.resource_reference_product_card"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "vertical", "label": "Vertical (default)" },
+        { "value": "horizontal", "label": "Horizontal" }
+      ],
+      "default": "vertical",
+      "info": "Horizontal places the gallery on the left, content in the middle, and any quick-add button on the right."
+    },
+    {
+      "type": "range",
+      "id": "horizontal_image_width",
+      "label": "Image width (horizontal)",
+      "min": 60,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 96,
+      "visible_if": "{{ block.settings.layout == 'horizontal' }}"
     },
     {
       "type": "range",

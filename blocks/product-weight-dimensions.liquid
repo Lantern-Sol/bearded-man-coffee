@@ -1,0 +1,256 @@
+{%- liquid
+  assign block_settings = block.settings
+  assign product_resource = closest.product
+  assign variant = product_resource.selected_or_first_available_variant
+
+  assign weight_value = ''
+  if variant.weight and variant.weight > 0
+    assign weight_value = variant.weight_in_unit | round: 2
+    assign weight_unit = variant.weight_unit
+  endif
+
+  assign dimensions_value = ''
+  assign metafield_path = block_settings.dimensions_metafield | strip
+  if metafield_path != blank
+    assign metafield_parts = metafield_path | split: '.'
+    assign metafield_namespace = metafield_parts[0]
+    assign metafield_key = metafield_parts[1]
+    if metafield_namespace != blank and metafield_key != blank
+      if block_settings.dimensions_source == 'variant'
+        assign dimensions_value = variant.metafields[metafield_namespace][metafield_key]
+      else
+        assign dimensions_value = product_resource.metafields[metafield_namespace][metafield_key]
+      endif
+    endif
+  endif
+
+  assign show_weight = false
+  if block_settings.show_weight and weight_value != ''
+    assign show_weight = true
+  endif
+
+  assign show_dimensions = false
+  if block_settings.show_dimensions and dimensions_value != blank
+    assign show_dimensions = true
+  endif
+-%}
+
+<product-weight-dimensions
+  class="
+    product-weight-dimensions spacing-style
+    {% if block_settings.type_preset != '' %} {{ block_settings.type_preset }}{% endif %}
+  "
+  style="{% render 'spacing-style', settings: block_settings %} --row-gap: {{ block_settings.row_gap }}px;"
+  data-block-id="{{ block.id }}"
+  data-product-id="{{ product_resource.id }}"
+  {{ block.shopify_attributes }}
+>
+  {%- if show_weight or show_dimensions -%}
+    <dl class="product-weight-dimensions__list">
+      {%- if show_weight -%}
+        <div class="product-weight-dimensions__row">
+          <dt class="product-weight-dimensions__label">{{ block_settings.weight_label | escape }}</dt>
+          <dd class="product-weight-dimensions__value">{{ weight_value }} {{ weight_unit }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if show_dimensions -%}
+        <div class="product-weight-dimensions__row">
+          <dt class="product-weight-dimensions__label">{{ block_settings.dimensions_label | escape }}</dt>
+          <dd class="product-weight-dimensions__value">{{ dimensions_value }}</dd>
+        </div>
+      {%- endif -%}
+    </dl>
+  {%- endif -%}
+</product-weight-dimensions>
+
+{% stylesheet %}
+  .product-weight-dimensions {
+    display: block;
+    width: 100%;
+  }
+
+  .product-weight-dimensions__list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--row-gap, 16px);
+  }
+
+  .product-weight-dimensions__row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-2xs, 4px);
+    padding-block-end: var(--row-gap, 16px);
+    border-block-end: var(--style-border-width, 1px) solid var(--color-border);
+  }
+
+  .product-weight-dimensions__row:last-child {
+    border-block-end: 0;
+    padding-block-end: 0;
+  }
+
+  .product-weight-dimensions__label {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  .product-weight-dimensions__value {
+    margin: 0;
+    opacity: 0.85;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Weight & dimensions",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Displays the selected variant's weight and dimensions. Weight comes from each variant's shipping weight; dimensions are read from a product or variant metafield."
+    },
+    {
+      "type": "header",
+      "content": "Weight"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_weight",
+      "label": "Show weight",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "weight_label",
+      "label": "Weight label",
+      "default": "Weight"
+    },
+    {
+      "type": "header",
+      "content": "Dimensions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dimensions",
+      "label": "Show dimensions",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "dimensions_label",
+      "label": "Dimensions label",
+      "default": "Dimensions"
+    },
+    {
+      "type": "select",
+      "id": "dimensions_source",
+      "label": "Dimensions source",
+      "options": [
+        {
+          "value": "variant",
+          "label": "Variant metafield"
+        },
+        {
+          "value": "product",
+          "label": "Product metafield"
+        }
+      ],
+      "default": "variant"
+    },
+    {
+      "type": "text",
+      "id": "dimensions_metafield",
+      "label": "Metafield (namespace.key)",
+      "default": "custom.dimensions",
+      "info": "Format: namespace.key — e.g. custom.dimensions"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:settings.heading_preset",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "paragraph",
+          "label": "t:options.paragraph"
+        },
+        {
+          "value": "h6",
+          "label": "t:options.h6"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Row spacing",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Weight & dimensions",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

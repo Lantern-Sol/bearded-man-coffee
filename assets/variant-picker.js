@@ -45,6 +45,7 @@ export default class VariantPicker extends Component {
 
     this.addEventListener('change', this.variantChanged.bind(this));
     this.#resizeObserver.observe(this);
+    this.recomputeAvailability();
   }
 
   disconnectedCallback() {
@@ -65,6 +66,7 @@ export default class VariantPicker extends Component {
     if (!selectedOption) return;
 
     this.updateSelectedOption(event.target);
+    this.recomputeAvailability();
     this.dispatchEvent(new VariantSelectedEvent({
       id: selectedOption.dataset.optionValueId ?? '',
     }));
@@ -393,7 +395,111 @@ export default class VariantPicker extends Component {
     });
     this.updateVariantPickerCss();
 
+    // After morph, refresh radio caches and reapply correct cross-option
+    // availability — Shopify's server-side computation is unreliable for some
+    // selection paths (see snippets/variant-main-picker.liquid for context).
+    this.#refreshRadioCaches();
+    this.recomputeAvailability();
+
     return newProduct;
+  }
+
+  /**
+   * Re-reads the radio elements after a morph so subsequent reads stay in sync
+   * with the new DOM. The morph reuses fieldset elements but replaces inputs,
+   * so the cached references can go stale.
+   */
+  #refreshRadioCaches() {
+    const fieldsets = /** @type {HTMLFieldSetElement[]} */ (this.refs.fieldsets || []);
+    this.#radios = fieldsets.map((fieldset) =>
+      Array.from(fieldset?.querySelectorAll('input') ?? [])
+    );
+  }
+
+  /**
+   * Recomputes availability for every option value based on the full variants
+   * table embedded in the picker, then updates each radio's
+   * `data-option-available`, `aria-disabled`, and the strikethrough SVG.
+   *
+   * For each option position P and each option value V at that position, V is
+   * available iff some variant exists with options[P] === V AND options[Q] ===
+   * currentlySelected[Q] for every other position Q AND that variant is
+   * available.
+   */
+  recomputeAvailability() {
+    const variants = this.#readAllVariants();
+    if (!variants || variants.length === 0) return;
+
+    const fieldsets = /** @type {HTMLFieldSetElement[]} */ (this.refs.fieldsets || []);
+    if (fieldsets.length === 0) return;
+
+    // Collect the currently-selected value (string) at each option position.
+    /** @type {(string | null)[]} */
+    const selectedByPosition = fieldsets.map((fieldset) => {
+      const checked = fieldset.querySelector('input:checked');
+      return checked instanceof HTMLInputElement ? checked.value : null;
+    });
+
+    fieldsets.forEach((fieldset, fieldsetIndex) => {
+      const inputs = fieldset.querySelectorAll('input');
+      inputs.forEach((input) => {
+        const candidateValue = input.value;
+        const isAvailable = variants.some((variant) => {
+          if (!variant.available) return false;
+          if (variant.options[fieldsetIndex] !== candidateValue) return false;
+          for (let i = 0; i < selectedByPosition.length; i++) {
+            if (i === fieldsetIndex) continue;
+            const sel = selectedByPosition[i];
+            if (sel != null && variant.options[i] !== sel) return false;
+          }
+          return true;
+        });
+        this.#applyAvailability(input, isAvailable);
+      });
+    });
+  }
+
+  /**
+   * @returns {Array<{id: number, available: boolean, options: string[]}> | null}
+   */
+  #readAllVariants() {
+    const script = this.querySelector('script[type="application/json"][data-all-variants]');
+    if (!script || !script.textContent) return null;
+    try {
+      return JSON.parse(script.textContent);
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * @param {HTMLInputElement} input
+   * @param {boolean} isAvailable
+   */
+  #applyAvailability(input, isAvailable) {
+    input.dataset.optionAvailable = String(isAvailable);
+    if (isAvailable) {
+      input.removeAttribute('aria-disabled');
+    } else {
+      input.setAttribute('aria-disabled', 'true');
+    }
+
+    const label = input.closest('label');
+    if (!label) return;
+
+    const existingStrikethrough = label.querySelector('.variant-option__strikethrough');
+    if (isAvailable) {
+      existingStrikethrough?.remove();
+    } else if (!existingStrikethrough) {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', '0 0 100 46');
+      svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+      svg.setAttribute('class', 'variant-option__strikethrough');
+      svg.innerHTML =
+        '<line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />' +
+        '<line x1="100" y1="0" x2="0" y2="46" vector-effect="non-scaling-stroke" />';
+      label.appendChild(svg);
+    }
   }
 
   updateVariantPickerCss() {

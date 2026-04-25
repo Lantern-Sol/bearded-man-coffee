@@ -216,6 +216,7 @@
     --font-h4--spacing: 0.25em;
     --font-h5--spacing: 0.25em;
     --font-h6--spacing: 0.25em;
+    --font-h7--spacing: 0.25em;
     --font-paragraph--spacing: 0.5em;
 
     /* Heading colors */
@@ -225,6 +226,7 @@
     --font-h4--color: var(--color-foreground-heading);
     --font-h5--color: var(--color-foreground-heading);
     --font-h6--color: var(--color-foreground-heading);
+    --font-h7--color: var(--color-foreground-heading);
 
     /** Z-Index / Layering */
     --layer-section-background: -2;
@@ -281,7 +283,7 @@
 
     /* Typography presets */
     {% liquid
-      assign font_sizes = "paragraph, h1, h2, h3, h4, h5, h6" | split: ", "
+      assign font_sizes = "paragraph, h1, h2, h3, h4, h5, h6, h7" | split: ", "
       assign fluid_size_cutoff = 48
       assign absolute_font_size_min = 10
 
@@ -357,7 +359,7 @@
         endif
       endfor
 
-      assign type_presets = "paragraph, h1, h2, h3, h4, h5, h6" | split: ", "
+      assign type_presets = "paragraph, h1, h2, h3, h4, h5, h6, h7" | split: ", "
 
       for preset_name in type_presets
         assign preset_size = '--font-size--[preset_name]' | replace: '[preset_name]', preset_name

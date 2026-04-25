@@ -218,6 +218,21 @@
       <script type="application/json">
         {{ product_resource.selected_or_first_available_variant | json }}
       </script>
+      {%- comment -%}
+        Full variants table for client-side availability recomputation. Shopify's
+        server-side `option_value.available` is unreliable for some selection
+        paths (e.g. selecting a variant whose option-1 has no matching variant
+        for the currently-selected option-2 leaves the option-1 marked
+        available). The client recomputes from this table after every change.
+      {%- endcomment -%}
+      <script type="application/json" data-all-variants>
+        [
+          {%- for v in product_resource.variants -%}
+            {"id":{{ v.id | json }},"available":{{ v.available | json }},"options":{{ v.options | json }}}
+            {%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      </script>
     </form>
   </variant-picker>
 {% endunless %}

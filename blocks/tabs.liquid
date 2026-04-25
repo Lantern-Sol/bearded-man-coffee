@@ -1,0 +1,306 @@
+{% assign block_settings = block.settings %}
+
+<product-tabs
+  class="
+    product-tabs spacing-style border-style
+    {% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}
+  "
+  style="
+    --tab-font-family: var(--font-{{ block_settings.tab_type_preset }}--family);
+    --tab-font-style: var(--font-{{ block_settings.tab_type_preset }}--style);
+    --tab-font-weight: var(--font-{{ block_settings.tab_type_preset }}--weight);
+    --tab-font-size: var(--font-{{ block_settings.tab_type_preset }}--size);
+    --tab-font-line-height: var(--font-{{ block_settings.tab_type_preset }}--line-height);
+    --tab-font-case: var(--font-{{ block_settings.tab_type_preset }}--case);
+    --tab-gap: {{ block_settings.tabs_gap }}px;
+    --tab-content-padding-top: {{ block_settings.content_padding_top }}px;
+    {% render 'spacing-style', settings: block_settings %}
+    {% render 'border-override', settings: block_settings %}
+  "
+  data-tabs-alignment="{{ block_settings.tabs_alignment }}"
+  {{ block.shopify_attributes }}
+>
+  <div
+    class="product-tabs__nav"
+    role="tablist"
+    ref="tablist"
+  ></div>
+
+  <div
+    class="product-tabs__panels"
+    ref="panels"
+  >
+    {% content_for 'blocks' %}
+  </div>
+</product-tabs>
+
+{% stylesheet %}
+  .product-tabs {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-tabs__nav {
+    display: flex;
+    align-items: stretch;
+    gap: var(--tab-gap, 24px);
+    border-block-end: var(--style-border-width, 1px) solid var(--color-border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .product-tabs__nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-tabs[data-tabs-alignment='center'] .product-tabs__nav {
+    justify-content: center;
+  }
+
+  .product-tabs[data-tabs-alignment='end'] .product-tabs__nav {
+    justify-content: flex-end;
+  }
+
+  .product-tabs__tab {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    margin: 0;
+    padding: 0.5rem;
+    font-family: var(--tab-font-family);
+    font-style: var(--tab-font-style);
+    font-weight: var(--tab-font-weight);
+    font-size: var(--tab-font-size);
+    line-height: var(--tab-font-line-height);
+    text-transform: var(--tab-font-case);
+    color: var(--color-foreground);
+    opacity: 0.55;
+    border-block-end: 2px solid transparent;
+    transform: translateY(var(--style-border-width, 1px));
+    transition:
+      opacity var(--animation-speed, 0.2s) ease,
+      border-color var(--animation-speed, 0.2s) ease;
+    white-space: nowrap;
+  }
+
+  .product-tabs__tab:hover,
+  .product-tabs__tab:focus-visible {
+    opacity: 1;
+  }
+
+  .product-tabs__tab[aria-selected='true'] {
+    opacity: 1;
+    border-block-end-color: currentColor;
+  }
+
+  .product-tabs__panels {
+    padding-block-start: var(--tab-content-padding-top, 16px);
+  }
+
+  /* Pre-hydration: hide every panel except the first to avoid flash */
+  .product-tabs:not([data-hydrated]) > .product-tabs__panels > .product-tabs__panel ~ .product-tabs__panel {
+    display: none;
+  }
+
+  /* Post-hydration: visibility driven by the [hidden] attribute */
+  .product-tabs[data-hydrated] > .product-tabs__panels > .product-tabs__panel[hidden] {
+    display: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tabs",
+  "tag": null,
+  "class": "product-tabs-block",
+  "blocks": [
+    {
+      "type": "_tab"
+    }
+  ],
+  "settings": [
+    {
+      "type": "select",
+      "id": "tabs_alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "end",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "range",
+      "id": "tabs_gap",
+      "label": "Tab spacing",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "content_padding_top",
+      "label": "Content top padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "tab_type_preset",
+      "label": "Tab heading preset",
+      "options": [
+        {
+          "value": "paragraph",
+          "label": "t:options.paragraph"
+        },
+        {
+          "value": "h1",
+          "label": "t:options.h1"
+        },
+        {
+          "value": "h2",
+          "label": "t:options.h2"
+        },
+        {
+          "value": "h3",
+          "label": "t:options.h3"
+        },
+        {
+          "value": "h4",
+          "label": "t:options.h4"
+        },
+        {
+          "value": "h5",
+          "label": "t:options.h5"
+        },
+        {
+          "value": "h6",
+          "label": "t:options.h6"
+        },
+        {
+          "value": "h7",
+          "label": "t:options.h7"
+        }
+      ],
+      "default": "h6"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_color_scheme",
+      "label": "t:settings.inherit_color_scheme",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tabs",
+      "category": "t:categories.product",
+      "blocks": {
+        "tab-1": {
+          "type": "_tab",
+          "name": "Description",
+          "settings": {
+            "tab_label": "Description"
+          },
+          "blocks": {
+            "text-1": {
+              "type": "text",
+              "settings": {
+                "text": "{{ closest.product.description }}",
+                "type_preset": "rte",
+                "width": "100%",
+                "alignment": "left"
+              }
+            }
+          },
+          "block_order": ["text-1"]
+        },
+        "tab-2": {
+          "type": "_tab",
+          "name": "Additional information",
+          "settings": {
+            "tab_label": "Additional information"
+          },
+          "blocks": {
+            "weight_dimensions-1": {
+              "type": "product-weight-dimensions",
+              "settings": {}
+            }
+          },
+          "block_order": ["weight_dimensions-1"]
+        }
+      },
+      "block_order": ["tab-1", "tab-2"]
+    }
+  ]
+}
+{% endschema %}

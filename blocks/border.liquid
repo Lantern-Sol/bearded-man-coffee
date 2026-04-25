@@ -1,0 +1,207 @@
+{%- liquid
+  assign block_settings = block.settings
+  assign border_color = block_settings.border_color | default: '#F2EDD7'
+-%}
+
+<div
+  class="border-block spacing-style"
+  style="
+    {% render 'spacing-style', settings: block_settings %}
+    --border-block-color: {{ border_color }};
+    --border-block-thickness: {{ block_settings.thickness }}px;
+    --border-block-style: {{ block_settings.style }};
+    --border-block-width: {{ block_settings.width_percent }}%;
+  "
+  data-border-position="{{ block_settings.position }}"
+  {{ block.shopify_attributes }}
+></div>
+
+{% stylesheet %}
+  .border-block {
+    width: 100%;
+    display: flex;
+  }
+
+  .border-block::before {
+    content: '';
+    display: block;
+    width: var(--border-block-width, 100%);
+    margin-inline: auto;
+    border-color: var(--border-block-color, #F2EDD7);
+    border-style: var(--border-block-style, solid);
+    border-width: 0;
+  }
+
+  .border-block[data-border-position='bottom']::before {
+    border-block-end-width: var(--border-block-thickness, 1px);
+  }
+
+  .border-block[data-border-position='top']::before {
+    border-block-start-width: var(--border-block-thickness, 1px);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Border",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "A simple horizontal rule. Defaults to a 1px solid line in the theme's cream tone."
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Position",
+      "options": [
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "top", "label": "Top" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Color",
+      "default": "#F2EDD7"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "dashed", "label": "Dashed" },
+        { "value": "dotted", "label": "Dotted" },
+        { "value": "double", "label": "Double" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "range",
+      "id": "thickness",
+      "label": "t:settings.thickness",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "width_percent",
+      "label": "Width",
+      "min": 5,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_mobile_padding",
+      "label": "Use mobile padding",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start-mobile",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.use_mobile_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end-mobile",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.use_mobile_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start-mobile",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.use_mobile_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end-mobile",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.use_mobile_padding }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Border",
+      "category": "t:categories.layout"
+    }
+  ]
+}
+{% endschema %}

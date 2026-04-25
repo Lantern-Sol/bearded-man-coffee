@@ -1,10 +1,14 @@
 {%- liquid
   assign product = closest.product
   assign block_settings = block.settings
+  assign should_inherit = true
+  if block_settings.inherit_color_scheme == false and block_settings.color_scheme != blank
+    assign should_inherit = false
+  endif
 -%}
 
 <div
-  class="product-quick-add-block spacing-style"
+  class="product-quick-add-block spacing-style{% unless should_inherit %} color-{{ block_settings.color_scheme }}{% endunless %}"
   style="{% render 'spacing-style', settings: block_settings %}"
   {{ block.shopify_attributes }}
 >
@@ -13,7 +17,7 @@
       product: product,
       section_id: section.id,
       block: block,
-      color_scheme: block_settings.color_scheme,
+      inherit_color_scheme: true,
       style_class: block_settings.style_class,
       show_icon: block_settings.show_icon
     %}
@@ -45,11 +49,6 @@
     display: flex;
     justify-content: center;
     height: var(--button-size-md);
-    /* Reset overlay-only styles so theme button / button-secondary win */
-    border-radius: var(--style-border-radius-buttons);
-    border: none;
-    background: unset;
-    backdrop-filter: none;
   }
 
   .product-quick-add-block .quick-add__button .add-to-cart-text {

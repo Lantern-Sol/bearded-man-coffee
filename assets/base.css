@@ -1003,11 +1003,33 @@ h6,
   }
 }
 
-:first-child:is(.h1, .h2, .h3, .h4, .h5, .h6) {
+.h7.h7,
+.text-block.h7>*,
+.text-block.h7 :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-h7--family);
+  font-style: var(--font-h7--style);
+  font-weight: var(--font-h7--weight);
+  font-size: var(--font-h7--size);
+  line-height: var(--font-h7--line-height);
+  letter-spacing: var(--font-h7--letter-spacing);
+  text-transform: var(--font-h7--case);
+  color: var(--color, var(--font-h7-color));
+}
+
+@media screen and (max-width: 1200px) {
+
+  input.h7.h7,
+  textarea.h7.h7,
+  select.h7.h7 {
+    font-size: max(1rem, var(--font-h7--size));
+  }
+}
+
+:first-child:is(.h1, .h2, .h3, .h4, .h5, .h6, .h7) {
   margin-block-start: 0;
 }
 
-:last-child:is(.h1, .h2, .h3, .h4, .h5, .h6) {
+:last-child:is(.h1, .h2, .h3, .h4, .h5, .h6, .h7) {
   margin-block-end: 0;
 }
 
@@ -1030,8 +1052,8 @@ a {
 }
 
 /* Add underline to text using our paragraph styles only. */
-p:not(.h1, .h2, .h3, .h4, .h5, .h6) a:where(:not(.button, .button-secondary)),
-.rte :is(p, ul, ol, table):not(.h1, .h2, .h3, .h4, .h5, .h6) a:where(:not(.button, .button-secondary)) {
+p:not(.h1, .h2, .h3, .h4, .h5, .h6, .h7) a:where(:not(.button, .button-secondary)),
+.rte :is(p, ul, ol, table):not(.h1, .h2, .h3, .h4, .h5, .h6, .h7) a:where(:not(.button, .button-secondary)) {
   text-decoration-color: currentcolor;
 
   &:hover {
@@ -2663,6 +2685,14 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
   white-space: nowrap;
 }
 
+.price {
+  font-weight: 700;
+}
+
+product-recommendations .price {
+  font-weight: normal;
+}
+
 .unit-price {
   display: block;
   font-size: min(0.85em, var(--font-paragraph--size));
@@ -2675,7 +2705,7 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
   color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
 }
 
-product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6)>*:not(.tax-note) {
+product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6, .h7)>*:not(.tax-note) {
   margin-block: 0;
 }
 
@@ -4423,6 +4453,8 @@ slideshow-container {
 
 @media screen and (min-width: 750px) {
   .media-gallery--carousel slideshow-component:has(slideshow-controls[thumbnails]) {
+    column-gap: 1rem;
+
     &:has(slideshow-controls[pagination-position='right']) {
       display: grid;
       grid-template:
@@ -4443,6 +4475,156 @@ slideshow-container {
       order: -1;
     }
   }
+}
+
+/*
+ * Slideshow Controls — Thumbnails
+ * Styles for the gallery thumbnail strip rendered by snippets/slideshow-controls.liquid.
+ * Sizes the buttons via --thumbnail-width (set on <media-gallery>), arranges them in a
+ * row or column depending on pagination position, and gives the active one a visible ring.
+ *
+ * The brand cream (#F8F5E9) is the gallery background; thumbnails sit on the same fill
+ * so the strip reads as one continuous panel with the main image.
+ */
+slideshow-controls[thumbnails] {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+
+slideshow-controls[thumbnails] .slideshow-controls__thumbnails-container {
+  display: flex;
+  overflow: auto;
+  scrollbar-width: none;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+slideshow-controls[thumbnails] .slideshow-controls__thumbnails-container::-webkit-scrollbar {
+  display: none;
+}
+
+slideshow-controls[thumbnails] .slideshow-controls__thumbnails {
+  display: flex;
+  gap: 1rem;
+}
+
+slideshow-controls[thumbnails][pagination-position='right'] .slideshow-controls__thumbnails-container,
+slideshow-controls[thumbnails][pagination-position='left'] .slideshow-controls__thumbnails-container {
+  flex-direction: column;
+}
+
+slideshow-controls[thumbnails][pagination-position='right'] .slideshow-controls__thumbnails,
+slideshow-controls[thumbnails][pagination-position='left'] .slideshow-controls__thumbnails {
+  flex-direction: column;
+}
+
+.slideshow-controls__thumbnail {
+  position: relative;
+  flex-shrink: 0;
+  width: 6.25rem;
+  aspect-ratio: var(--aspect-ratio, 1);
+  padding: 0;
+  cursor: pointer;
+  border-radius: var(--thumbnail-radius, 0);
+  background-color: #F8F5E9;
+  overflow: hidden;
+  transition: opacity var(--animation-speed) var(--animation-easing);
+}
+
+.slideshow-controls__thumbnail img {
+  width: 100%;
+  height: 100%;
+  /* Contain (not cover) so the cream background of the button frames the image. */
+  object-fit: contain;
+  display: block;
+  border-radius: inherit;
+}
+
+.slideshow-controls__thumbnail:not([aria-selected='true']) {
+  opacity: 0.6;
+}
+
+.slideshow-controls__thumbnail:hover {
+  opacity: 1;
+}
+
+.slideshow-controls__thumbnail[aria-selected='true'] {
+  outline: var(--style-border-width, 1px) solid var(--color-foreground);
+  outline-offset: 2px;
+}
+
+.slideshow-controls__thumbnail-badge {
+  position: absolute;
+  inset: auto var(--padding-2xs, 4px) var(--padding-2xs, 4px) auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: rgb(var(--color-background-rgb) / 0.85);
+  color: var(--color-foreground);
+  pointer-events: none;
+}
+
+.slideshow-controls__thumbnail-badge svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+/*
+ * Product media gallery — cream surface behind the active image only. The
+ * thumbnail strip itself stays transparent; each thumbnail button supplies its
+ * own cream fill (see .slideshow-controls__thumbnail above).
+ */
+.media-gallery--carousel {
+  position: relative;
+}
+
+.media-gallery--carousel slideshow-container {
+  background-color: #F8F5E9;
+}
+
+/*
+ * Product media gallery — roast label badge over the main image. Mirrors the
+ * collection card badge (snippets/product-card.liquid + blocks/_product-card-gallery.liquid),
+ * but defined here so the styles are available on the PDP without depending on
+ * the collection block's stylesheet.
+ */
+.product-media-gallery__badges {
+  position: absolute;
+  top: 1rem;
+  inset-inline-start: 1rem;
+  z-index: var(--layer-flat);
+  pointer-events: none;
+}
+
+@media screen and (min-width: 750px) {
+  .media-gallery--carousel:has(slideshow-controls[thumbnails][pagination-position='left']) .product-media-gallery__badges {
+    /* Push past the thumbnail column + the 1rem gap between strip and image. */
+    inset-inline-start: calc(6.25rem + 1rem + 1rem);
+  }
+
+  .media-gallery--carousel:has(slideshow-controls[thumbnails][pagination-position='right']) .product-media-gallery__badges {
+    inset-inline-start: 1rem;
+  }
+}
+
+.product-media-gallery__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-foreground);
+  background: var(--color-background);
+  font-size: var(--font-size--xs);
+  font-family: var(--font-paragraph--family);
+  font-weight: var(--font-paragraph--weight);
+  text-transform: var(--badge-text-transform, uppercase);
+  border-radius: var(--badge-border-radius, 0);
+  padding-block: var(--badge-rectangle-padding-block);
+  padding-inline: var(--badge-rectangle-padding-inline);
 }
 
 /* Slideshow Play/Pause */
@@ -5032,7 +5214,10 @@ text-component {
   .h5.h5 select,
   .h6.h6 input,
   .h6.h6 textarea,
-  .h6.h6 select {
+  .h6.h6 select,
+  .h7.h7 input,
+  .h7.h7 textarea,
+  .h7.h7 select {
     font-size: max(1rem, 100%);
   }
 }
@@ -5181,7 +5366,6 @@ product-recommendations:has([data-has-recommendations='false']) {
 
   .add-to-cart-text {
     /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-    clip-path: circle(0% at 50% 50%);
     filter: blur(2px);
     opacity: 0;
     translate: 0 4px;
