@@ -1,0 +1,123 @@
+{% liquid
+  assign heading = section.settings.heading | default: 'Start Your Coffee Ritual'
+  assign tagline = section.settings.tagline
+  assign button_label = section.settings.button_label | default: 'Shop coffee'
+  assign button_link = section.settings.button_link
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="section section--page-width color-{{ section.settings.color_scheme }} spacing-style coffee-ritual-cta"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+  <div class="coffee-ritual-cta__inner">
+    {%- if heading != blank -%}
+      <h2 class="coffee-ritual-cta__heading h4">{{ heading }}</h2>
+    {%- endif -%}
+    {%- if tagline != blank -%}
+      <p class="coffee-ritual-cta__tagline">{{ tagline }}</p>
+    {%- endif -%}
+    {%- if button_label != blank and button_link != blank -%}
+      <a
+        href="{{ button_link }}"
+        class="coffee-ritual-cta__button button button--primary"
+      >{{ button_label }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .coffee-ritual-cta__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--gap-md, 16px);
+  }
+
+  .coffee-ritual-cta__heading {
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .coffee-ritual-cta__tagline {
+    margin: 0;
+    max-width: 36rem;
+  }
+
+  .coffee-ritual-cta__button {
+    margin-block-start: var(--gap-sm, 12px);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Coffee ritual CTA",
+  "tag": "section",
+  "class": "coffee-ritual-cta-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Start Your Coffee Ritual"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Explore our curated selection of premium coffee and elevate your daily brew."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop coffee"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coffee ritual CTA",
+      "category": "t:categories.other_sections"
+    }
+  ]
+}
+{% endschema %}

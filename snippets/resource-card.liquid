@@ -158,9 +158,13 @@
     {% endif %}
 
     {%- if button_label != blank -%}
-      <span class="{{ button_style_class | default: 'button-secondary' }} resource-card__button">
+      <a
+        class="{{ button_style_class | default: 'button-secondary' }} resource-card__button"
+        href="{{ resource.url }}"
+        aria-label="{{ button_label }}: {{ resource.title }}"
+      >
         {{ button_label }}
-      </span>
+      </a>
     {%- endif -%}
   </div>
 </div>
@@ -187,6 +191,18 @@
     position: absolute;
     inset: 0;
     z-index: 1;
+  }
+
+  /* Sit above the card-wide overlay link so clicks resolve to the button. */
+  .resource-card__button {
+    position: relative;
+    z-index: 2;
+    align-self: flex-start;
+    width: fit-content;
+  }
+
+  .resource-card--overlay .resource-card__button {
+    align-self: flex-start;
   }
 
   .resource-card__content {
