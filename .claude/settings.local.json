@@ -186,7 +186,27 @@
       "Bash(curl -s \"http://127.0.0.1:9292/recommendations/products?section_id=product_recommendations_qggXJq&product_id=8954400702657&limit=4\" --max-time 20 -o /tmp/recs2.html)",
       "Bash(curl -s \"http://127.0.0.1:9292/?view=editor&t=$\\(date +%s\\)\" --max-time 20 -o /tmp/e3.html)",
       "Bash(awk '/product-quick-add-block/{f=1; print} f && /<quick-add-component/{print; getline; print; f=0}' /tmp/e3.html)",
-      "Bash(curl -s -o /tmp/v8.html -w \"HTTP %{http_code}\\\\n\" \"http://127.0.0.1:9292/products/atomic-blonde\" --max-time 15)"
+      "Bash(curl -s -o /tmp/v8.html -w \"HTTP %{http_code}\\\\n\" \"http://127.0.0.1:9292/products/atomic-blonde\" --max-time 15)",
+      "mcp__babf924b-dd2f-45c0-80bc-40249cf89079__get_design_context",
+      "mcp__babf924b-dd2f-45c0-80bc-40249cf89079__get_metadata",
+      "mcp__babf924b-dd2f-45c0-80bc-40249cf89079__get_screenshot",
+      "mcp__babf924b-dd2f-45c0-80bc-40249cf89079__whoami",
+      "Bash(magick --version)",
+      "Bash(python -c \"import fitz; print\\(fitz.__version__\\)\")",
+      "Bash(python -c \"import pypdf; print\\(pypdf.__version__\\)\")",
+      "Bash(python -c \"import PyPDF2; print\\(PyPDF2.__version__\\)\")",
+      "Bash(python -c \"import pdf2image; print\\(pdf2image.__version__\\)\")",
+      "Bash(node -e \"console.log\\(process.versions\\)\")",
+      "Bash(npm list *)",
+      "Bash(mkdir -p /tmp/pdfread)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(node \"C:/Users/jjtam/.claude/plugins/cache/shopify-ai-toolkit/shopify-plugin/1.1.0/skills/shopify-admin/scripts/search_docs.mjs\" \"articleCreate mutation blog tags\" --model claude-opus-4-7 --client-name claude-code --client-version 1.0)",
+      "Bash(node \"C:/Users/jjtam/.claude/plugins/cache/shopify-ai-toolkit/shopify-plugin/1.1.0/skills/shopify-admin/scripts/search_docs.mjs\" \"blogByHandle blog query id\" --model claude-opus-4-7 --client-name claude-code --client-version 1.0)",
+      "Bash(node \"C:/Users/jjtam/.claude/plugins/cache/shopify-ai-toolkit/shopify-plugin/1.1.0/skills/shopify-admin/scripts/search_docs.mjs\" \"blogs query handle filter list\" --model claude-opus-4-7 --client-name claude-code --client-version 1.0)",
+      "Bash(node C:/Users/jjtam/.claude/plugins/cache/shopify-ai-toolkit/shopify-plugin/1.1.0/skills/shopify-admin/scripts/validate.mjs --code 'mutation CreateArticle\\($article: ArticleCreateInput!\\) { articleCreate\\(article: $article\\) { article { id handle title tags publishedAt isPublished } userErrors { field code message } } }' --model claude-opus-4-7 --client-name claude-code --client-version 1.0 --artifact-id article-create --revision 1)",
+      "Bash(node C:/Users/jjtam/.claude/plugins/cache/shopify-ai-toolkit/shopify-plugin/1.1.0/skills/shopify-admin/scripts/validate.mjs --code 'query FindBlog\\($q: String!\\) { blogs\\(first: 5, query: $q\\) { nodes { id handle title } } }' --model claude-opus-4-7 --client-name claude-code --client-version 1.0 --artifact-id find-blog --revision 1)",
+      "Bash(node -e \"const fs=require\\('fs'\\); const s=fs.readFileSync\\('C:/Projects/Breaded man coffee/bearded-man-coffee/sections/main-blog.liquid','utf8'\\); const m=s.match\\(/{%\\\\s*schema\\\\s*%}\\([\\\\s\\\\S]*?\\){%\\\\s*endschema\\\\s*%}/\\); const j=JSON.parse\\(m[1]\\); const fb = j.settings.filter\\(s => s.id && s.id.startsWith\\('featured_card'\\)\\); console.log\\(JSON.stringify\\(fb, null, 2\\)\\);\")"
     ]
   }
 }

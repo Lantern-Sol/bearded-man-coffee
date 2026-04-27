@@ -26,6 +26,7 @@
   style="{% render 'spacing-style', settings: section.settings %}"
   data-testid="collection-links-{{ section.id }}"
 >
+  {% content_for 'blocks' %}
   <collection-links-component
     layout="{{ section.settings.layout }}"
     alignment="{{ section.settings.alignment }}"
@@ -196,6 +197,16 @@
   "disabled_on": {
     "groups": ["header", "footer"]
   },
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" },
+    { "type": "text" },
+    { "type": "icon" },
+    { "type": "image" },
+    { "type": "button" },
+    { "type": "spacer" },
+    { "type": "_divider" }
+  ],
   "settings": [
     {
       "type": "collection_list",
