@@ -1,17 +1,21 @@
 import { Component } from '@theme/component';
 
 /**
- * Tabbed collection grids with optional dot indicators.
+ * Tabbed collection grids.
  *
- * Panels are discovered from direct `.collection-grid-block` children.
- * Each panel carries its tab label on `data-tab-label`, so the tab nav
- * and dot indicators are built at runtime from that data — avoiding the
- * Liquid limitation that `content_for 'block'` cannot take a dynamic
- * `id`, which prevented us from iterating + rendering blocks server-side.
+ * Panels are discovered from direct `.collection-grid-block` children. Each
+ * panel carries its tab label on `data-tab-label`, so the tab nav is built
+ * at runtime from that data — avoiding the Liquid limitation that
+ * `content_for 'block'` cannot take a dynamic `id`, which prevented us from
+ * iterating + rendering blocks server-side.
+ *
+ * Pagination dots (when enabled) live inside each panel's own slideshow
+ * (the slider mode of `_collection-grid`), so only the active panel's
+ * dots are visible — and they track the active product card slide rather
+ * than the active tab.
  *
  * @typedef {object} Refs
  * @property {HTMLElement} tablist
- * @property {HTMLElement} [dotlist]
  * @property {HTMLElement} [emptyState]
  *
  * @extends Component<Refs>
@@ -23,8 +27,6 @@ class CollectionTabsComponent extends Component {
   #panels = [];
   /** @type {HTMLButtonElement[]} */
   #tabs = [];
-  /** @type {HTMLButtonElement[]} */
-  #dots = [];
 
   connectedCallback() {
     super.connectedCallback();
@@ -40,16 +42,14 @@ class CollectionTabsComponent extends Component {
   #hydrate() {
     this.#hydratePanels();
     this.#buildTabs();
-    this.#buildDots();
     this.#toggleEmptyState();
   }
 
   #toggleEmptyState() {
     const hasPanels = this.#panels.length > 0;
-    const { tablist, dotlist, emptyState } = this.refs;
+    const { tablist, emptyState } = this.refs;
     if (emptyState) emptyState.toggleAttribute('hidden', hasPanels);
     if (tablist) tablist.toggleAttribute('hidden', !hasPanels);
-    if (dotlist) dotlist.toggleAttribute('hidden', this.#panels.length < 2);
   }
 
   #hydratePanels() {
@@ -88,31 +88,6 @@ class CollectionTabsComponent extends Component {
       tab.addEventListener('keydown', (event) => this.#onTabKeydown(event));
       tablist.appendChild(tab);
       return tab;
-    });
-  }
-
-  #buildDots() {
-    const dotlist = this.refs.dotlist;
-    if (!dotlist) return;
-    dotlist.replaceChildren();
-    const template = this.dataset.slideLabelTemplate ?? 'Slide [index] of [length]';
-    const length = this.#panels.length;
-    this.#dots = this.#panels.map((_, i) => {
-      const li = document.createElement('li');
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.className = 'collection-tabs__dot';
-      const human = String(i + 1);
-      dot.setAttribute(
-        'aria-label',
-        template.replace('[index]', human).replace('[length]', String(length))
-      );
-      dot.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-      dot.tabIndex = -1;
-      dot.addEventListener('click', () => this.#activate(i));
-      li.appendChild(dot);
-      dotlist.appendChild(li);
-      return dot;
     });
   }
 
@@ -162,10 +137,6 @@ class CollectionTabsComponent extends Component {
     this.#panels.forEach((panel, i) => {
       if (i === index) panel.removeAttribute('hidden');
       else panel.setAttribute('hidden', '');
-    });
-
-    this.#dots.forEach((dot, i) => {
-      dot.setAttribute('aria-selected', String(i === index));
     });
   }
 }

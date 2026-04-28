@@ -265,7 +265,15 @@
       "Bash(awk '/{% schema %}/,/{% endschema %}/' \"/c/Projects/Breaded man coffee/bearded-man-coffee/blocks/price.liquid\")",
       "Bash(node -e \"let s=''; process.stdin.on\\('data',d=>s+=d\\); process.stdin.on\\('end',\\(\\)=>{try{const j=JSON.parse\\(s\\); const ids = j.settings.filter\\(x=>x.id\\).map\\(x=>x.id\\); const dups = ids.filter\\(\\(id,i,a\\) => a.indexOf\\(id\\) !== i\\); console.log\\('JSON valid. Settings:', j.settings.length, '| Mobile:', ids.includes\\('type_preset_mobile'\\), ids.includes\\('mobile_font_size'\\), ids.includes\\('mobile_custom_line_height'\\), '| Dupes:', dups.length || 'none'\\)}catch\\(e\\){console.log\\('FAIL:',e.message\\)}}\\)\")",
       "Bash(awk '/{% schema %}/,/{% endschema %}/' \"/c/Projects/Breaded man coffee/bearded-man-coffee/sections/section.liquid\")",
-      "Bash(node -e \"let s=''; process.stdin.on\\('data',d=>s+=d\\); process.stdin.on\\('end',\\(\\)=>{try{const j=JSON.parse\\(s\\); console.log\\('JSON valid. Settings:', j.settings.length\\);}catch\\(e\\){console.log\\('FAIL:',e.message\\)}}\\)\")"
+      "Bash(node -e \"let s=''; process.stdin.on\\('data',d=>s+=d\\); process.stdin.on\\('end',\\(\\)=>{try{const j=JSON.parse\\(s\\); console.log\\('JSON valid. Settings:', j.settings.length\\);}catch\\(e\\){console.log\\('FAIL:',e.message\\)}}\\)\")",
+      "Bash(shopify --version)",
+      "Bash(timeout 10 shopify theme dev --store vwzfnb-90.myshopify.com)",
+      "Bash(netstat -ano)",
+      "Bash(curl -sI http://127.0.0.1:9292/ --max-time 5)",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('templates/index.json','utf8'\\)\\);console.log\\('index.json: OK'\\)\")",
+      "Bash(node -e \"const fs=require\\('fs'\\);try{JSON.parse\\(fs.readFileSync\\('templates/index.json','utf8'\\)\\);console.log\\('index.json OK'\\);}catch\\(e\\){console.log\\('FAIL:',e.message\\);}\")",
+      "Bash(node -c assets/collection-tabs.js)",
+      "Bash(node -c assets/slideshow.js)"
     ]
   }
 }

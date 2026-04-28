@@ -9,44 +9,236 @@
   if tab_label == blank and block.settings.collection != blank
     assign tab_label = block.settings.collection.title
   endif
+
+  assign enable_slider_desktop = block.settings.enable_slider_desktop
+  assign enable_slider_mobile = block.settings.enable_slider_mobile
+  assign use_slider = false
+  if enable_slider_desktop or enable_slider_mobile
+    assign use_slider = true
+  endif
+
+  assign desktop_slides = block.settings.slides_to_show_desktop | default: columns
+  assign mobile_slides = block.settings.mobile_slides_to_show | default: mobile_columns
+  assign desktop_scroll = block.settings.slides_to_scroll_desktop | default: 1
+  assign mobile_scroll = block.settings.mobile_slides_to_scroll | default: 1
+
+  assign show_dots_desktop = block.settings.show_dots_desktop
+  assign show_dots_mobile = block.settings.show_dots_mobile
+  assign show_arrows_desktop = block.settings.show_arrows_desktop
+  assign show_arrows_mobile = block.settings.show_arrows_mobile
+
+  assign show_any_dots = false
+  if show_dots_desktop or show_dots_mobile
+    assign show_any_dots = true
+  endif
+  assign show_any_arrows = false
+  if show_arrows_desktop or show_arrows_mobile
+    assign show_any_arrows = true
+  endif
+
+  if block.settings.collection != blank and shop.products_count != 0
+    assign products = block.settings.collection.products
+    assign product_count = block.settings.collection.products_count
+    if product_count > max_items
+      assign product_count = max_items
+    endif
+  else
+    assign product_count = max_items
+  endif
 %}
 
 <div
-  class="collection-grid-block"
+  class="collection-grid-block{% if use_slider %} collection-grid-block--slider{% endif %}"
   id="collection-panel-{{ block.id }}"
   data-collection-grid
   data-tab-label="{{ tab_label | escape }}"
   {{ block.shopify_attributes }}
 >
-  <div
-    class="resource-list resource-list--grid collection-grid-block__list"
-    style="
-      --resource-list-column-gap-desktop: {{ columns_gap }}px;
-      --resource-list-row-gap-desktop: {{ rows_gap }}px;
-      --resource-list-columns: repeat({{ columns }}, 1fr);
-      --resource-list-columns-mobile: repeat({{ mobile_columns }}, 1fr);
-      --column-count-mobile: {{ mobile_columns }};
-    "
-  >
-    {% if block.settings.collection != blank and shop.products_count != 0 %}
-      {% for product in block.settings.collection.products limit: max_items %}
-        <div class="resource-list__item">
-          {% # theme-check-disable UniqueStaticBlockId %}
-            {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: product %}
-          {% # theme-check-enable UniqueStaticBlockId %}
+  {% if use_slider %}
+    <slideshow-auto-component
+      class="collection-grid-block__slideshow slideshow"
+      {% unless enable_slider_desktop %}desktop-disabled{% endunless %}
+      {% unless enable_slider_mobile %}mobile-disabled{% endunless %}
+      style="
+        --slides-per-view-desktop: {{ desktop_slides }};
+        --slides-per-view-mobile: {{ mobile_slides }};
+        --slideshow-gap: {{ columns_gap }}px;
+        --slideshow-disabled-gap: {{ columns_gap }}px;
+        --collection-grid-cols-desktop: {{ columns }};
+        --collection-grid-cols-mobile: {{ mobile_columns }};
+        --collection-grid-rows-gap: {{ rows_gap }}px;
+      "
+      {% if desktop_scroll > 1 or mobile_scroll > 1 %}
+        slides-to-scroll="{{ desktop_scroll }}"
+        mobile-slides-to-scroll="{{ mobile_scroll }}"
+      {% endif %}
+      initial-slide="0"
+    >
+      <slideshow-container ref="slideshowContainer">
+        {% if show_any_arrows %}
+          {% render 'slideshow-arrows',
+            class: 'collection-grid-block__arrows',
+            icon_style: 'arrows_large',
+            arrows_position: 'center',
+            mobile_arrows_position: 'center',
+            show_arrows_desktop: show_arrows_desktop,
+            show_arrows_mobile: show_arrows_mobile
+          %}
+        {% endif %}
+        <slideshow-slides
+          tabindex="-1"
+          ref="scroller"
+          class="collection-grid-block__slides"
+        >
+          {% if block.settings.collection != blank and shop.products_count != 0 %}
+            {% for product in block.settings.collection.products limit: max_items %}
+              <div class="collection-grid-block__slide resource-list__item">
+                {% # theme-check-disable UniqueStaticBlockId %}
+                  {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: product %}
+                {% # theme-check-enable UniqueStaticBlockId %}
+              </div>
+            {% endfor %}
+          {% else %}
+            {% for i in (1..max_items) %}
+              <div class="collection-grid-block__slide resource-list__item">
+                {% # theme-check-disable UniqueStaticBlockId %}
+                  {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: null %}
+                {% # theme-check-enable UniqueStaticBlockId %}
+              </div>
+            {% endfor %}
+          {% endif %}
+        </slideshow-slides>
+      </slideshow-container>
+      {% if show_any_dots and product_count > 1 %}
+        <div
+          class="collection-grid-block__controls-wrap
+            {% unless show_dots_desktop %}collection-grid-block__controls--no-desktop{% endunless %}
+            {% unless show_dots_mobile %}collection-grid-block__controls--no-mobile{% endunless %}"
+        >
+          {%- render 'slideshow-controls',
+            style: 'dots',
+            item_count: product_count,
+            show_arrows: false,
+            arrows_on_media: false,
+            controls_on_media: false,
+            pagination_position: 'center',
+            icon_style: 'none'
+          -%}
         </div>
-      {% endfor %}
-    {% else %}
-      {% for i in (1..max_items) %}
-        <div class="resource-list__item">
-          {% # theme-check-disable UniqueStaticBlockId %}
-            {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: null %}
-          {% # theme-check-enable UniqueStaticBlockId %}
-        </div>
-      {% endfor %}
-    {% endif %}
-  </div>
+      {% endif %}
+    </slideshow-auto-component>
+  {% else %}
+    <div
+      class="resource-list resource-list--grid collection-grid-block__list"
+      style="
+        --resource-list-column-gap-desktop: {{ columns_gap }}px;
+        --resource-list-row-gap-desktop: {{ rows_gap }}px;
+        --resource-list-columns: repeat({{ columns }}, 1fr);
+        --resource-list-columns-mobile: repeat({{ mobile_columns }}, 1fr);
+        --column-count-mobile: {{ mobile_columns }};
+      "
+    >
+      {% if block.settings.collection != blank and shop.products_count != 0 %}
+        {% for product in block.settings.collection.products limit: max_items %}
+          <div class="resource-list__item">
+            {% # theme-check-disable UniqueStaticBlockId %}
+              {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: product %}
+            {% # theme-check-enable UniqueStaticBlockId %}
+          </div>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..max_items) %}
+          <div class="resource-list__item">
+            {% # theme-check-disable UniqueStaticBlockId %}
+              {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: null %}
+            {% # theme-check-enable UniqueStaticBlockId %}
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  {% endif %}
 </div>
+
+{% stylesheet %}
+  .collection-grid-block--slider {
+    width: 100%;
+  }
+
+  .collection-grid-block__slideshow {
+    width: 100%;
+  }
+
+  /*
+    When the slider IS active at a given breakpoint, each slide takes
+    1/N of the row minus its share of the gap.
+  */
+  .collection-grid-block__slideshow:not([desktop-disabled]) > slideshow-container > slideshow-slides > slideshow-slide {
+    @media screen and (min-width: 750px) {
+      flex: 0 0 calc(
+        (100% - (var(--slideshow-gap, 0px) * (var(--slides-per-view-desktop, 1) - 1))) /
+          var(--slides-per-view-desktop, 1)
+      );
+    }
+  }
+
+  .collection-grid-block__slideshow:not([mobile-disabled]) > slideshow-container > slideshow-slides > slideshow-slide {
+    @media screen and (max-width: 749px) {
+      flex: 0 0 calc(
+        (100% - (var(--slideshow-gap, 0px) * (var(--slides-per-view-mobile, 1) - 1))) /
+          var(--slides-per-view-mobile, 1)
+      );
+    }
+  }
+
+  /*
+    When disabled at the current breakpoint, fall back to a CSS grid that
+    matches the original "Collection grid" layout.
+  */
+  .collection-grid-block__slideshow[desktop-disabled] > slideshow-container > slideshow-slides {
+    @media screen and (min-width: 750px) {
+      display: grid;
+      grid-template-columns: repeat(var(--collection-grid-cols-desktop, 4), 1fr);
+      column-gap: var(--slideshow-gap, 0);
+      row-gap: var(--collection-grid-rows-gap, 24px);
+    }
+  }
+
+  .collection-grid-block__slideshow[mobile-disabled] > slideshow-container > slideshow-slides {
+    @media screen and (max-width: 749px) {
+      display: grid;
+      grid-template-columns: repeat(var(--collection-grid-cols-mobile, 2), 1fr);
+      column-gap: var(--slideshow-gap, 0);
+      row-gap: var(--collection-grid-rows-gap, 24px);
+    }
+  }
+
+  /*
+    Slide cell width must be `auto` so grid-template-columns is honored.
+    The base disabled-state CSS sets it via --slideshow-disabled-slide-width.
+  */
+  .collection-grid-block__slideshow[desktop-disabled] {
+    @media screen and (min-width: 750px) {
+      --slideshow-disabled-slide-width: auto;
+    }
+  }
+  .collection-grid-block__slideshow[mobile-disabled] {
+    @media screen and (max-width: 749px) {
+      --slideshow-disabled-slide-width: auto;
+    }
+  }
+
+  /* Per-breakpoint dot visibility while slider IS active. */
+  @media screen and (min-width: 750px) {
+    .collection-grid-block__controls--no-desktop {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 749px) {
+    .collection-grid-block__controls--no-mobile {
+      display: none;
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -117,6 +309,90 @@
       "step": 1,
       "unit": "px",
       "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slider_desktop",
+      "label": "Enable slider on desktop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slider_mobile",
+      "label": "Enable slider on mobile",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "slides_to_show_desktop",
+      "label": "Desktop slides per view",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "visible_if": "{{ block.settings.enable_slider_desktop }}"
+    },
+    {
+      "type": "range",
+      "id": "slides_to_scroll_desktop",
+      "label": "Desktop slides to scroll",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 1,
+      "visible_if": "{{ block.settings.enable_slider_desktop }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_slides_to_show",
+      "label": "Mobile slides per view",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "visible_if": "{{ block.settings.enable_slider_mobile }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_slides_to_scroll",
+      "label": "Mobile slides to scroll",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1,
+      "visible_if": "{{ block.settings.enable_slider_mobile }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots_desktop",
+      "label": "Show dots on desktop",
+      "default": false,
+      "visible_if": "{{ block.settings.enable_slider_desktop }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots_mobile",
+      "label": "Show dots on mobile",
+      "default": true,
+      "visible_if": "{{ block.settings.enable_slider_mobile }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows_desktop",
+      "label": "Show arrows on desktop",
+      "default": false,
+      "visible_if": "{{ block.settings.enable_slider_desktop }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows_mobile",
+      "label": "Show arrows on mobile",
+      "default": false,
+      "visible_if": "{{ block.settings.enable_slider_mobile }}"
     }
   ],
   "presets": [

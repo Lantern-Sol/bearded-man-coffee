@@ -22,7 +22,6 @@
   <collection-tabs-component
     class="collection-tabs"
     data-section-id="{{ section.id }}"
-    data-slide-label-template="{{ 'accessibility.slide_status' | t: index: '[index]', length: '[length]' | escape }}"
     style="
       --collection-tabs-alignment: {{ section.settings.tabs_alignment }};
       --collection-tabs-header-alignment: {{ section.settings.header_alignment }};
@@ -34,9 +33,10 @@
     </div>
 
     {%- comment -%}
-      Tablist + dots shells are always rendered so the component always finds its
-      refs. collection-tabs.js populates them from each panel's `data-tab-label`
-      and toggles the empty state based on how many panels were actually rendered.
+      Tablist shell is always rendered so the component always finds its ref.
+      collection-tabs.js populates it from each panel's `data-tab-label`.
+      Dots are now owned by each panel's own slideshow (when slider mode is
+      enabled on _collection-grid) — only the active panel's dots are visible.
     {%- endcomment -%}
     <div
       class="collection-tabs__nav"
@@ -53,14 +53,6 @@
     >
       {{- 'onboarding.no_content' | t -}}
     </div>
-
-    {% if section.settings.show_dots %}
-      <ol
-        class="collection-tabs__dots"
-        aria-hidden="true"
-        ref="dotlist"
-      ></ol>
-    {% endif %}
   </collection-tabs-component>
 </div>
 
@@ -217,35 +209,6 @@
     }
   }
 
-  .collection-tabs__dots {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;    
-    padding-top: 1rem;
-  }
-
-  .collection-tabs__dot {
-    appearance: none;
-    background: transparent;
-    border: 0;
-    padding: 0;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: currentColor;
-    opacity: 0.25;
-    cursor: pointer;
-    transition: opacity var(--animation-speed, 0.2s) ease;
-  }
-
-  .collection-tabs__dot[aria-selected='true'] {
-    opacity: 0.85;
-  }
-
   .collection-tabs__empty {
     color: var(--color-foreground);
     opacity: 0.6;
@@ -341,12 +304,6 @@
         }
       ],
       "default": "center"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_dots",
-      "label": "Show dots",
-      "default": true
     },
     {
       "type": "header",
@@ -507,7 +464,6 @@
       "settings": {
         "header_alignment": "center",
         "tabs_alignment": "center",
-        "show_dots": true,
         "section_width": "page-width",
         "gap": 28,
         "color_scheme": "scheme-1",

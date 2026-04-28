@@ -532,8 +532,10 @@
     justify-self: flex-end;
   }
 
-  .header__column--right header-actions {
-    margin-inline-start: calc(var(--gap-md) * -1);
+  @media screen and (min-width: 750px) {
+    .header__column--right header-actions {
+      margin-inline-start: calc(var(--gap-md) * -1);
+    }
   }
 
   .header-actions__cart-icon {

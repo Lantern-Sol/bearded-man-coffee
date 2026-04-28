@@ -4179,6 +4179,112 @@ slideshow-component[mobile-disabled] slideshow-slides {
   }
 }
 
+/*
+ * Per-breakpoint disabled state: at the matching breakpoint, neutralize
+ * the carousel layout so children flow as the parent block intends.
+ * Consumers control the per-slide cell with --slideshow-disabled-slide-width
+ * (default: auto) and the gap with --slideshow-disabled-gap.
+ */
+slideshow-component[mobile-disabled] > slideshow-container > slideshow-slides,
+slideshow-component[desktop-disabled] > slideshow-container > slideshow-slides {
+  --_disabled-gap: var(--slideshow-disabled-gap, 0);
+}
+
+@media screen and (max-width: 749px) {
+  slideshow-component[mobile-disabled] > slideshow-container > slideshow-slides {
+    overflow: visible;
+    scroll-snap-type: none;
+    flex-wrap: wrap;
+    gap: var(--_disabled-gap);
+    cursor: auto;
+  }
+
+  slideshow-component[mobile-disabled] > slideshow-container > slideshow-slides > slideshow-slide {
+    flex: 0 0 var(--slideshow-disabled-slide-width, auto);
+    width: var(--slideshow-disabled-slide-width, auto);
+    scroll-snap-align: none;
+    content-visibility: visible;
+  }
+
+  slideshow-component[mobile-disabled] > slideshow-container > slideshow-arrows,
+  slideshow-component[mobile-disabled] > slideshow-controls {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  slideshow-component[desktop-disabled] > slideshow-container > slideshow-slides {
+    overflow: visible;
+    scroll-snap-type: none;
+    flex-wrap: wrap;
+    gap: var(--_disabled-gap);
+    cursor: auto;
+  }
+
+  slideshow-component[desktop-disabled] > slideshow-container > slideshow-slides > slideshow-slide {
+    flex: 0 0 var(--slideshow-disabled-slide-width, auto);
+    width: var(--slideshow-disabled-slide-width, auto);
+    scroll-snap-align: none;
+    content-visibility: visible;
+  }
+
+  slideshow-component[desktop-disabled] > slideshow-container > slideshow-arrows,
+  slideshow-component[desktop-disabled] > slideshow-controls {
+    display: none;
+  }
+}
+
+/*
+ * Auto-slideshow always shows multiple slides per view, so:
+ *  - snap to start (not center) — center leaves half-card peeks on both edges.
+ *  - keep content-visibility: visible so every slide contributes to the
+ *    container's height from the first paint, preventing the height-shift
+ *    bug where the container locked to whichever slide was visible first.
+ */
+slideshow-auto-component slideshow-slide {
+  scroll-snap-align: start;
+  content-visibility: visible;
+}
+
+/*
+ * Pagination dots for auto-slideshow — visual dots, not the default
+ * numbered <ol> list. Scoped to auto-slideshow only so the original
+ * slideshow block's controls are untouched.
+ */
+slideshow-auto-component .slideshow-controls__dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 1rem 0 0;
+}
+
+slideshow-auto-component .slideshow-controls__dots > li {
+  display: block;
+  list-style: none;
+}
+
+slideshow-auto-component .slideshow-controls__dots .slideshow-control {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-color: #3D3A35;
+  opacity: 0.25;
+  font-size: 0;
+  line-height: 0;
+  color: transparent;
+  cursor: pointer;
+  transition: opacity var(--animation-speed, 0.2s) ease;
+}
+
+slideshow-auto-component .slideshow-controls__dots .slideshow-control[aria-selected='true'] {
+  opacity: 1;
+}
+
 slideshow-slide {
   position: relative;
   scroll-snap-align: center;

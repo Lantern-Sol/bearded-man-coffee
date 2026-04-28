@@ -12,7 +12,7 @@
     "logo": "shopify://shop_images/Property_1_dark.svg",
     "logo_inverse": "shopify://shop_images/Property_1_light.svg",
     "logo_height": 64,
-    "logo_height_mobile": 28,
+    "logo_height_mobile": 39,
     "favicon": "shopify://shop_images/Property_1_desktop.svg",
     "type_body_font": "inter_n4",
     "type_subheading_font": "inter_n5",
@@ -104,6 +104,11 @@
     "blocks": {
       "14060646107696862457": {
         "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {}
+      },
+      "10436698916776057164": {
+        "type": "shopify://apps/appstle-subscription/blocks/appstle-subscription-helper/fe257d39-6f88-4f35-ab08-bd437e3aa94e",
         "disabled": false,
         "settings": {}
       }

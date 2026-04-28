@@ -476,8 +476,23 @@
       --closed-underlay-height: 100%;
     }
 
-    /** For transparent header, apply inherit to rows when menu is not hovered */
-    &:not([data-sticky-state='active']):not(:has(.menu-list__link:is(:hover, [aria-expanded='true']))) .header__row {
+    /* Mobile: when the menu drawer is open, fall back to the default (non-inverse) color scheme — mirrors the sticky-active treatment so header content stays legible against the open drawer */
+    @media screen and (max-width: 749px) {
+      &:has(#Details-menu-drawer-container[open]) {
+        --header-logo-display: unset;
+        --header-logo-inverse-display: unset;
+        --color-foreground: inherit;
+        --color-foreground-rgb: inherit;
+        --color-background: inherit;
+        --color-background-rgb: inherit;
+        --color-border: inherit;
+        --color-border-rgb: inherit;
+        --closed-underlay-height: 100%;
+      }
+    }
+
+    /** For transparent header, apply inherit to rows when menu is not hovered. */
+    &:not([data-sticky-state='active']):not(:has(.menu-list__link:is(:hover, [aria-expanded='true']))):not(:has(#Details-menu-drawer-container[open])) .header__row {
       --color-foreground: inherit;
       --color-foreground-rgb: inherit;
       --color-border: inherit;

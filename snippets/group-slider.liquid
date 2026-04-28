@@ -1,0 +1,188 @@
+{%- doc -%}
+  Renders block content for the group-slider block. Children are arranged
+  with the same flex layout as the regular group block, but additionally
+  wrapped in a <slideshow-auto-component> so they can be presented as a
+  slider on either breakpoint (or both).
+
+  @param {string} children - The DOM content of the group block.
+  @param {object} settings - The settings of the group block.
+  @param {string} shopify_attributes - String with Shopify attributes for the editor.
+  @param {string} [class] - Custom classes for the group block.
+  @param {string} [style] - Custom inline styles for the group block.
+{%- enddoc -%}
+
+{%- liquid
+  assign enable_desktop = settings.enable_slider_desktop
+  assign enable_mobile = settings.enable_slider_mobile
+
+  assign desktop_slides = settings.slides_to_show_desktop | default: 3
+  assign desktop_scroll = settings.slides_to_scroll_desktop | default: 1
+  assign mobile_slides = settings.mobile_slides_to_show | default: 1
+  assign mobile_scroll = settings.mobile_slides_to_scroll | default: 1
+
+  assign show_dots_desktop = settings.show_dots_desktop
+  assign show_dots_mobile = settings.show_dots_mobile
+  assign show_arrows_desktop = settings.show_arrows_desktop
+  assign show_arrows_mobile = settings.show_arrows_mobile
+
+  assign show_any_dots = false
+  if show_dots_desktop or show_dots_mobile
+    assign show_any_dots = true
+  endif
+  assign show_any_arrows = false
+  if show_arrows_desktop or show_arrows_mobile
+    assign show_any_arrows = true
+  endif
+
+  assign gap = settings.gap | default: 0
+-%}
+
+<div
+  class="
+    group-block
+    group-slider
+    group-block--height-{{ settings.height }}
+    group-block--width-{{ settings.width }}
+
+    border-style
+    spacing-style
+    size-style
+    {% if settings.inherit_color_scheme == false %} color-{{ settings.color_scheme }}{% endif %}
+    {{ class }}
+  "
+  style="
+    {% render 'border-override', settings: settings %}
+    {% render 'spacing-style', settings: settings %}
+    {% render 'size-style', settings: settings %}
+    {{ style }}
+  "
+  {{ shopify_attributes }}
+  data-testid="group-slider-block"
+>
+  <slideshow-auto-component
+    class="group-slider__slideshow slideshow"
+    {% unless enable_desktop %}desktop-disabled{% endunless %}
+    {% unless enable_mobile %}mobile-disabled{% endunless %}
+    style="
+      --slides-per-view-desktop: {{ desktop_slides }};
+      --slides-per-view-mobile: {{ mobile_slides }};
+      --slideshow-gap: {{ gap }}px;
+      --slideshow-disabled-gap: {{ gap }}px;
+      --slideshow-disabled-slide-width: var(--group-slider-cell-width, auto);
+    "
+    {% if desktop_scroll > 1 or mobile_scroll > 1 %}
+      slides-to-scroll="{{ desktop_scroll }}"
+      mobile-slides-to-scroll="{{ mobile_scroll }}"
+    {% endif %}
+    initial-slide="0"
+    infinite
+  >
+    <slideshow-container ref="slideshowContainer">
+      {% if show_any_arrows %}
+        {% render 'slideshow-arrows',
+          icon_style: 'arrows_large',
+          arrows_position: 'center',
+          mobile_arrows_position: 'center',
+          show_arrows_desktop: show_arrows_desktop,
+          show_arrows_mobile: show_arrows_mobile
+        %}
+      {% endif %}
+      <slideshow-slides
+        tabindex="-1"
+        ref="scroller"
+        class="group-slider__slides"
+      >
+        {{- children -}}
+      </slideshow-slides>
+    </slideshow-container>
+    {% if show_any_dots and slide_count > 1 %}
+      <div
+        class="group-slider__controls-wrap
+          {% unless show_dots_desktop %}group-slider__controls--no-desktop{% endunless %}
+          {% unless show_dots_mobile %}group-slider__controls--no-mobile{% endunless %}"
+      >
+        {%- render 'slideshow-controls',
+          style: 'dots',
+          item_count: slide_count,
+          show_arrows: false,
+          arrows_on_media: false,
+          controls_on_media: false,
+          pagination_position: 'center',
+          icon_style: 'none'
+        -%}
+      </div>
+    {% endif %}
+  </slideshow-auto-component>
+</div>
+
+{% stylesheet %}
+  .group-slider {
+    position: relative;
+  }
+
+  .group-slider__slideshow {
+    width: 100%;
+  }
+
+  .group-slider__slides {
+    width: 100%;
+  }
+
+  /*
+    Arrows/dots stay hidden on the breakpoints the merchant didn't enable
+    them for, even when the slider IS active on that breakpoint.
+  */
+  @media screen and (min-width: 750px) {
+    .group-slider__controls--no-desktop {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 749px) {
+    .group-slider__controls--no-mobile {
+      display: none;
+    }
+  }
+
+  /*
+    Each slide takes 1/N of the row minus its share of the gap. Same calc
+    applies whether the slider is active or disabled at this breakpoint —
+    only the scroll/snap behavior changes between the two.
+  */
+  .group-slider__slideshow > slideshow-container > slideshow-slides > slideshow-slide {
+    @media screen and (min-width: 750px) {
+      flex: 0 0 calc(
+        (100% - (var(--slideshow-gap, 0px) * (var(--slides-per-view-desktop, 1) - 1))) /
+          var(--slides-per-view-desktop, 1)
+      );
+    }
+
+    @media screen and (max-width: 749px) {
+      flex: 0 0 calc(
+        (100% - (var(--slideshow-gap, 0px) * (var(--slides-per-view-mobile, 1) - 1))) /
+          var(--slides-per-view-mobile, 1)
+      );
+    }
+  }
+
+  /*
+    The base [*-disabled] CSS sets --slideshow-disabled-slide-width on
+    slideshow-slide width — point it at the calc value above so disabled
+    state matches active layout.
+  */
+  .group-slider__slideshow[desktop-disabled] {
+    @media screen and (min-width: 750px) {
+      --slideshow-disabled-slide-width: calc(
+        (100% - (var(--slideshow-gap, 0px) * (var(--slides-per-view-desktop, 1) - 1))) /
+          var(--slides-per-view-desktop, 1)
+      );
+    }
+  }
+  .group-slider__slideshow[mobile-disabled] {
+    @media screen and (max-width: 749px) {
+      --slideshow-disabled-slide-width: calc(
+        (100% - (var(--slideshow-gap, 0px) * (var(--slides-per-view-mobile, 1) - 1))) /
+          var(--slides-per-view-mobile, 1)
+      );
+    }
+  }
+{% endstylesheet %}

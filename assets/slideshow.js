@@ -496,7 +496,9 @@ export class Slideshow extends Component {
    */
   get disabled() {
     return (
-      this.getAttribute('disabled') === 'true' || (this.hasAttribute('mobile-disabled') && !mediaQueryLarge.matches)
+      this.getAttribute('disabled') === 'true' ||
+      (this.hasAttribute('mobile-disabled') && !mediaQueryLarge.matches) ||
+      (this.hasAttribute('desktop-disabled') && mediaQueryLarge.matches)
     );
   }
 

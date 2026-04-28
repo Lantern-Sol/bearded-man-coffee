@@ -27,9 +27,9 @@
             "weight": "",
             "letter_spacing": "normal",
             "case": "uppercase",
-            "use_mobile_settings": false,
-            "mobile_font_size": "1rem",
-            "mobile_custom_line_height": 1.5
+            "type_preset_mobile": "custom",
+            "mobile_font_size": "0.875rem",
+            "mobile_custom_line_height": 1
           },
           "blocks": {}
         },
@@ -45,9 +45,9 @@
             "weight": "",
             "letter_spacing": "normal",
             "case": "uppercase",
-            "use_mobile_settings": false,
-            "mobile_font_size": "1rem",
-            "mobile_custom_line_height": 1.5
+            "type_preset_mobile": "custom",
+            "mobile_font_size": "0.875rem",
+            "mobile_custom_line_height": 1
           },
           "blocks": {}
         }
@@ -63,7 +63,10 @@
         "color_scheme": "scheme-2",
         "divider_width": 0,
         "padding-block-start": 15,
-        "padding-block-end": 15
+        "padding-block-end": 15,
+        "use_mobile_padding": true,
+        "padding-block-start-mobile": 8,
+        "padding-block-end-mobile": 8
       }
     },
     "header_section": {
