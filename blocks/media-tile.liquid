@@ -2,6 +2,7 @@
   assign s = block.settings
   assign height_mode = s.height_mode | default: 'image_ratio'
   assign image = s.image
+  assign image_mobile = s.image_mobile
 
   assign has_link = false
   if s.link != blank
@@ -9,6 +10,7 @@
   endif
 
   assign aspect_ratio = image.aspect_ratio | default: 1.5
+  assign aspect_ratio_mobile = image_mobile.aspect_ratio
   assign base_opacity = s.overlay_opacity | divided_by: 100.0
   assign hover_opacity = s.hover_overlay_opacity | divided_by: 100.0
 -%}
@@ -24,6 +26,7 @@
     --media-tile-overlay-opacity: {{ base_opacity }};
     --media-tile-overlay-opacity-hover: {{ hover_opacity }};
     --media-tile-aspect-ratio: {{ aspect_ratio }};
+    {% if aspect_ratio_mobile != blank %}--media-tile-aspect-ratio-mobile: {{ aspect_ratio_mobile }};{% endif %}
     {% if height_mode == 'custom' %}--media-tile-height: {{ s.custom_height }}svh;{% endif %}
     {% if s.text_color != blank %}--media-tile-text-color: {{ s.text_color }};{% endif %}
   "
@@ -38,8 +41,21 @@
             loading: 'lazy',
             widths: '400, 800, 1200, 1600',
             sizes: '(min-width: 750px) 50vw, 100vw',
-            alt: image.alt
+            alt: image.alt,
+            class: 'media-tile__image-desktop'
       }}
+      {%- if image_mobile != blank -%}
+        {{
+          image_mobile
+          | image_url: width: 1200
+          | image_tag:
+              loading: 'lazy',
+              widths: '375, 540, 750, 1100, 1200',
+              sizes: '100vw',
+              alt: image_mobile.alt,
+              class: 'media-tile__image-mobile'
+        }}
+      {%- endif -%}
     </div>
   {%- else -%}
     <div class="media-tile__image media-tile__image--placeholder">
@@ -198,6 +214,38 @@
     transform: translateY(0);
   }
 
+  /*
+    Mobile has no hover, so show the revealed state by default. Matches the
+    :hover end-state above (content slid up, description + button visible)
+    without animating, and swaps in the mobile-specific image when one is set.
+  */
+  .media-tile__image-mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .media-tile--height-image_ratio {
+      aspect-ratio: var(--media-tile-aspect-ratio-mobile, var(--media-tile-aspect-ratio, 1.5));
+    }
+
+    .media-tile--reveal-on-hover .media-tile__content {
+      transform: translateY(0);
+    }
+
+    .media-tile--reveal-on-hover .media-tile__description,
+    .media-tile--reveal-on-hover .media-tile__button {
+      opacity: 1;
+    }
+
+    .media-tile__image:has(.media-tile__image-mobile) .media-tile__image-desktop {
+      display: none;
+    }
+
+    .media-tile__image-mobile {
+      display: block;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .media-tile__overlay,
     .media-tile__content {
@@ -215,6 +263,12 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. Shown instead of the image above on mobile devices."
     },
     {
       "type": "url",

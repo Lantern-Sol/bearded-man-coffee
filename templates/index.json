@@ -661,7 +661,7 @@
           "settings": {
             "tab_label": "",
             "collection": "coffee",
-            "max_products": 4,
+            "max_products": 12,
             "columns": 4,
             "mobile_columns": "2",
             "columns_gap": 16,
@@ -2247,7 +2247,7 @@
               "type": "text",
               "settings": {
                 "text": "<h2>Shop coffee by category</h2>",
-                "mobile_text": "",
+                "mobile_text": "<h2>Shop coffee by <br/>category</h2>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -2275,9 +2275,9 @@
                 "padding-block-end": 16,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0,
-                "use_mobile_padding": false,
+                "use_mobile_padding": true,
                 "padding-block-start-mobile": 0,
-                "padding-block-end-mobile": 0,
+                "padding-block-end-mobile": 8,
                 "padding-inline-start-mobile": 0,
                 "padding-inline-end-mobile": 0
               },
@@ -2475,7 +2475,7 @@
                 "case": "uppercase",
                 "wrap": "pretty",
                 "color": "var(--color-foreground)",
-                "type_preset_mobile": "",
+                "type_preset_mobile": "h5",
                 "mobile_font_size": "1rem",
                 "mobile_custom_line_height": 1.5,
                 "background": false,
@@ -2485,7 +2485,7 @@
                 "padding-block-end": 24,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0,
-                "use_mobile_padding": false,
+                "use_mobile_padding": true,
                 "padding-block-start-mobile": 0,
                 "padding-block-end-mobile": 0,
                 "padding-inline-start-mobile": 0,
@@ -2594,7 +2594,7 @@
                     "icon": "price_tag",
                     "image_upload": "shopify://shop_images/star-icons.svg",
                     "width": 98,
-                    "width-mobile": 24,
+                    "width-mobile": 98,
                     "link": "",
                     "open_in_new_tab": false
                   },
@@ -2739,7 +2739,7 @@
                     "icon": "price_tag",
                     "image_upload": "shopify://shop_images/star-icons.svg",
                     "width": 98,
-                    "width-mobile": 24,
+                    "width-mobile": 98,
                     "link": "",
                     "open_in_new_tab": false
                   },
@@ -2884,7 +2884,7 @@
                     "icon": "price_tag",
                     "image_upload": "shopify://shop_images/star-icons.svg",
                     "width": 98,
-                    "width-mobile": 24,
+                    "width-mobile": 98,
                     "link": "",
                     "open_in_new_tab": false
                   },
@@ -3031,9 +3031,9 @@
         "padding-block-end": 64,
         "padding-inline-start": 0,
         "padding-inline-end": 0,
-        "use_mobile_padding": false,
-        "padding-block-start-mobile": 0,
-        "padding-block-end-mobile": 0,
+        "use_mobile_padding": true,
+        "padding-block-start-mobile": 40,
+        "padding-block-end-mobile": 40,
         "padding-inline-start-mobile": 0,
         "padding-inline-end-mobile": 0
       }
@@ -3046,6 +3046,7 @@
           "name": "Blog tile",
           "settings": {
             "image": "shopify://shop_images/Card_1.png",
+            "image_mobile": "shopify://shop_images/Card_2.webp",
             "link": "/blogs/news",
             "heading": "Explore our blog",
             "description": "",
@@ -3066,6 +3067,7 @@
           "name": "Visit tile",
           "settings": {
             "image": "shopify://shop_images/Card_2.png",
+            "image_mobile": "shopify://shop_images/Card_3.webp",
             "link": "/pages/contact",
             "heading": "Come visit us",
             "description": "",
@@ -3128,9 +3130,9 @@
         "padding-block-end": 80,
         "padding-inline-start": 0,
         "padding-inline-end": 0,
-        "use_mobile_padding": false,
-        "padding-block-start-mobile": 0,
-        "padding-block-end-mobile": 0,
+        "use_mobile_padding": true,
+        "padding-block-start-mobile": 60,
+        "padding-block-end-mobile": 60,
         "padding-inline-start-mobile": 0,
         "padding-inline-end-mobile": 0
       }
