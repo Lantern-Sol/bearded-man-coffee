@@ -75,6 +75,25 @@
     assign ratio = 1
   endif
 
+  # Calculate mobile aspect ratio (blank = inherit from desktop)
+  assign ratio_mobile = blank
+  case block_settings.image_ratio_mobile
+    when 'landscape'
+      assign ratio_mobile = '16 / 9'
+    when 'portrait'
+      assign ratio_mobile = '4 / 5'
+    when 'square'
+      assign ratio_mobile = '1 / 1'
+    when 'adapt'
+      assign ratio_mobile = image_resource.aspect_ratio
+    when 'custom'
+      assign ratio_mobile = block_settings.image_ratio_mobile_custom
+  endcase
+
+  if ratio_mobile == 0 or ratio_mobile == null
+    assign ratio_mobile = blank
+  endif
+
   # Generate responsive image attributes
   assign sizes = '(min-width: 750px) 50vw, 100vw'
   assign lazy_sizes = 'auto, ' | append: sizes
@@ -118,10 +137,12 @@
   {% if content_type == 'articles' %}
     .featured-blog-posts-card[data-block-id="{{ parent_block_id }}"] {
       --ratio: {{ ratio }};
+      {% if ratio_mobile != blank %}--ratio-mobile: {{ ratio_mobile }};{% endif %}
     }
   {% elsif content_type == 'collections' %}
     .collection-card[data-block-id="{{ parent_block_id }}"] {
       --ratio: {{ ratio }};
+      {% if ratio_mobile != blank %}--ratio-mobile: {{ ratio_mobile }};{% endif %}
     }
   {% endif %}
 {% endstyle %}
@@ -210,5 +231,11 @@
   .resource-image--placeholder {
     width: 100%;
     height: 100%;
+  }
+
+  @media screen and (max-width: 749px) {
+    .resource-image {
+      aspect-ratio: var(--ratio-mobile, var(--ratio));
+    }
   }
 {% endstylesheet %}

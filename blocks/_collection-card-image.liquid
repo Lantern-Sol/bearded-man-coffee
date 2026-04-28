@@ -54,6 +54,46 @@
       "default": "portrait"
     },
     {
+      "type": "select",
+      "id": "image_ratio_mobile",
+      "label": "Mobile aspect ratio",
+      "options": [
+        {
+          "value": "inherit",
+          "label": "Same as desktop"
+        },
+        {
+          "value": "adapt",
+          "label": "t:options.auto"
+        },
+        {
+          "value": "portrait",
+          "label": "t:options.portrait"
+        },
+        {
+          "value": "square",
+          "label": "t:options.square"
+        },
+        {
+          "value": "landscape",
+          "label": "t:options.landscape"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "inherit"
+    },
+    {
+      "type": "text",
+      "id": "image_ratio_mobile_custom",
+      "label": "Custom mobile aspect ratio",
+      "info": "Format: width / height (e.g. 360 / 300)",
+      "default": "360 / 300",
+      "visible_if": "{{ block.settings.image_ratio_mobile == 'custom' }}"
+    },
+    {
       "type": "checkbox",
       "id": "toggle_overlay",
       "label": "t:settings.media_overlay"

@@ -117,6 +117,12 @@
     aspect-ratio: var(--ratio);
   }
 
+  @media screen and (max-width: 749px) {
+    .collection-card.collection-card--image-bg {
+      aspect-ratio: var(--ratio-mobile, var(--ratio));
+    }
+  }
+
   .collection-card.collection-card--image-bg .collection-card__content {
     padding: var(--padding-lg);
   }
@@ -192,6 +198,20 @@
   .collection-card--reveal-on-hover:hover .collection-card__content > *:not(:first-child),
   .collection-card--reveal-on-hover:focus-within .collection-card__content > *:not(:first-child) {
     opacity: 1;
+  }
+
+  /*
+    Mobile has no hover, so show the revealed state by default. Matches the
+    :hover end-state above (slid up + extra children visible) without animating.
+  */
+  @media screen and (max-width: 749px) {
+    .collection-card--reveal-on-hover .collection-card__content {
+      transform: translateY(0);
+    }
+
+    .collection-card--reveal-on-hover .collection-card__content > *:not(:first-child) {
+      opacity: 1;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -2066,7 +2066,7 @@
             "case": "uppercase",
             "wrap": "pretty",
             "color": "var(--color-foreground-heading)",
-            "type_preset_mobile": "",
+            "type_preset_mobile": "h5",
             "mobile_font_size": "1rem",
             "mobile_custom_line_height": 1.5,
             "background": false,
@@ -2076,8 +2076,8 @@
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0,
-            "use_mobile_padding": false,
-            "padding-block-start-mobile": 0,
+            "use_mobile_padding": true,
+            "padding-block-start-mobile": 41,
             "padding-block-end-mobile": 0,
             "padding-inline-start-mobile": 0,
             "padding-inline-end-mobile": 0
@@ -2162,7 +2162,8 @@
         "color_scheme": "scheme-2",
         "background_media": "image",
         "video_position": "cover",
-        "background_image": "shopify://shop_images/Frame_2147227915_2.webp",
+        "background_image": "shopify://shop_images/subscription-background.webp",
+        "background_image_mobile": "shopify://shop_images/Frame_2147227915_2.webp",
         "background_image_position": "cover",
         "border": "none",
         "border_width": 1,
@@ -2187,9 +2188,9 @@
         "padding-block-end": 50,
         "padding-inline-start": 0,
         "padding-inline-end": 0,
-        "use_mobile_padding": false,
-        "padding-block-start-mobile": 0,
-        "padding-block-end-mobile": 0,
+        "use_mobile_padding": true,
+        "padding-block-start-mobile": 100,
+        "padding-block-end-mobile": 24,
         "padding-inline-start-mobile": 0,
         "padding-inline-end-mobile": 0
       }
@@ -2349,6 +2350,8 @@
               "static": true,
               "settings": {
                 "image_ratio": "portrait",
+                "image_ratio_mobile": "custom",
+                "image_ratio_mobile_custom": "360 / 300",
                 "toggle_overlay": false,
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
@@ -2384,7 +2387,7 @@
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "columns": 4,
-        "mobile_columns": "2",
+        "mobile_columns": "1",
         "mobile_card_size": "60cqw",
         "columns_gap": 16,
         "bento_gap": 8,
@@ -2396,7 +2399,10 @@
         "gap": 24,
         "color_scheme": "scheme-1",
         "padding-block-start": 80,
-        "padding-block-end": 80
+        "padding-block-end": 80,
+        "use_mobile_padding": true,
+        "padding-block-start-mobile": 60,
+        "padding-block-end-mobile": 60
       }
     },
     "section_testimonials": {
