@@ -1,0 +1,1041 @@
+[
+  {
+    "id": "gid://shopify/Product/9130418012417",
+    "handle": "5-oclock-shadow",
+    "title": "5 O’clock Shadow",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Light-Medium",
+        "level": 2
+      },
+      "secondLine": {
+        "kind": "origin",
+        "value": "Brazilian & Mexican Chiapas"
+      },
+      "tastingNotes": "Sweet florals, smooth, balanced, clean finish",
+      "sigInfusion": null
+    },
+    "input": {
+      "id": "gid://shopify/Product/9130418012417",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Not quite morning. Not quite ready. Somewhere in between.</p>\n<p>This light-medium roast keeps things smooth and balanced with a medium body, subtle acidity, and soft floral notes that brighten things up without getting in the way. It finishes clean, easy, and right on time.</p>\n<p>Just enough edge to get you moving… even if your stubble’s still catching up.</p>\n<p>A steady go-to when you want something lighter that still shows up.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "2"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Sweet florals, smooth, balanced, clean finish"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400090759425\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9130418045185",
+    "handle": "atomic-blonde",
+    "title": "Atomic Blonde",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Light",
+        "level": 1
+      },
+      "secondLine": {
+        "kind": "signature",
+        "value": "Vanilla & Cayenne"
+      },
+      "tastingNotes": "Vanilla, subtle cayenne heat, smooth, light-bodied",
+      "sigInfusion": "Vanilla & Cayenne"
+    },
+    "input": {
+      "id": "gid://shopify/Product/9130418045185",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Easy going at first sip. Then it wakes you up.</p>\n<p>Atomic Blonde brings smooth, velvety vanilla up front with a light body that keeps things bright and approachable. Just when you think it’s all sweetness, a subtle cayenne kick rolls in to keep things interesting.</p>\n<p>Light, lively, and not afraid to surprise you.</p>\n<p>The kind of cup that starts smooth… and finishes with a little spark.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "1"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Vanilla, subtle cayenne heat, smooth, light-bodied"
+        },
+        {
+          "namespace": "custom",
+          "key": "signature_infusion",
+          "type": "single_line_text_field",
+          "value": "Vanilla & Cayenne"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400787964161\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9130418110721",
+    "handle": "babyface-decaf",
+    "title": "Babyface Decaf Test",
+    "flags": [
+      "No Roast line detected — only category was added."
+    ],
+    "skip": false,
+    "action": "category-only",
+    "input": {
+      "id": "gid://shopify/Product/9130418110721",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3"
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9130418176257",
+    "handle": "bandholz",
+    "title": "Bandholz",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 2
+      },
+      "secondLine": {
+        "kind": "origin",
+        "value": "Mexican Chiapas & Costa Rican"
+      },
+      "tastingNotes": "Nutty pecan, pine barrel, buttery finish",
+      "sigInfusion": null
+    },
+    "input": {
+      "id": "gid://shopify/Product/9130418176257",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Some things take time to appreciate. This is one of them. </p>\n<p>Bandholz brings together rich pecan notes with a subtle pine barrel character and a smooth, buttery finish that rounds everything out. It’s layered without being complicated, bold without being loud.</p>\n<p>The kind of cup that grows on you the more you come back to it.</p>\n<p>Give it a few mornings. You’ll get it.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "2"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Nutty pecan, pine barrel, buttery finish"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132924338433",
+    "handle": "mountain-berry",
+    "title": "Mountain Berry",
+    "flags": [
+      "Description has no coffee structure — only category was added. Manual review needed."
+    ],
+    "skip": false,
+    "action": "category-only",
+    "input": {
+      "id": "gid://shopify/Product/9132924338433",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3"
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132924764417",
+    "handle": "smooth-operator-2",
+    "title": "Smooth Operator",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "signature",
+        "value": "Hazelnut & Vanilla"
+      },
+      "tastingNotes": "Toasted hazelnut, sweet vanilla, smooth",
+      "sigInfusion": "Hazelnut & Vanilla"
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132924764417",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Smooth from the first sip. Doesn’t miss a step.</p>\n<p>Toasted hazelnut and vanilla come together in a silky, easy-drinking cup that keeps things light, balanced, and dangerously likable.</p>\n<p>Suave, silky, and charming enough to talk its way out of doing the dishes.</p>\n<p>The kind of coffee that always leaves a good impression… and somehow gets away with it.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Toasted hazelnut, sweet vanilla, smooth"
+        },
+        {
+          "namespace": "custom",
+          "key": "signature_infusion",
+          "type": "single_line_text_field",
+          "value": "Hazelnut & Vanilla"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132925387009",
+    "handle": "fu-man-chai",
+    "title": "Fu Man Chai",
+    "flags": [
+      "Signature Infusion inferred from Seasonal Blend (tasting notes \"Spiced apple, cinnamon, cardamom, clove, ginger\") → \"Spiced Apple Chai\". Manual review."
+    ],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "seasonal",
+        "value": null
+      },
+      "tastingNotes": "Spiced apple, cinnamon, cardamom, clove, ginger",
+      "sigInfusion": "Spiced Apple Chai"
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132925387009",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>A little wise. A little wild. Definitely not boring.</p>\n<p>Fu Man Chai brings sweet, juicy apple together with a lineup of warm spices like cinnamon, cardamom, and clove, finished with a hint of ginger that keeps things interesting. It’s smooth, balanced, and just complex enough to make you slow down and actually enjoy the cup.</p>\n<p>Nostalgic in the best way. Like summer days that didn’t have a schedule.</p>\n<p>Easy to sip, easy to share, and even better when you’ve got nowhere to be.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Spiced apple, cinnamon, cardamom, clove, ginger"
+        },
+        {
+          "namespace": "custom",
+          "key": "signature_infusion",
+          "type": "single_line_text_field",
+          "value": "Spiced Apple Chai"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132925419777",
+    "handle": "moonshiner",
+    "title": "Moonshiner",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "signature",
+        "value": "Bourbon-Inspired (Alcohol Free)"
+      },
+      "tastingNotes": "Oak, caramel, rye",
+      "sigInfusion": "Bourbon-Inspired (Alcohol Free)"
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132925419777",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Smooth enough to sip. Bold enough to raise an eyebrow.</p>\n<p>Moonshiner brings rich oak, caramel sweetness, and a hint of rye spice into a balanced, medium roast that drinks easy but carries a little swagger. All the character of a backwoods barrel, none of the consequences.</p>\n<p>It’s got that slow-burn confidence. The kind that doesn’t need to prove anything.</p>\n<p>A good pick when you want something a little different without going off the rails.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Oak, caramel, rye"
+        },
+        {
+          "namespace": "custom",
+          "key": "signature_infusion",
+          "type": "single_line_text_field",
+          "value": "Bourbon-Inspired (Alcohol Free)"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132925714689",
+    "handle": "winterstache",
+    "title": "Winterstache",
+    "flags": [
+      "Signature Infusion inferred from Seasonal Blend (tasting notes \"Coconut, caramel, cocoa\") → \"Coconut Cocoa\". Manual review."
+    ],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "seasonal",
+        "value": null
+      },
+      "tastingNotes": "Coconut, caramel, cocoa",
+      "sigInfusion": "Coconut Cocoa"
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132925714689",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Cold air. Warm cup. Beard collecting a little frost.</p>\n<p>Winterstache brings together smooth coconut, rich caramel, and deep cocoa in a balanced medium roast that feels like it was made for slower mornings and heavier flannels. It’s cozy without being overly sweet, with just enough richness to keep you coming back for another cup.</p>\n<p>The kind of coffee that makes winter feel less like something to survive… and more like something to enjoy.</p>\n<p>Best paired with cold mornings and absolutely no plans to rush.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Coconut, caramel, cocoa"
+        },
+        {
+          "namespace": "custom",
+          "key": "signature_infusion",
+          "type": "single_line_text_field",
+          "value": "Coconut Cocoa"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132925812993",
+    "handle": "yeard",
+    "title": "Yeard",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Light",
+        "level": 1
+      },
+      "secondLine": {
+        "kind": "origin",
+        "value": "African Peaberry"
+      },
+      "tastingNotes": "Intense, creamy, berry notes, brown sugar sweetness",
+      "sigInfusion": null
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132925812993",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Bright, lively, and not here to blend in.</p>\n<p>Yeard brings a light roast that leans into vibrant berry notes with a creamy body and a touch of brown sugar sweetness to keep things grounded. It’s crisp, expressive, and a little more adventurous than your everyday cup.</p>\n<p>The kind of coffee that proves patience pays off.</p>\n<p>Worth the wait. Every time.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "1"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Intense, creamy, berry notes, brown sugar sweetness"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400787964161\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132925845761",
+    "handle": "moosestachio",
+    "title": "Moosestachio",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "signature",
+        "value": "Pistachio & Vanilla"
+      },
+      "tastingNotes": "Nutty, creamy, sweet",
+      "sigInfusion": "Pistachio & Vanilla"
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132925845761",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Big. Hairy. Surprisingly refined.</p>\n<p>Moosestachio brings together creamy vanilla and rich pistachio for a smooth, nutty cup that leans sweet without going overboard. It’s easy to drink, but not boring about it.</p>\n<p>Imagine a moose… with a mustache… somehow pulling it off. That’s the energy here.</p>\n<p>A little wild, a little classy, and way more enjoyable than it has any right to be.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Nutty, creamy, sweet"
+        },
+        {
+          "namespace": "custom",
+          "key": "signature_infusion",
+          "type": "single_line_text_field",
+          "value": "Pistachio & Vanilla"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132925944065",
+    "handle": "gunslinger",
+    "title": "Gunslinger",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium-Dark",
+        "level": 4
+      },
+      "secondLine": {
+        "kind": "origin",
+        "value": "Mexican Chiapas"
+      },
+      "tastingNotes": "Caramel, chocolate, subtle fruit, hazelnut, velvety finish",
+      "sigInfusion": null
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132925944065",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Straight shooter. No wasted time.</p>\n<p>Gunslinger delivers a full-bodied cup with bold caramel and chocolate, balanced by subtle fruit and hazelnut notes and a smooth, velvety finish.</p>\n<p>Confident, steady, and always on target.Shoots straight and never misses.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "4"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Caramel, chocolate, subtle fruit, hazelnut, velvety finish"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400787996929\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132925976833",
+    "handle": "chinstrap",
+    "title": "Chinstrap",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium-Dark",
+        "level": 4
+      },
+      "secondLine": {
+        "kind": "origin",
+        "value": "Colombian Supremo"
+      },
+      "tastingNotes": "Caramel, walnut, honey, bright woody finish",
+      "sigInfusion": null
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132925976833",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Clean lines. Strong finish. No shortcuts.</p>\n<p>Chinstrap brings bold caramel sweetness with layers of walnut and honey, all wrapped in a balanced, medium-bodied cup with a bright, woody edge.</p>\n<p>Structured, sharp, and dialed in from start to finish.</p>\n<p>Tighter than your camping buddy’s hammock straps.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "4"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Caramel, walnut, honey, bright woody finish"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400787996929\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132926009601",
+    "handle": "balbo",
+    "title": "Balbo",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "origin",
+        "value": "Brazilian"
+      },
+      "tastingNotes": "Nutty pecan, clean, balanced, medium-bodied",
+      "sigInfusion": null
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132926009601",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Some mornings don’t need a speech. Just a solid cup of coffee.</p>\n<p>Balbo delivers a smooth, medium-bodied brew with a clean, balanced profile and subtle pecan notes that round things out. It’s steady, reliable, and built to show up the same way every time.</p>\n<p>No flash. No fuss. Just really good coffee done right.</p>\n<p>Dependable as a compass that always points toward coffee.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Nutty pecan, clean, balanced, medium-bodied"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132926042369",
+    "handle": "stubble",
+    "title": "Stubble",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "origin",
+        "value": "Peruvian & Mexican Chiapas"
+      },
+      "tastingNotes": "Ripe cherry sweetness, velvety texture",
+      "sigInfusion": null
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132926042369",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Not fully grown. Still gets the job done.</p>\n<p>Stubble brings a smooth, medium roast with ripe cherry sweetness and a velvety texture that punches above its weight. It’s easygoing but still has a little personality tucked in there.</p>\n<p>Short, scrappy, and surprisingly refined.</p>\n<p>Proof that you don’t need a full beard to make an impression.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Ripe cherry sweetness, velvety texture"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132926075137",
+    "handle": "yeti",
+    "title": "Yeti",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "signature",
+        "value": "Dark Cocoa & Cayenne"
+      },
+      "tastingNotes": "Dark cocoa, subtle heat",
+      "sigInfusion": "Dark Cocoa & Cayenne"
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132926075137",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Hard to find. Easy to remember.</p>\n<p>Yeti blends rich dark cocoa with a smooth, medium roast and a cayenne kick that shows up just enough to keep things interesting. Bold, balanced, and a little elusive.</p>\n<p>You might not see it coming… but you’ll know it when it hits.</p>\n<p>The mythical beast of your morning routine. Just try to catch it.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Dark cocoa, subtle heat"
+        },
+        {
+          "namespace": "custom",
+          "key": "signature_infusion",
+          "type": "single_line_text_field",
+          "value": "Dark Cocoa & Cayenne"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132926107905",
+    "handle": "shag",
+    "title": "Shag",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "origin",
+        "value": "Costa Rican Tarrazu"
+      },
+      "tastingNotes": "Smooth caramel, toasted pine nut",
+      "sigInfusion": null
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132926107905",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>A little messy. Still works.</p>\n<p>Shag delivers a smooth, caramel-forward cup with toasted pine nut notes that give it a subtle, woodsy edge. It’s relaxed, unfussy, and comes together better than it probably should.</p>\n<p>It’s not trying to be perfect. That’s kind of the point.</p>\n<p>Turns out, a little chaos can taste pretty good.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Smooth caramel, toasted pine nut"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132926140673",
+    "handle": "verdi",
+    "title": "Verdi",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Dark",
+        "level": 4
+      },
+      "secondLine": {
+        "kind": "origin",
+        "value": "Vietnamese Highlands & Peruvian"
+      },
+      "tastingNotes": "Bold espresso, full-bodied, lingering intensity",
+      "sigInfusion": null
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132926140673",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Not a background coffee. More like a full performance.</p>\n<p>Verdi delivers a bold, espresso-forward cup with deep body and an intensity that sticks around. Rich, dramatic, and not afraid to take up a little space.</p>\n<p>This one doesn’t whisper. It projects.</p>\n<p>Built for early mornings that feel a little more like opening night.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "4"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Bold espresso, full-bodied, lingering intensity"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400788029697\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132926173441",
+    "handle": "french-fork",
+    "title": "French Fork",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Dark",
+        "level": 5
+      },
+      "secondLine": {
+        "kind": "origin",
+        "value": "Brazilian & Mexican Chiapas"
+      },
+      "tastingNotes": "Dark, full-bodied, smooth caramel, deep undertones",
+      "sigInfusion": null
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132926173441",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Built for early mornings and long nights.</p>\n<p>French Fork leans into a full-bodied, dark roast with deep, rich character and a smooth caramel finish that keeps things grounded. Bold without being harsh, heavy without slowing you down.</p>\n<p>Rugged, refined, and right at home anywhere.</p>\n<p>A brew that belongs equally at a campsite or a Parisian café table.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "5"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Dark, full-bodied, smooth caramel, deep undertones"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400788029697\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132926206209",
+    "handle": "shaman",
+    "title": "Shaman",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "signature",
+        "value": "Cinnamon & Turmeric"
+      },
+      "tastingNotes": "Warm spice, maple sweetness",
+      "sigInfusion": "Cinnamon & Turmeric"
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132926206209",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Feels less like coffee. More like a ritual.</p>\n<p>Shaman layers warming cinnamon and turmeric with a subtle maple sweetness into a smooth, comforting cup that leans cozy without going soft. It’s rich, grounding, and just a little unexpected.</p>\n<p>Like your morning got upgraded to a campfire ceremony.</p>\n<p>Best enjoyed when the day calls for something steady.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Warm spice, maple sweetness"
+        },
+        {
+          "namespace": "custom",
+          "key": "signature_infusion",
+          "type": "single_line_text_field",
+          "value": "Cinnamon & Turmeric"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132926238977",
+    "handle": "baby-face-decaf",
+    "title": "Babyface, Decaf",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "origin",
+        "value": "Washed Decaf"
+      },
+      "tastingNotes": "Full-bodied, earthy, herbal, smooth",
+      "sigInfusion": null
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132926238977",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>No caffeine. No compromise.</p>\n<p>Babyface keeps things full-bodied and smooth with earthy, herbal notes that hold their own against anything with a buzz. It’s mellow where it should be, but still brings real flavor to the table.</p>\n<p>Clean, easy, and dangerously drinkable.</p>\n<p>Have another cup. You’ll still sleep like the baby face you are.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Full-bodied, earthy, herbal, smooth"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132926271745",
+    "handle": "big-easy",
+    "title": "Big Easy",
+    "flags": [],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "signature",
+        "value": "Toasted Praline"
+      },
+      "tastingNotes": "Nutty, smooth, toasted sweetness",
+      "sigInfusion": "Toasted Praline"
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132926271745",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>No rush. No noise. Just a good cup and a slow start.</p>\n<p>Big Easy leans into smooth, nutty toasted praline flavors with a mellow, easy-drinking body that doesn’t try to wake you up too aggressively. It’s comfortable, familiar, and exactly what you want when the morning needs to ease in.</p>\n<p>Laid-back, but still gets the job done.</p>\n<p>Best enjoyed without looking at your email.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Nutty, smooth, toasted sweetness"
+        },
+        {
+          "namespace": "custom",
+          "key": "signature_infusion",
+          "type": "single_line_text_field",
+          "value": "Toasted Praline"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  },
+  {
+    "id": "gid://shopify/Product/9132926304513",
+    "handle": "autumn-bliss",
+    "title": "Autumn Bliss",
+    "flags": [
+      "Signature Infusion inferred from Seasonal Blend (tasting notes \"Pumpkin, warm spices\") → \"Pumpkin Spice\". Manual review."
+    ],
+    "skip": false,
+    "action": "full-migrate",
+    "parsed": {
+      "roast": {
+        "label": "Medium",
+        "level": 3
+      },
+      "secondLine": {
+        "kind": "seasonal",
+        "value": null
+      },
+      "tastingNotes": "Pumpkin, warm spices",
+      "sigInfusion": "Pumpkin Spice"
+    },
+    "input": {
+      "id": "gid://shopify/Product/9132926304513",
+      "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+      "descriptionHtml": "<p>Feels like flannel season showed up right on time.</p>\n<p>Autumn Bliss brings a smooth, comforting cup with pumpkin and warm spice notes that settle in easy and stick around just long enough. It’s rich without being heavy, and cozy without trying too hard.</p>\n<p>Familiar, relaxed, and exactly what you want when the seasons start to turn.</p>\n<p>Best enjoyed during a little leaf peeping.</p>",
+      "metafields": [
+        {
+          "namespace": "custom",
+          "key": "roast_profile",
+          "type": "number_integer",
+          "value": "3"
+        },
+        {
+          "namespace": "custom",
+          "key": "tasting_notes",
+          "type": "single_line_text_field",
+          "value": "Pumpkin, warm spices"
+        },
+        {
+          "namespace": "custom",
+          "key": "signature_infusion",
+          "type": "single_line_text_field",
+          "value": "Pumpkin Spice"
+        },
+        {
+          "namespace": "shopify",
+          "key": "coffee-roast",
+          "type": "list.metaobject_reference",
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      ]
+    }
+  }
+]

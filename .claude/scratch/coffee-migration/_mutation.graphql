@@ -1,0 +1,11 @@
+mutation MigrateCoffee($product: ProductUpdateInput!) {
+  productUpdate(product: $product) {
+    product {
+      id
+      handle
+      category { fullName }
+      metafields(first: 5, namespace: "custom") { nodes { key value } }
+    }
+    userErrors { field message }
+  }
+}

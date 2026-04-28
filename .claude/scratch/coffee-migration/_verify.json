@@ -1,0 +1,428 @@
+{
+  "products": {
+    "nodes": [
+      {
+        "id": "gid://shopify/Product/9130418012417",
+        "handle": "5-oclock-shadow",
+        "title": "5 O’clock Shadow",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "2"
+        },
+        "mfSig": null,
+        "mfTN": {
+          "value": "Sweet florals, smooth, balanced, clean finish"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400090759425\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9130418045185",
+        "handle": "atomic-blonde",
+        "title": "Atomic Blonde",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "1"
+        },
+        "mfSig": {
+          "value": "Vanilla & Cayenne"
+        },
+        "mfTN": {
+          "value": "Vanilla, subtle cayenne heat, smooth, light-bodied"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400787964161\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9130418110721",
+        "handle": "babyface-decaf",
+        "title": "Babyface Decaf Test",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": null,
+        "mfSig": null,
+        "mfTN": null,
+        "mfRoastObj": null
+      },
+      {
+        "id": "gid://shopify/Product/9130418176257",
+        "handle": "bandholz",
+        "title": "Bandholz",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "2"
+        },
+        "mfSig": null,
+        "mfTN": {
+          "value": "Nutty pecan, pine barrel, buttery finish"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132924338433",
+        "handle": "mountain-berry",
+        "title": "Mountain Berry",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": null,
+        "mfSig": null,
+        "mfTN": null,
+        "mfRoastObj": null
+      },
+      {
+        "id": "gid://shopify/Product/9132924764417",
+        "handle": "smooth-operator-2",
+        "title": "Smooth Operator",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": {
+          "value": "Hazelnut & Vanilla"
+        },
+        "mfTN": {
+          "value": "Toasted hazelnut, sweet vanilla, smooth"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132925387009",
+        "handle": "fu-man-chai",
+        "title": "Fu Man Chai",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": {
+          "value": "Spiced Apple Chai"
+        },
+        "mfTN": {
+          "value": "Spiced apple, cinnamon, cardamom, clove, ginger"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132925419777",
+        "handle": "moonshiner",
+        "title": "Moonshiner",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": {
+          "value": "Bourbon-Inspired (Alcohol Free)"
+        },
+        "mfTN": {
+          "value": "Oak, caramel, rye"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132925714689",
+        "handle": "winterstache",
+        "title": "Winterstache",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": {
+          "value": "Coconut Cocoa"
+        },
+        "mfTN": {
+          "value": "Coconut, caramel, cocoa"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132925812993",
+        "handle": "yeard",
+        "title": "Yeard",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "1"
+        },
+        "mfSig": null,
+        "mfTN": {
+          "value": "Intense, creamy, berry notes, brown sugar sweetness"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400787964161\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132925845761",
+        "handle": "moosestachio",
+        "title": "Moosestachio",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": {
+          "value": "Pistachio & Vanilla"
+        },
+        "mfTN": {
+          "value": "Nutty, creamy, sweet"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132925944065",
+        "handle": "gunslinger",
+        "title": "Gunslinger",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "4"
+        },
+        "mfSig": null,
+        "mfTN": {
+          "value": "Caramel, chocolate, subtle fruit, hazelnut, velvety finish"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400787996929\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132925976833",
+        "handle": "chinstrap",
+        "title": "Chinstrap",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "4"
+        },
+        "mfSig": null,
+        "mfTN": {
+          "value": "Caramel, walnut, honey, bright woody finish"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400787996929\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132926009601",
+        "handle": "balbo",
+        "title": "Balbo",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": null,
+        "mfTN": {
+          "value": "Nutty pecan, clean, balanced, medium-bodied"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132926042369",
+        "handle": "stubble",
+        "title": "Stubble",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": null,
+        "mfTN": {
+          "value": "Ripe cherry sweetness, velvety texture"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132926075137",
+        "handle": "yeti",
+        "title": "Yeti",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": {
+          "value": "Dark Cocoa & Cayenne"
+        },
+        "mfTN": {
+          "value": "Dark cocoa, subtle heat"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132926107905",
+        "handle": "shag",
+        "title": "Shag",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": null,
+        "mfTN": {
+          "value": "Smooth caramel, toasted pine nut"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132926140673",
+        "handle": "verdi",
+        "title": "Verdi",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "4"
+        },
+        "mfSig": null,
+        "mfTN": {
+          "value": "Bold espresso, full-bodied, lingering intensity"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400788029697\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132926173441",
+        "handle": "french-fork",
+        "title": "French Fork",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "5"
+        },
+        "mfSig": null,
+        "mfTN": {
+          "value": "Dark, full-bodied, smooth caramel, deep undertones"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400788029697\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132926206209",
+        "handle": "shaman",
+        "title": "Shaman",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": {
+          "value": "Cinnamon & Turmeric"
+        },
+        "mfTN": {
+          "value": "Warm spice, maple sweetness"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132926238977",
+        "handle": "baby-face-decaf",
+        "title": "Babyface, Decaf",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": null,
+        "mfTN": {
+          "value": "Full-bodied, earthy, herbal, smooth"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132926271745",
+        "handle": "big-easy",
+        "title": "Big Easy",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": {
+          "value": "Toasted Praline"
+        },
+        "mfTN": {
+          "value": "Nutty, smooth, toasted sweetness"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      },
+      {
+        "id": "gid://shopify/Product/9132926304513",
+        "handle": "autumn-bliss",
+        "title": "Autumn Bliss",
+        "category": {
+          "fullName": "Food, Beverages & Tobacco > Beverages > Coffee"
+        },
+        "mfRoastInt": {
+          "value": "3"
+        },
+        "mfSig": {
+          "value": "Pumpkin Spice"
+        },
+        "mfTN": {
+          "value": "Pumpkin, warm spices"
+        },
+        "mfRoastObj": {
+          "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+        }
+      }
+    ]
+  }
+}

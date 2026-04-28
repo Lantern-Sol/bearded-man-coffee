@@ -69,17 +69,66 @@
       endcase
     -%}
     {%- liquid
+      # Mobile anchor: only apply when the user enabled mobile settings AND
+      # explicitly picked a mobile anchor. Otherwise mobile uses the desktop anchor.
+      assign v_mobile = ''
+      assign h_mobile = ''
+      if section.settings.use_floating_media_mobile_settings and section.settings.floating_media_anchor_mobile != blank
+        case section.settings.floating_media_anchor_mobile
+          when 'top-left'
+            assign v_mobile = 'top'
+            assign h_mobile = 'left'
+          when 'top-center'
+            assign v_mobile = 'top'
+            assign h_mobile = 'center'
+          when 'top-right'
+            assign v_mobile = 'top'
+            assign h_mobile = 'right'
+          when 'center-left'
+            assign v_mobile = 'center'
+            assign h_mobile = 'left'
+          when 'center-right'
+            assign v_mobile = 'center'
+            assign h_mobile = 'right'
+          when 'bottom-left'
+            assign v_mobile = 'bottom'
+            assign h_mobile = 'left'
+          when 'bottom-center'
+            assign v_mobile = 'bottom'
+            assign h_mobile = 'center'
+          when 'bottom-right'
+            assign v_mobile = 'bottom'
+            assign h_mobile = 'right'
+        endcase
+      endif
+    -%}
+    {%- liquid
       assign width_rem = section.settings.floating_media_width | divided_by: 16.0
       assign offset_x_rem = section.settings.floating_media_offset_x | divided_by: 16.0
       assign offset_y_rem = section.settings.floating_media_offset_y | divided_by: 16.0
+      assign width_mobile_rem = section.settings.floating_media_width_mobile | divided_by: 16.0
+      assign offset_x_mobile_rem = section.settings.floating_media_offset_x_mobile | divided_by: 16.0
+      assign offset_y_mobile_rem = section.settings.floating_media_offset_y_mobile | divided_by: 16.0
     -%}
     <div
-      class="section-floating-media section-floating-media--v-{{ v }} section-floating-media--h-{{ h }}"
+      class="
+        section-floating-media
+        section-floating-media--v-{{ v }}
+        section-floating-media--h-{{ h }}
+        {% if section.settings.use_floating_media_mobile_settings %}section-floating-media--has-mobile-settings{% endif %}
+        {% if v_mobile != blank %}section-floating-media--v-mobile-{{ v_mobile }}{% endif %}
+        {% if h_mobile != blank %}section-floating-media--h-mobile-{{ h_mobile }}{% endif %}
+      "
       style="
-        --floating-media-width: {{ width_rem }}rem;
-        --floating-media-offset-x: {{ offset_x_rem }}rem;
-        --floating-media-offset-y: {{ offset_y_rem }}rem;
+        --floating-media-width-desktop: {{ width_rem }}rem;
+        --floating-media-offset-x-desktop: {{ offset_x_rem }}rem;
+        --floating-media-offset-y-desktop: {{ offset_y_rem }}rem;
         --floating-media-rotation: {{ section.settings.floating_media_rotation }}deg;
+        {% if section.settings.use_floating_media_mobile_settings %}
+          --floating-media-width-mobile: {{ width_mobile_rem }}rem;
+          --floating-media-offset-x-mobile: {{ offset_x_mobile_rem }}rem;
+          --floating-media-offset-y-mobile: {{ offset_y_mobile_rem }}rem;
+        {% endif %}
       "
       aria-hidden="true"
     >
@@ -156,6 +205,14 @@
   .section-floating-media {
     /* Edge offset = 0 for full-width; page-margin for page-width (overridden below). */
     --floating-media-edge-offset: 0px;
+    /* Bind the unscoped vars (read by transforms / width below) to the desktop
+       values. The @media rule at the bottom of this stylesheet rebinds them to
+       the mobile values when use_floating_media_mobile_settings is on. We can't
+       set them directly in the inline `style` attr because that would beat the
+       media-query rule on mobile (custom-property cascade). */
+    --floating-media-width: var(--floating-media-width-desktop, 7.5rem);
+    --floating-media-offset-x: var(--floating-media-offset-x-desktop, 0);
+    --floating-media-offset-y: var(--floating-media-offset-y-desktop, 0);
     position: absolute;
     grid-column: 1 / -1;
     width: var(--floating-media-width, 7.5rem);
@@ -214,6 +271,73 @@
   @media screen and (max-width: 749px) {
     .section--floating-media-hide-mobile .section-floating-media {
       display: none;
+    }
+
+    /*
+      Mobile floating-media overrides. When the user has enabled mobile-specific
+      settings, rebind the unscoped vars to the mobile values; all transforms
+      and the width property automatically pick them up. Falls back to the
+      desktop value if a particular mobile var wasn't emitted.
+    */
+    .section-floating-media--has-mobile-settings {
+      --floating-media-width: var(--floating-media-width-mobile, var(--floating-media-width-desktop, 7.5rem));
+      --floating-media-offset-x: var(--floating-media-offset-x-mobile, var(--floating-media-offset-x-desktop, 0));
+      --floating-media-offset-y: var(--floating-media-offset-y-mobile, var(--floating-media-offset-y-desktop, 0));
+    }
+
+    /*
+      Mobile anchor: when one is set, reset the desktop top/bottom/left/right
+      first (the desktop anchor classes set them), then apply the mobile anchor.
+    */
+    .section-floating-media:where(
+      .section-floating-media--v-mobile-top,
+      .section-floating-media--v-mobile-center,
+      .section-floating-media--v-mobile-bottom
+    ) {
+      top: auto;
+      bottom: auto;
+    }
+
+    .section-floating-media:where(
+      .section-floating-media--h-mobile-left,
+      .section-floating-media--h-mobile-center,
+      .section-floating-media--h-mobile-right
+    ) {
+      left: auto;
+      right: auto;
+    }
+
+    .section-floating-media--v-mobile-top {
+      top: 0;
+    }
+
+    .section-floating-media--v-mobile-bottom {
+      bottom: 0;
+    }
+
+    .section-floating-media--v-mobile-center {
+      top: 50%;
+      transform: translate(var(--floating-media-offset-x, 0), calc(-50% + var(--floating-media-offset-y, 0)))
+        rotate(var(--floating-media-rotation, 0));
+    }
+
+    .section-floating-media--h-mobile-left {
+      left: var(--floating-media-edge-offset);
+    }
+
+    .section-floating-media--h-mobile-right {
+      right: var(--floating-media-edge-offset);
+    }
+
+    .section-floating-media--h-mobile-center {
+      left: 50%;
+      transform: translate(calc(-50% + var(--floating-media-offset-x, 0)), var(--floating-media-offset-y, 0))
+        rotate(var(--floating-media-rotation, 0));
+    }
+
+    .section-floating-media--v-mobile-center.section-floating-media--h-mobile-center {
+      transform: translate(calc(-50% + var(--floating-media-offset-x, 0)), calc(-50% + var(--floating-media-offset-y, 0)))
+        rotate(var(--floating-media-rotation, 0));
     }
   }
 {% endstylesheet %}

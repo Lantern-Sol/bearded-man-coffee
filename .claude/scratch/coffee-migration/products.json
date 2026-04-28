@@ -1,0 +1,144 @@
+{
+  "products": {
+    "nodes": [
+      {
+        "id": "gid://shopify/Product/9130418012417",
+        "title": "5 O’clock Shadow",
+        "handle": "5-oclock-shadow",
+        "descriptionHtml": "<p><strong>Roast:</strong> Light-Medium (2/5)</p> <p><strong>Origin: </strong>Brazilian &amp; Mexican Chiapas</p> <p><strong>Tasting Notes:</strong> Sweet florals, smooth, balanced, clean finish</p> <p></p> <p>Not quite morning. Not quite ready. Somewhere in between.</p> <p>This light-medium roast keeps things smooth and balanced with a medium body, subtle acidity, and soft floral notes that brighten things up without getting in the way. It finishes clean, easy, and right on time.</p> <p>Just enough edge to get you moving… even if your stubble’s still catching up.</p> <p>A steady go-to when you want something lighter that still shows up.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9130418045185",
+        "title": "Atomic Blonde",
+        "handle": "atomic-blonde",
+        "descriptionHtml": "<p><strong>Roast:</strong> Light (1/5)</p> <p><strong>Signature Infusion: </strong>Vanilla &amp; Cayenne</p> <p><strong>Tasting Notes: </strong>Vanilla, subtle cayenne heat, smooth, light-bodied</p> <p></p> <p>Easy going at first sip. Then it wakes you up.</p> <p>Atomic Blonde brings smooth, velvety vanilla up front with a light body that keeps things bright and approachable. Just when you think it’s all sweetness, a subtle cayenne kick rolls in to keep things interesting.</p> <p>Light, lively, and not afraid to surprise you.</p> <p>The kind of cup that starts smooth… and finishes with a little spark.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9130418110721",
+        "title": "Babyface Decaf Test",
+        "handle": "babyface-decaf",
+        "descriptionHtml": "<p>All the comfort, none of the buzz. A water-process decaf with earthy depth, herbal lift, and a smooth, easy finish.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9130418176257",
+        "title": "Bandholz",
+        "handle": "bandholz",
+        "descriptionHtml": "<p><strong>Roast</strong>: Medium (2/5)</p> <p><strong>Origin</strong>: Mexican Chiapas &amp; Costa Rican</p> <p><strong>Tasting Notes</strong>: Nutty pecan, pine barrel, buttery finish</p> <p></p> <p>Some things take time to appreciate. This is one of them. </p> <p>Bandholz brings together rich pecan notes with a subtle pine barrel character and a smooth, buttery finish that rounds everything out. It’s layered without being complicated, bold without being loud.</p> <p>The kind of cup that grows on you the more you come back to it.</p> <p>Give it a few mornings. You’ll get it.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132924338433",
+        "title": "Mountain Berry",
+        "handle": "mountain-berry",
+        "descriptionHtml": "<p> Experience the refreshing taste of Mountain Berry, a seasonal delight that brings the essence of spring to your palate. Infused with subtle vanilla notes, this berry offers a perfect balance of sweetness and tanginess. Harvested from pristine mountain regions, it’s a refreshing treat to enjoy on its own or in your favorite recipes.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132924764417",
+        "title": "Smooth Operator",
+        "handle": "smooth-operator-2",
+        "descriptionHtml": "<p><strong>Roast: </strong>Medium (3/5)</p> <p><strong>Signature Infusion:</strong> Hazelnut &amp; Vanilla</p> <p><strong>Tasting Notes:</strong> Toasted hazelnut, sweet vanilla, smooth</p> <p></p> <p>Smooth from the first sip. Doesn’t miss a step.</p> <p>Toasted hazelnut and vanilla come together in a silky, easy-drinking cup that keeps things light, balanced, and dangerously likable.</p> <p>Suave, silky, and charming enough to talk its way out of doing the dishes.</p> <p>The kind of coffee that always leaves a good impression… and somehow gets away with it.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132925387009",
+        "title": "Fu Man Chai",
+        "handle": "fu-man-chai",
+        "descriptionHtml": "<p><strong>Roast</strong>: Medium (3/5)</p> <p><strong>Seasonal Blend</strong></p> <p><strong>Tasting Notes:</strong> Spiced apple, cinnamon, cardamom, clove, ginger</p> <p></p> <p>A little wise. A little wild. Definitely not boring.</p> <p>Fu Man Chai brings sweet, juicy apple together with a lineup of warm spices like cinnamon, cardamom, and clove, finished with a hint of ginger that keeps things interesting. It’s smooth, balanced, and just complex enough to make you slow down and actually enjoy the cup.</p> <p>Nostalgic in the best way. Like summer days that didn’t have a schedule.</p> <p>Easy to sip, easy to share, and even better when you’ve got nowhere to be.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132925419777",
+        "title": "Moonshiner",
+        "handle": "moonshiner",
+        "descriptionHtml": "<p><strong>Roast</strong>: Medium (3/5)</p> <p><strong>Signature Infusion: </strong>Bourbon-Inspired (Alcohol Free)</p> <p><strong>Tasting Notes: </strong>Oak, caramel, rye</p> <p></p> <p>Smooth enough to sip. Bold enough to raise an eyebrow.</p> <p>Moonshiner brings rich oak, caramel sweetness, and a hint of rye spice into a balanced, medium roast that drinks easy but carries a little swagger. All the character of a backwoods barrel, none of the consequences.</p> <p>It’s got that slow-burn confidence. The kind that doesn’t need to prove anything.</p> <p>A good pick when you want something a little different without going off the rails.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132925714689",
+        "title": "Winterstache",
+        "handle": "winterstache",
+        "descriptionHtml": "<p><strong>Roast:</strong> Medium (3/5)</p> <p><strong>Seasonal Blend</strong></p> <p><strong>Tasting Notes: </strong>Coconut, caramel, cocoa</p> <p></p> <p>Cold air. Warm cup. Beard collecting a little frost.</p> <p>Winterstache brings together smooth coconut, rich caramel, and deep cocoa in a balanced medium roast that feels like it was made for slower mornings and heavier flannels. It’s cozy without being overly sweet, with just enough richness to keep you coming back for another cup.</p> <p>The kind of coffee that makes winter feel less like something to survive… and more like something to enjoy.</p> <p>Best paired with cold mornings and absolutely no plans to rush.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132925812993",
+        "title": "Yeard",
+        "handle": "yeard",
+        "descriptionHtml": "<p><strong>Roast: </strong>Light (1/5)</p> <p><strong>Origin: </strong>African Peaberry</p> <p><strong>Tasting Notes: </strong>Intense, creamy, berry notes, brown sugar sweetness</p> <p></p> <p>Bright, lively, and not here to blend in.</p> <p>Yeard brings a light roast that leans into vibrant berry notes with a creamy body and a touch of brown sugar sweetness to keep things grounded. It’s crisp, expressive, and a little more adventurous than your everyday cup.</p> <p>The kind of coffee that proves patience pays off.</p> <p>Worth the wait. Every time.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132925845761",
+        "title": "Moosestachio",
+        "handle": "moosestachio",
+        "descriptionHtml": "<p><strong>Roast:</strong> Medium (3/5)</p> <p><strong>Signature Infusion: </strong>Pistachio &amp; Vanilla</p> <p><strong>Tasting Notes: </strong>Nutty, creamy, sweet</p> <p></p> <p>Big. Hairy. Surprisingly refined.</p> <p>Moosestachio brings together creamy vanilla and rich pistachio for a smooth, nutty cup that leans sweet without going overboard. It’s easy to drink, but not boring about it.</p> <p>Imagine a moose… with a mustache… somehow pulling it off. That’s the energy here.</p> <p>A little wild, a little classy, and way more enjoyable than it has any right to be.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132925944065",
+        "title": "Gunslinger",
+        "handle": "gunslinger",
+        "descriptionHtml": "<p><strong>Roast:</strong> Medium-Dark (4/5)</p> <p><strong>Origin:</strong> Mexican Chiapas</p> <p><strong>Tasting Notes: </strong>Caramel, chocolate, subtle fruit, hazelnut, velvety finish</p> <p></p> <p>Straight shooter. No wasted time.</p> <p>Gunslinger delivers a full-bodied cup with bold caramel and chocolate, balanced by subtle fruit and hazelnut notes and a smooth, velvety finish.</p> <p>Confident, steady, and always on target.Shoots straight and never misses.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132925976833",
+        "title": "Chinstrap",
+        "handle": "chinstrap",
+        "descriptionHtml": "<p><strong>Roast: </strong>Medium-Dark (4/5)</p> <p><strong>Origin: </strong>Colombian Supremo</p> <p><strong>Tasting Notes: </strong>Caramel, walnut, honey, bright woody finish</p> <p></p> <p>Clean lines. Strong finish. No shortcuts.</p> <p>Chinstrap brings bold caramel sweetness with layers of walnut and honey, all wrapped in a balanced, medium-bodied cup with a bright, woody edge.</p> <p>Structured, sharp, and dialed in from start to finish.</p> <p>Tighter than your camping buddy’s hammock straps.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132926009601",
+        "title": "Balbo",
+        "handle": "balbo",
+        "descriptionHtml": "<p><strong>Roast:</strong> Medium (3/5)</p> <p><strong>Origin: </strong>Brazilian</p> <p><strong>Tasting Notes:</strong> Nutty pecan, clean, balanced, medium-bodied</p> <p></p> <p>Some mornings don’t need a speech. Just a solid cup of coffee.</p> <p>Balbo delivers a smooth, medium-bodied brew with a clean, balanced profile and subtle pecan notes that round things out. It’s steady, reliable, and built to show up the same way every time.</p> <p>No flash. No fuss. Just really good coffee done right.</p> <p>Dependable as a compass that always points toward coffee.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132926042369",
+        "title": "Stubble",
+        "handle": "stubble",
+        "descriptionHtml": "<p><strong>Roast</strong>: Medium (3/5) </p> <p><strong>Origin: </strong>Peruvian &amp; Mexican Chiapas</p> <p><strong>Tasting Notes:</strong> Ripe cherry sweetness, velvety texture</p> <p></p> <p>Not fully grown. Still gets the job done.</p> <p>Stubble brings a smooth, medium roast with ripe cherry sweetness and a velvety texture that punches above its weight. It’s easygoing but still has a little personality tucked in there.</p> <p>Short, scrappy, and surprisingly refined.</p> <p>Proof that you don’t need a full beard to make an impression.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132926075137",
+        "title": "Yeti",
+        "handle": "yeti",
+        "descriptionHtml": "<p><strong>Roast:</strong> Medium (3/5)</p> <p><strong>Signature Infusion:</strong> Dark Cocoa &amp; Cayenne</p> <p><strong>Tasting Notes: </strong>Dark cocoa, subtle heat</p> <p></p> <p>Hard to find. Easy to remember.</p> <p>Yeti blends rich dark cocoa with a smooth, medium roast and a cayenne kick that shows up just enough to keep things interesting. Bold, balanced, and a little elusive.</p> <p>You might not see it coming… but you’ll know it when it hits.</p> <p>The mythical beast of your morning routine. Just try to catch it.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132926107905",
+        "title": "Shag",
+        "handle": "shag",
+        "descriptionHtml": "<p><strong>Roast</strong>: Medium (3/5)</p> <p><strong>Origin: </strong>Costa Rican Tarrazu</p> <p><strong>Tasting Notes: </strong>Smooth caramel, toasted pine nut</p> <p></p> <p>A little messy. Still works.</p> <p>Shag delivers a smooth, caramel-forward cup with toasted pine nut notes that give it a subtle, woodsy edge. It’s relaxed, unfussy, and comes together better than it probably should.</p> <p>It’s not trying to be perfect. That’s kind of the point.</p> <p>Turns out, a little chaos can taste pretty good.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132926140673",
+        "title": "Verdi",
+        "handle": "verdi",
+        "descriptionHtml": "<p><strong>Roast: </strong>Dark (4/5) </p> <p><strong>Origin: </strong>Vietnamese Highlands &amp; Peruvian</p> <p><strong>Tasting Notes: </strong>Bold espresso, full-bodied, lingering intensity</p> <p></p> <p>Not a background coffee. More like a full performance.</p> <p>Verdi delivers a bold, espresso-forward cup with deep body and an intensity that sticks around. Rich, dramatic, and not afraid to take up a little space.</p> <p>This one doesn’t whisper. It projects.</p> <p>Built for early mornings that feel a little more like opening night.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132926173441",
+        "title": "French Fork",
+        "handle": "french-fork",
+        "descriptionHtml": "<p><strong>Roast: </strong>Dark (5/5)</p> <p><strong>Origin: </strong>Brazilian &amp; Mexican Chiapas</p> <p><strong>Tasting Notes: </strong>Dark, full-bodied, smooth caramel, deep undertones</p> <p></p> <p>Built for early mornings and long nights.</p> <p>French Fork leans into a full-bodied, dark roast with deep, rich character and a smooth caramel finish that keeps things grounded. Bold without being harsh, heavy without slowing you down.</p> <p>Rugged, refined, and right at home anywhere.</p> <p>A brew that belongs equally at a campsite or a Parisian café table.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132926206209",
+        "title": "Shaman",
+        "handle": "shaman",
+        "descriptionHtml": "<p><strong>Roast</strong>: Medium (3/5)</p> <p><strong>Signature Infusion: </strong>Cinnamon &amp; Turmeric</p> <p><strong>Tasting Notes:</strong> Warm spice, maple sweetness</p> <p></p> <p>Feels less like coffee. More like a ritual.</p> <p>Shaman layers warming cinnamon and turmeric with a subtle maple sweetness into a smooth, comforting cup that leans cozy without going soft. It’s rich, grounding, and just a little unexpected.</p> <p>Like your morning got upgraded to a campfire ceremony.</p> <p>Best enjoyed when the day calls for something steady.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132926238977",
+        "title": "Babyface, Decaf",
+        "handle": "baby-face-decaf",
+        "descriptionHtml": "<p><strong>Roast:</strong> Medium (3/5)</p> <p><strong>Origin: </strong>Washed Decaf</p> <p><strong>Tasting Notes: </strong>Full-bodied, earthy, herbal, smooth</p> <p></p> <p>No caffeine. No compromise.</p> <p>Babyface keeps things full-bodied and smooth with earthy, herbal notes that hold their own against anything with a buzz. It’s mellow where it should be, but still brings real flavor to the table.</p> <p>Clean, easy, and dangerously drinkable.</p> <p>Have another cup. You’ll still sleep like the baby face you are.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132926271745",
+        "title": "Big Easy",
+        "handle": "big-easy",
+        "descriptionHtml": "<p><strong>Roast: </strong>Medium (3/5)</p> <p><strong>Signature Infusion: </strong>Toasted Praline</p> <p><strong>Tasting Notes:</strong> Nutty, smooth, toasted sweetness</p> <p></p> <p>No rush. No noise. Just a good cup and a slow start.</p> <p>Big Easy leans into smooth, nutty toasted praline flavors with a mellow, easy-drinking body that doesn’t try to wake you up too aggressively. It’s comfortable, familiar, and exactly what you want when the morning needs to ease in.</p> <p>Laid-back, but still gets the job done.</p> <p>Best enjoyed without looking at your email.</p>"
+      },
+      {
+        "id": "gid://shopify/Product/9132926304513",
+        "title": "Autumn Bliss",
+        "handle": "autumn-bliss",
+        "descriptionHtml": "<p><strong>Roast: </strong>Medium (3/5)</p> <p><strong>Seasonal Blend</strong></p> <p><strong>Tasting Notes: </strong>Pumpkin, warm spices</p> <p></p> <p>Feels like flannel season showed up right on time.</p> <p>Autumn Bliss brings a smooth, comforting cup with pumpkin and warm spice notes that settle in easy and stick around just long enough. It’s rich without being heavy, and cozy without trying too hard.</p> <p>Familiar, relaxed, and exactly what you want when the seasons start to turn.</p> <p>Best enjoyed during a little leaf peeping.</p>"
+      }
+    ]
+  }
+}

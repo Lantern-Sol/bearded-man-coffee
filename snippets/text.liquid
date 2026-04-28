@@ -51,7 +51,7 @@
 %}
 
 {% capture attributes %}
-  class="{{ class }} spacing-style text-block text-block--{{ block.id }} {{ block_settings.type_preset }}
+  class="{{ class }} spacing-style text-block text-block--{{ block.id }} {{ block_settings.type_preset }}{% if block_settings.type_preset_mobile != blank %} mobile-preset-{{ block_settings.type_preset_mobile }}{% endif %}
     {{ text_block_classes }}
   "
 
@@ -284,5 +284,123 @@
   .custom-color,
   .custom-color > :is(h1, h2, h3, h4, h5, h6, p, *) {
     color: var(--color);
+  }
+
+  /*
+    Mobile preset override. The desktop preset class (h1, h2, …, paragraph) stays
+    on the element; on mobile, .mobile-preset-{value} wins via the chained
+    .text-block.text-block selector (higher specificity than base.css's
+    .text-block.h1 desktop rule).
+  */
+  @media screen and (max-width: 749px) {
+    .text-block.text-block.mobile-preset-paragraph > *,
+    .text-block.text-block.mobile-preset-paragraph :is(h1, h2, h3, h4, h5, h6) {
+      font-family: var(--font-paragraph--family);
+      font-style: var(--font-paragraph--style);
+      font-weight: var(--font-paragraph--weight);
+      font-size: var(--font-paragraph--size);
+      line-height: var(--font-paragraph--line-height);
+      letter-spacing: 0;
+      text-transform: var(--font-paragraph--case);
+      color: var(--color, var(--color-foreground));
+    }
+
+    .text-block.text-block.mobile-preset-h1 > *,
+    .text-block.text-block.mobile-preset-h1 :is(h1, h2, h3, h4, h5, h6) {
+      font-family: var(--font-h1--family);
+      font-style: var(--font-h1--style);
+      font-weight: var(--font-h1--weight);
+      font-size: var(--font-h1--size);
+      line-height: var(--font-h1--line-height);
+      letter-spacing: var(--font-h1--letter-spacing);
+      text-transform: var(--font-h1--case);
+      color: var(--color, var(--font-h1-color));
+    }
+
+    .text-block.text-block.mobile-preset-h2 > *,
+    .text-block.text-block.mobile-preset-h2 :is(h1, h2, h3, h4, h5, h6) {
+      font-family: var(--font-h2--family);
+      font-style: var(--font-h2--style);
+      font-weight: var(--font-h2--weight);
+      font-size: var(--font-h2--size);
+      line-height: var(--font-h2--line-height);
+      letter-spacing: var(--font-h2--letter-spacing);
+      text-transform: var(--font-h2--case);
+      color: var(--color, var(--font-h2-color));
+    }
+
+    .text-block.text-block.mobile-preset-h3 > *,
+    .text-block.text-block.mobile-preset-h3 :is(h1, h2, h3, h4, h5, h6) {
+      font-family: var(--font-h3--family);
+      font-style: var(--font-h3--style);
+      font-weight: var(--font-h3--weight);
+      font-size: var(--font-h3--size);
+      line-height: var(--font-h3--line-height);
+      letter-spacing: var(--font-h3--letter-spacing);
+      text-transform: var(--font-h3--case);
+      color: var(--color, var(--font-h3-color));
+    }
+
+    .text-block.text-block.mobile-preset-h4 > *,
+    .text-block.text-block.mobile-preset-h4 :is(h1, h2, h3, h4, h5, h6) {
+      font-family: var(--font-h4--family);
+      font-style: var(--font-h4--style);
+      font-weight: var(--font-h4--weight);
+      font-size: var(--font-h4--size);
+      line-height: var(--font-h4--line-height);
+      letter-spacing: var(--font-h4--letter-spacing);
+      text-transform: var(--font-h4--case);
+      color: var(--color, var(--font-h4-color));
+    }
+
+    .text-block.text-block.mobile-preset-h5 > *,
+    .text-block.text-block.mobile-preset-h5 :is(h1, h2, h3, h4, h5, h6) {
+      font-family: var(--font-h5--family);
+      font-style: var(--font-h5--style);
+      font-weight: var(--font-h5--weight);
+      font-size: var(--font-h5--size);
+      line-height: var(--font-h5--line-height);
+      letter-spacing: var(--font-h5--letter-spacing);
+      text-transform: var(--font-h5--case);
+      color: var(--color, var(--font-h5-color));
+    }
+
+    .text-block.text-block.mobile-preset-h6 > *,
+    .text-block.text-block.mobile-preset-h6 :is(h1, h2, h3, h4, h5, h6) {
+      font-family: var(--font-h6--family);
+      font-style: var(--font-h6--style);
+      font-weight: var(--font-h6--weight);
+      font-size: var(--font-h6--size);
+      line-height: var(--font-h6--line-height);
+      letter-spacing: var(--font-h6--letter-spacing);
+      text-transform: var(--font-h6--case);
+      color: var(--color, var(--font-h6-color));
+    }
+
+    .text-block.text-block.mobile-preset-h7 > *,
+    .text-block.text-block.mobile-preset-h7 :is(h1, h2, h3, h4, h5, h6) {
+      font-family: var(--font-h7--family);
+      font-style: var(--font-h7--style);
+      font-weight: var(--font-h7--weight);
+      font-size: var(--font-h7--size);
+      line-height: var(--font-h7--line-height);
+      letter-spacing: var(--font-h7--letter-spacing);
+      text-transform: var(--font-h7--case);
+      color: var(--color, var(--font-h7-color));
+    }
+
+    /*
+      mobile-preset = custom: keep the desktop preset's family / weight / etc.
+      and only override font-size + line-height with the user's mobile values
+      (use_mobile_settings + mobile_font_size + mobile_custom_line_height).
+      Triple-chained class selector keeps us ahead of any deeper-context
+      selectors (e.g. .product-card .text-block.h6 …).
+    */
+    .text-block.text-block.text-block.mobile-preset-custom,
+    .text-block.text-block.text-block.mobile-preset-custom > *,
+    .text-block.text-block.text-block.mobile-preset-custom :is(h1, h2, h3, h4, h5, h6, p) {
+      font-size: var(--font-size-mobile, var(--font-size, inherit));
+      line-height: var(--line-height-mobile, var(--line-height, inherit));
+    }
   }
 {% endstylesheet %}

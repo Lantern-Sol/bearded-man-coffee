@@ -127,6 +127,11 @@
       {% render 'layout-panel-style', settings: block_settings %}
       {% render 'spacing-style', settings: block_settings %}
       {% render 'gap-style', value: product_card_gap_value, name: 'product-card-gap' %}
+      {% if block_settings.use_mobile_gap %}
+        {% render 'gap-style', value: block_settings.mobile_product_card_gap, name: 'product-card-gap-mobile' %}
+      {% else %}
+        {% render 'gap-style', value: product_card_gap_value, name: 'product-card-gap-mobile' %}
+      {% endif %}
       --quick-add-display: {% if has_quick_add %}flex{% else %}none{% endif %};
       --quick-add-mobile-display: {% if has_mobile_quick_add %}flex{% else %}none{% endif %};
       --quick-add-mobile-opacity: {% if has_mobile_quick_add %}1{% else %}0{% endif %};

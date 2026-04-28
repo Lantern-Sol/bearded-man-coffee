@@ -56,8 +56,12 @@ class HeaderDrawer extends Component {
 
   /**
    * Toggle the main menu drawer
+   * @param {Event} [event]
    */
-  toggle() {
+  toggle(event) {
+    // Prevent the browser from natively toggling [open] on <summary> click — we manage it ourselves
+    // so the close animation can finish before the children are hidden.
+    event?.preventDefault?.();
     return this.isOpen ? this.close() : this.open();
   }
 
@@ -67,11 +71,16 @@ class HeaderDrawer extends Component {
    * @param {Event} [event]
    */
   open(target, event) {
+    // Prevent the browser from natively toggling [open] when this fires on a <summary> click —
+    // we set [open] explicitly below, and the browser's toggle would undo it.
+    event?.preventDefault?.();
+
     const details = this.#getDetailsElement(event);
     const summary = details.querySelector('summary');
 
     if (!summary) return;
 
+    details.setAttribute('open', '');
     summary.setAttribute('aria-expanded', 'true');
 
     this.preventInitialAccordionAnimations(details);

@@ -489,6 +489,65 @@
       "visible_if": "{{ section.settings.floating_media != blank }}"
     },
     {
+      "type": "checkbox",
+      "id": "use_floating_media_mobile_settings",
+      "label": "Use different settings for mobile",
+      "default": false,
+      "visible_if": "{{ section.settings.floating_media != blank and section.settings.floating_media_hide_mobile != true }}"
+    },
+    {
+      "type": "range",
+      "id": "floating_media_width_mobile",
+      "label": "Mobile width",
+      "min": 40,
+      "max": 500,
+      "step": 5,
+      "unit": "px",
+      "default": 120,
+      "visible_if": "{{ section.settings.floating_media != blank and section.settings.use_floating_media_mobile_settings }}"
+    },
+    {
+      "type": "select",
+      "id": "floating_media_anchor_mobile",
+      "label": "Mobile anchor",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "top-left", "label": "Top left" },
+        { "value": "top-center", "label": "Top center" },
+        { "value": "top-right", "label": "Top right" },
+        { "value": "center-left", "label": "Center left" },
+        { "value": "center-right", "label": "Center right" },
+        { "value": "bottom-left", "label": "Bottom left" },
+        { "value": "bottom-center", "label": "Bottom center" },
+        { "value": "bottom-right", "label": "Bottom right" }
+      ],
+      "default": "",
+      "visible_if": "{{ section.settings.floating_media != blank and section.settings.use_floating_media_mobile_settings }}"
+    },
+    {
+      "type": "range",
+      "id": "floating_media_offset_x_mobile",
+      "label": "Mobile horizontal offset",
+      "info": "Positive moves away from the anchor edge toward the opposite side.",
+      "min": -300,
+      "max": 300,
+      "step": 6,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.floating_media != blank and section.settings.use_floating_media_mobile_settings }}"
+    },
+    {
+      "type": "range",
+      "id": "floating_media_offset_y_mobile",
+      "label": "Mobile vertical offset",
+      "min": -300,
+      "max": 300,
+      "step": 6,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.floating_media != blank and section.settings.use_floating_media_mobile_settings }}"
+    },
+    {
       "type": "header",
       "content": "t:content.padding"
     },

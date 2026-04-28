@@ -68,6 +68,23 @@
     },
     {
       "type": "checkbox",
+      "id": "use_mobile_gap",
+      "label": "Use mobile gap",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "mobile_product_card_gap",
+      "label": "Mobile vertical gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ block.settings.use_mobile_gap }}"
+    },
+    {
+      "type": "checkbox",
       "id": "inherit_color_scheme",
       "label": "t:settings.inherit_color_scheme",
       "default": true
@@ -239,6 +256,60 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_mobile_padding",
+      "label": "Use mobile padding",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start-mobile",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.use_mobile_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end-mobile",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.use_mobile_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start-mobile",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.use_mobile_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end-mobile",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.use_mobile_padding }}"
     }
   ],
   "presets": [
@@ -278,6 +349,7 @@
             "case": "none",
             "wrap": "pretty",
             "color": "var(--color-foreground)",
+            "type_preset_mobile": "rte",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,

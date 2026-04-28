@@ -1,0 +1,230 @@
+[
+  {
+    "handle": "5-oclock-shadow",
+    "title": "5 O’clock Shadow",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "atomic-blonde",
+    "title": "Atomic Blonde",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "babyface-decaf",
+    "title": "Babyface Decaf Test",
+    "action": "category-only",
+    "flags": [
+      "No Roast line detected — only category was added."
+    ],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "bandholz",
+    "title": "Bandholz",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "mountain-berry",
+    "title": "Mountain Berry",
+    "action": "category-only",
+    "flags": [
+      "Description has no coffee structure — only category was added. Manual review needed."
+    ],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "smooth-operator-2",
+    "title": "Smooth Operator",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "fu-man-chai",
+    "title": "Fu Man Chai",
+    "action": "full-migrate",
+    "flags": [
+      "Signature Infusion inferred from Seasonal Blend (tasting notes \"Spiced apple, cinnamon, cardamom, clove, ginger\") → \"Spiced Apple Chai\". Manual review."
+    ],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "moonshiner",
+    "title": "Moonshiner",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "winterstache",
+    "title": "Winterstache",
+    "action": "full-migrate",
+    "flags": [
+      "Signature Infusion inferred from Seasonal Blend (tasting notes \"Coconut, caramel, cocoa\") → \"Coconut Cocoa\". Manual review."
+    ],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "yeard",
+    "title": "Yeard",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "moosestachio",
+    "title": "Moosestachio",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "gunslinger",
+    "title": "Gunslinger",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "chinstrap",
+    "title": "Chinstrap",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "balbo",
+    "title": "Balbo",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "stubble",
+    "title": "Stubble",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "yeti",
+    "title": "Yeti",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "shag",
+    "title": "Shag",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "verdi",
+    "title": "Verdi",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "french-fork",
+    "title": "French Fork",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "shaman",
+    "title": "Shaman",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "baby-face-decaf",
+    "title": "Babyface, Decaf",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  },
+  {
+    "handle": "big-easy",
+    "title": "Big Easy",
+    "action": "full-migrate",
+    "flags": [],
+    "ok": true,
+    "userErrors": [],
+    "parseError": null,
+    "exitCode": 0
+  }
+]

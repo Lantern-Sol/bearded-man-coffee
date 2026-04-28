@@ -1155,6 +1155,18 @@ body:has(.header[transparent]) #header-group>*:not(.header-section) {
   overflow: hidden;
 }
 
+/* Honor the per-card mobile padding emitted by spacing-style. The doubled
+   .product-grid__card.product-grid__card selector above (specificity 0,2,0)
+   beats .spacing-style's mobile rule, so we mirror the same specificity here
+   to read the -mobile vars when they're present. */
+@media screen and (max-width: 749px) {
+  .product-grid__card.product-grid__card {
+    padding-block: var(--padding-block-start-mobile, var(--padding-block-start)) var(--padding-block-end-mobile, var(--padding-block-end));
+    padding-inline: var(--padding-inline-start-mobile, var(--padding-inline-start)) var(--padding-inline-end-mobile, var(--padding-inline-end));
+    gap: var(--product-card-gap-mobile, var(--product-card-gap));
+  }
+}
+
 [product-grid-view='zoom-out'] .product-grid__card {
   row-gap: var(--padding-xs);
 }
@@ -2689,7 +2701,8 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
   font-weight: 700;
 }
 
-product-recommendations .price {
+product-recommendations .price,
+product-card .price {
   font-weight: normal;
 }
 
@@ -2966,7 +2979,7 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6, .h7)>*:not(.tax-note) 
     }
 
     >.text-block {
-      flex: 1 1 var(--max-width--display-tight);
+      flex: 1 1;
     }
 
     >.image-block {

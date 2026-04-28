@@ -1,0 +1,33 @@
+{
+  "product": {
+    "id": "gid://shopify/Product/9132926304513",
+    "category": "gid://shopify/TaxonomyCategory/fb-1-3",
+    "descriptionHtml": "<p>Feels like flannel season showed up right on time.</p>\n<p>Autumn Bliss brings a smooth, comforting cup with pumpkin and warm spice notes that settle in easy and stick around just long enough. It’s rich without being heavy, and cozy without trying too hard.</p>\n<p>Familiar, relaxed, and exactly what you want when the seasons start to turn.</p>\n<p>Best enjoyed during a little leaf peeping.</p>",
+    "metafields": [
+      {
+        "namespace": "custom",
+        "key": "roast_profile",
+        "type": "number_integer",
+        "value": "3"
+      },
+      {
+        "namespace": "custom",
+        "key": "tasting_notes",
+        "type": "single_line_text_field",
+        "value": "Pumpkin, warm spices"
+      },
+      {
+        "namespace": "custom",
+        "key": "signature_infusion",
+        "type": "single_line_text_field",
+        "value": "Pumpkin Spice"
+      },
+      {
+        "namespace": "shopify",
+        "key": "coffee-roast",
+        "type": "list.metaobject_reference",
+        "value": "[\"gid://shopify/Metaobject/400089776385\"]"
+      }
+    ]
+  }
+}
