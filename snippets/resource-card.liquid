@@ -141,7 +141,7 @@
   </div>
 
   <div class="resource-card__content">
-    <p class="resource-card__title{% if style == 'overlay' %} h5{%else %} paragraph{% endif %}">
+    <p class="resource-card__title h5">
       {{- resource.title -}}
     </p>
 
@@ -273,8 +273,16 @@
     overflow-wrap: break-word;
   }
 
-  .resource-card__title.paragraph {
-    line-height: 1.3;
+  @media screen and (max-width: 749px) {
+    .resource-card__title.h5.h5 {
+      font-family: var(--font-h6--family);
+      font-style: var(--font-h6--style);
+      font-weight: var(--font-h6--weight);
+      font-size: var(--font-h6--size);
+      line-height: var(--font-h6--line-height);
+      letter-spacing: var(--font-h6--letter-spacing);
+      text-transform: var(--font-h6--case);
+    }
   }
 
   .resource-card--overlay {

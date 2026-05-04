@@ -147,6 +147,108 @@
       "visible_if": "{{ block.settings.content_direction == 'column' }}"
     },
     {
+      "type": "header",
+      "content": "Mobile alignment"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_mobile_alignment",
+      "label": "Use mobile alignment",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "mobile_horizontal_alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        },
+        {
+          "value": "space-between",
+          "label": "t:options.space_between"
+        }
+      ],
+      "default": "flex-start",
+      "visible_if": "{{ block.settings.use_mobile_alignment and block.settings.content_direction == 'row' and block.settings.vertical_on_mobile == false }}"
+    },
+    {
+      "type": "select",
+      "id": "mobile_vertical_alignment",
+      "label": "t:settings.position",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.top"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.bottom"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.use_mobile_alignment and block.settings.content_direction == 'row' and block.settings.vertical_on_mobile == false }}"
+    },
+    {
+      "type": "select",
+      "id": "mobile_horizontal_alignment_flex_direction_column",
+      "label": "t:settings.alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "flex-start",
+      "visible_if": "{{ block.settings.use_mobile_alignment and block.settings.content_direction != 'row' or block.settings.use_mobile_alignment and block.settings.vertical_on_mobile }}"
+    },
+    {
+      "type": "select",
+      "id": "mobile_vertical_alignment_flex_direction_column",
+      "label": "t:settings.position",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:options.top"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:options.bottom"
+        },
+        {
+          "value": "space-between",
+          "label": "t:options.space_between"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ block.settings.use_mobile_alignment and block.settings.content_direction != 'row' or block.settings.use_mobile_alignment and block.settings.vertical_on_mobile }}"
+    },
+    {
       "type": "range",
       "id": "gap",
       "label": "t:settings.gap",

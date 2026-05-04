@@ -70,7 +70,7 @@
       ref="menuDrawer"
       class="
         menu-drawer
-        color-{{ block_settings.color_scheme }}
+        color-{{ section.settings.color_scheme_drawer | default: block_settings.color_scheme }}
       "
     >
       <button
@@ -856,6 +856,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-top: 1.5rem;
   }
 
   .menu-drawer__menu {
@@ -864,7 +865,7 @@
     list-style: none;
     padding-inline: var(--drawer-padding);
     margin-inline: 0;
-    margin-block-start: 0;
+    margin-block-start: 1rem;
   }
 
   .menu-drawer__menu--grid {
@@ -882,7 +883,7 @@
 
   .menu-drawer__menu.has-submenu,
   .menu-drawer__menu--childlist:not(:has(.menu-drawer__animated-element)) {
-    margin-block-end: var(--margin-xs);
+    margin-block-end: 1rem;
 
     @media screen and (min-width: 750px) {
       margin-block-end: 2.5rem;
@@ -1032,11 +1033,12 @@
 
   .menu-drawer__menu-item {
     display: flex;
-    padding: var(--padding-2xs) 0;
+    padding: 0.5rem 0;
     position: relative;
     text-decoration: none;
     justify-content: space-between;
     align-items: center;
+    min-height: fit-content;
   }
 
   .menu-drawer__menu-item:has(> .menu-drawer__link-image) {
@@ -1098,7 +1100,7 @@
   .menu-drawer__back-button {
     display: flex;
     width: 100%;
-    padding: var(--padding-md) var(--padding-xl);
+    padding: 0 var(--padding-md) 0;
     border: none;
     align-items: center;
     color: var(--color-foreground);
@@ -1109,11 +1111,13 @@
     overflow-x: hidden;
     line-height: 1.2;
     box-shadow: none;
+    outline: none;
   }
 
   .menu-drawer__menu-item-text {
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: normal;
   }
 
   /** Styles when the country selector is hidden */
@@ -1130,7 +1134,7 @@
     width: fit-content;
     height: fit-content;
     margin: 0;
-    padding-block: var(--padding-lg);
+    padding-block: 0;
     padding-inline-start: var(--padding-xl);
     flex-shrink: 0;
   }
@@ -1159,7 +1163,7 @@
   }
 
   .menu-drawer__back-button > .svg-wrapper {
-    margin-right: var(--padding-md);
+    margin-right: 0.5rem;
     width: var(--icon-size-xs);
     height: var(--icon-size-xs);
   }
@@ -1205,7 +1209,7 @@
   .menu-drawer__account-wrapper shopify-account {
     display: inline-flex;
     align-items: center;
-    gap: var(--gap-xs);
+    gap: 1rem;
     color: inherit;
   }
 
@@ -1213,6 +1217,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    margin-inline-end: 1rem;
   }
 
   .menu-drawer__account-icon svg {
@@ -1221,10 +1226,12 @@
   }
 
   .menu-drawer__account-label {
+    font-family: var(--font-body--family);
+    font-style: var(--font-body--style);
+    font-weight: 700;
+    font-size: var(--menu-font-md--size);
+    line-height: var(--menu-font-2xl--line-height);
     text-transform: uppercase;
-    font-family: var(--font-heading--family);
-    font-weight: var(--font-heading--weight);
-    letter-spacing: 0.05em;
   }
 
   .menu-drawer__link-image,
