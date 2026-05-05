@@ -831,13 +831,17 @@
         {
           "value": "hint",
           "label": "t:options.hint"
+        },
+        {
+          "value": "thumbnails",
+          "label": "t:options.thumbnails"
         }
       ]
     },
     {
       "type": "header",
       "content": "t:content.thumbnails",
-      "visible_if": "{{ block.settings.media_presentation == 'carousel' and block.settings.slideshow_controls_style == 'thumbnails' }}"
+      "visible_if": "{{ block.settings.media_presentation == 'carousel' and block.settings.slideshow_controls_style == 'thumbnails' or block.settings.media_presentation == 'carousel' and block.settings.slideshow_mobile_controls_style == 'thumbnails' }}"
     },
     {
       "type": "select",
@@ -858,7 +862,7 @@
         }
       ],
       "default": "bottom",
-      "visible_if": "{{ block.settings.media_presentation == 'carousel' and block.settings.slideshow_controls_style == 'thumbnails' }}"
+      "visible_if": "{{ block.settings.media_presentation == 'carousel' and block.settings.slideshow_controls_style == 'thumbnails' or block.settings.media_presentation == 'carousel' and block.settings.slideshow_mobile_controls_style == 'thumbnails' }}"
     },
     {
       "type": "range",
@@ -869,7 +873,7 @@
       "step": 1,
       "unit": "px",
       "default": 64,
-      "visible_if": "{{ block.settings.media_presentation == 'carousel' and block.settings.slideshow_controls_style == 'thumbnails' }}"
+      "visible_if": "{{ block.settings.media_presentation == 'carousel' and block.settings.slideshow_controls_style == 'thumbnails' or block.settings.media_presentation == 'carousel' and block.settings.slideshow_mobile_controls_style == 'thumbnails' }}"
     },
     {
       "type": "header",

@@ -126,13 +126,11 @@
         <span
           class="add-to-cart-text"
         >
-          {%  comment  %}
           {% if current_variant.available %}
-            <span class="svg-wrapper add-to-cart-icon">
+            <span class="svg-wrapper add-to-cart-icon is-visually-hidden-desktop">
               {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
             </span>
           {% endif %}
-          {% endcomment %}
           <span class="add-to-cart-text__content">
             <span>
               {%- if current_variant.available -%}
@@ -430,6 +428,23 @@
       "step": 4,
       "unit": "px",
       "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "use_mobile_gap",
+      "label": "Use mobile gap",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Mobile gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ section.settings.use_mobile_gap }}"
     },
     {
       "type": "checkbox",

@@ -253,6 +253,10 @@
 
   product-card.product-card--horizontal .product-quick-add-block .quick-add__button {
     padding-inline: var(--padding-md, 16px);
+    padding-block: 0;
+    @media only screen and (max-width: 749px) {
+      white-space: wrap;
+    }
   }
 
   /* Disable overlay quick-add and roast badge in horizontal mode —

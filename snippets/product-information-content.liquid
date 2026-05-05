@@ -79,7 +79,7 @@
 <div class="section-background color-{{ settings.color_scheme }}"></div>
 <div
   class="product-information section section--{{ content_width }} spacing-style color-{{ settings.color_scheme }} relative"
-  style="{% render 'spacing-style', settings: settings %} --gap: {{ settings.gap }}px;"
+  style="{% render 'spacing-style', settings: settings %} --gap: {{ settings.gap }}px; --mobile-gap: {% if settings.use_mobile_gap %}{{ settings.mobile_gap }}{% else %}{{ settings.gap }}{% endif %}px;"
   data-testid="product-information"
 >
   {% if settings.desktop_media_position == 'left' and product_has_media and request.page_type == 'product' %}
@@ -142,12 +142,14 @@
 
   /* Mobile styles */
   @media screen and (max-width: 749px) {
+
+    .product-details,
     .product-information__media {
-      grid-column: 1 / -1;
+      grid-column: 2 / 3;
     }
 
-    .product-details {
-      grid-column: 2 / 3;
+    .product-information__grid {
+      row-gap: var(--mobile-gap, var(--gap, 0));
     }
   }
 
