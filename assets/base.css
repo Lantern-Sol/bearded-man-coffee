@@ -706,6 +706,16 @@ p:empty {
   opacity: var(--image-opacity);
 }
 
+@media screen and (max-width: 749px) {
+  .background-image-container::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 15.87%, rgba(0, 0, 0, 0.35) 37.5%);
+    position: absolute;
+  }
+}
+
 .background-image-container img,
 .background-image-container svg {
   object-fit: cover;
@@ -4185,13 +4195,13 @@ slideshow-component[mobile-disabled] slideshow-slides {
  * Consumers control the per-slide cell with --slideshow-disabled-slide-width
  * (default: auto) and the gap with --slideshow-disabled-gap.
  */
-slideshow-component[mobile-disabled] > slideshow-container > slideshow-slides,
-slideshow-component[desktop-disabled] > slideshow-container > slideshow-slides {
+slideshow-component[mobile-disabled]>slideshow-container>slideshow-slides,
+slideshow-component[desktop-disabled]>slideshow-container>slideshow-slides {
   --_disabled-gap: var(--slideshow-disabled-gap, 0);
 }
 
 @media screen and (max-width: 749px) {
-  slideshow-component[mobile-disabled] > slideshow-container > slideshow-slides {
+  slideshow-component[mobile-disabled]>slideshow-container>slideshow-slides {
     overflow: visible;
     scroll-snap-type: none;
     flex-wrap: wrap;
@@ -4199,21 +4209,21 @@ slideshow-component[desktop-disabled] > slideshow-container > slideshow-slides {
     cursor: auto;
   }
 
-  slideshow-component[mobile-disabled] > slideshow-container > slideshow-slides > slideshow-slide {
+  slideshow-component[mobile-disabled]>slideshow-container>slideshow-slides>slideshow-slide {
     flex: 0 0 var(--slideshow-disabled-slide-width, auto);
     width: var(--slideshow-disabled-slide-width, auto);
     scroll-snap-align: none;
     content-visibility: visible;
   }
 
-  slideshow-component[mobile-disabled] > slideshow-container > slideshow-arrows,
-  slideshow-component[mobile-disabled] > slideshow-controls {
+  slideshow-component[mobile-disabled]>slideshow-container>slideshow-arrows,
+  slideshow-component[mobile-disabled]>slideshow-controls {
     display: none;
   }
 }
 
 @media screen and (min-width: 750px) {
-  slideshow-component[desktop-disabled] > slideshow-container > slideshow-slides {
+  slideshow-component[desktop-disabled]>slideshow-container>slideshow-slides {
     overflow: visible;
     scroll-snap-type: none;
     flex-wrap: wrap;
@@ -4221,15 +4231,15 @@ slideshow-component[desktop-disabled] > slideshow-container > slideshow-slides {
     cursor: auto;
   }
 
-  slideshow-component[desktop-disabled] > slideshow-container > slideshow-slides > slideshow-slide {
+  slideshow-component[desktop-disabled]>slideshow-container>slideshow-slides>slideshow-slide {
     flex: 0 0 var(--slideshow-disabled-slide-width, auto);
     width: var(--slideshow-disabled-slide-width, auto);
     scroll-snap-align: none;
     content-visibility: visible;
   }
 
-  slideshow-component[desktop-disabled] > slideshow-container > slideshow-arrows,
-  slideshow-component[desktop-disabled] > slideshow-controls {
+  slideshow-component[desktop-disabled]>slideshow-container>slideshow-arrows,
+  slideshow-component[desktop-disabled]>slideshow-controls {
     display: none;
   }
 }
@@ -4261,7 +4271,7 @@ slideshow-auto-component .slideshow-controls__dots {
   padding: 1rem 0 0;
 }
 
-slideshow-auto-component .slideshow-controls__dots > li {
+slideshow-auto-component .slideshow-controls__dots>li {
   display: block;
   list-style: none;
 }

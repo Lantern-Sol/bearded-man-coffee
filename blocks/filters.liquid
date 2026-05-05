@@ -65,10 +65,7 @@
     assign should_show_pane = block_settings.enable_filtering
   endif
 
-  assign should_use_select_on_mobile = true
-  if block_settings.enable_filtering == false and block_settings.enable_sorting
-    assign should_use_select_on_mobile = false
-  endif
+  assign should_use_select_on_mobile = false
 
   assign desktop_drawer = block_settings.use_drawer_on_desktop
   assign desktop_drawer_class = ''
@@ -376,7 +373,7 @@
 
     {% liquid
       assign child_count = 0
-      if block_settings.enable_filtering == false and block_settings.enable_sorting
+      if block_settings.enable_sorting
         assign child_count = child_count | plus: 1
       endif
       if block_settings.enable_grid_density
@@ -385,7 +382,7 @@
     %}
 
     <div class="facets-mobile-wrapper facets-controls-wrapper{% if child_count > 1 %} facets-mobile-wrapper--multiple-controls{% endif %}">
-      {% if block_settings.enable_filtering == false and block_settings.enable_sorting %}
+      {% if block_settings.enable_sorting %}
         <facets-form-component
           section-id="{{ section.id }}"
           id="FacetFiltersForm--{{ section.id }}-mobile-sorting-only"
@@ -400,7 +397,7 @@
               sort_by: sort_by,
               filter_style: block_settings.filter_style,
               sort_position: 'mobile',
-              should_use_select_on_mobile: should_use_select_on_mobile,
+              should_use_select_on_mobile: false,
               section_id: section.id
             %}
           </form>
@@ -516,16 +513,6 @@
               </div>
             {% endif %}
 
-            {% if block_settings.enable_sorting %}
-              {% render 'sorting',
-                results: results,
-                sort_by: sort_by,
-                filter_style: block_settings.filter_style,
-                suffix: 'overflow',
-                should_use_select_on_mobile: should_use_select_on_mobile,
-                section_id: section.id
-              %}
-            {% endif %}
           </scroll-hint>
         </form>
       </facets-form-component>
@@ -598,6 +585,8 @@
 
   .facets-toggle__button {
     box-shadow: none;
+    text-transform: capitalize;
+    font-weight: 400;
 
     @media screen and (min-width: 750px) {
       display: none;

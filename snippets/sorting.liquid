@@ -96,7 +96,7 @@
           Sort by:
         </span>
         <span
-          class="facets__status h6"
+          class="facets__status"
         >
           {{- status -}}
         </span>
@@ -313,7 +313,9 @@
   }
 
   .facets-mobile-wrapper .sorting-filter .facets__status {
-    display: none;
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground);
+    margin-inline: 0.2rem 0.75rem;
   }
 
   .facets-mobile-wrapper:has(> :nth-child(2)) .sorting-filter .sorting-filter__options {
@@ -323,8 +325,8 @@
 
   .facets-mobile-wrapper .sorting-filter .facets__label {
     margin-inline-end: var(--margin-2xs);
-    font-size: var(--font-paragraph--size);
-    color: var(--color-foreground-muted);
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground);
   }
 
   .facets-toggle .sorting-filter__container {
