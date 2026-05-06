@@ -22,11 +22,26 @@
   .legal-page__header {
     text-align: center;
     margin-block-end: var(--gap-2xl, 48px);
+
+    @media screen and (max-width: 749px) {
+      margin-block-end: var(--gap-xl, 24px);
+    }
   }
 
   .legal-page__title {
     margin: 0;
     text-transform: uppercase;
+  }
+
+  @media screen and (max-width: 749px) {
+    .legal-page__title.h4 {
+      font-family: var(--font-h5--family);
+      font-style: var(--font-h5--style);
+      font-weight: var(--font-h5--weight);
+      font-size: var(--font-h5--size);
+      line-height: var(--font-h5--line-height);
+      letter-spacing: var(--font-h5--letter-spacing);
+    }
   }
 
   .legal-page__body :is(h1, h2, h3, h4, h5, h6) {
@@ -111,6 +126,34 @@
       "step": 4,
       "unit": "px",
       "default": 64
+    },
+    {
+      "type": "checkbox",
+      "id": "use_mobile_padding",
+      "label": "Use mobile padding",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start-mobile",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 32,
+      "visible_if": "{{ section.settings.use_mobile_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end-mobile",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64,
+      "visible_if": "{{ section.settings.use_mobile_padding }}"
     }
   ],
   "presets": [

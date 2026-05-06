@@ -39,6 +39,10 @@
     object-fit: cover;
     object-position: center center;
     height: calc(var(--blog-post-card-img-height) * var(--blog-post-card-scale));
+
+    @media screen and (max-width: 749px) {
+      height: calc(var(--blog-post-card-img-height) * (var(--blog-post-card-scale) + 0.3));
+    }
   }
 
   .blog-post-card__image--small {
