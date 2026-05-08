@@ -57,8 +57,16 @@
   {% if use_slider %}
     <slideshow-auto-component
       class="collection-grid-block__slideshow slideshow"
-      {% unless enable_slider_desktop %}desktop-disabled{% endunless %}
-      {% unless enable_slider_mobile %}mobile-disabled{% endunless %}
+      {%- comment -%}
+        In the theme editor (request.design_mode), force-disable the
+        slideshow at both breakpoints so the children fall back to the
+        CSS grid layout. <slideshow-auto-component> does not inherit
+        base.css's pre-hydration overflow clamp (that rule targets
+        <slideshow-component>), so without this the flex slides spill
+        out of the container and look broken until the JS hydrates.
+      {%- endcomment -%}
+      {% if request.design_mode or enable_slider_desktop == false %}desktop-disabled{% endif %}
+      {% if request.design_mode or enable_slider_mobile == false %}mobile-disabled{% endif %}
       style="
         --slides-per-view-desktop: {{ desktop_slides }};
         --slides-per-view-mobile: {{ mobile_slides }};

@@ -5,9 +5,24 @@
   @param {string} children - The children of the section
 {%- enddoc -%}
 
+{%- liquid
+  assign floating_media_type = section.settings.floating_media_type | default: 'image'
+  assign has_floating_image = false
+  assign has_floating_text = false
+  if floating_media_type == 'image' and section.settings.floating_media != blank
+    assign has_floating_image = true
+  endif
+  if floating_media_type == 'text' and section.settings.floating_media_text != blank
+    assign has_floating_text = true
+  endif
+  assign has_floating_media = false
+  if has_floating_image or has_floating_text
+    assign has_floating_media = true
+  endif
+-%}
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
-  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}{% if section.settings.floating_media != blank %} section--has-floating-media{% endif %}{% if section.settings.floating_media_hide_mobile %} section--floating-media-hide-mobile{% endif %}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}{% if has_floating_media %} section--has-floating-media{% endif %}{% if section.settings.floating_media_hide_mobile %} section--floating-media-hide-mobile{% endif %}"
   data-testid="ui-test-section"
 
   {% if request.visual_preview_mode %}
@@ -39,7 +54,7 @@
     %}
   </div>
 
-  {%- if section.settings.floating_media != blank -%}
+  {%- if has_floating_media -%}
     {%- liquid
       # Map the 8 anchor values to independent vertical/horizontal tracks.
       case section.settings.floating_media_anchor
@@ -110,10 +125,13 @@
       assign width_mobile_rem = section.settings.floating_media_width_mobile | divided_by: 16.0
       assign offset_x_mobile_rem = section.settings.floating_media_offset_x_mobile | divided_by: 16.0
       assign offset_y_mobile_rem = section.settings.floating_media_offset_y_mobile | divided_by: 16.0
+      assign text_pad_y_rem = section.settings.floating_media_text_padding_y | default: 0 | divided_by: 16.0
+      assign text_pad_x_rem = section.settings.floating_media_text_padding_x | default: 0 | divided_by: 16.0
     -%}
     <div
       class="
         section-floating-media
+        section-floating-media--{{ floating_media_type }}
         section-floating-media--v-{{ v }}
         section-floating-media--h-{{ h }}
         {% if section.settings.use_floating_media_mobile_settings %}section-floating-media--has-mobile-settings{% endif %}
@@ -131,13 +149,25 @@
           --floating-media-offset-y-mobile: {{ offset_y_mobile_rem }}rem;
         {% endif %}
       "
-      aria-hidden="true"
+      {% if has_floating_image %}aria-hidden="true"{% endif %}
     >
-      {{
-        section.settings.floating_media
-        | image_url: width: 800
-        | image_tag: loading: 'lazy', widths: '120, 240, 480, 800', sizes: '(min-width: 750px) 500px, 240px', alt: section.settings.floating_media.alt
-      }}
+      {%- if has_floating_image -%}
+        {{
+          section.settings.floating_media
+          | image_url: width: 800
+          | image_tag: loading: 'lazy', widths: '120, 240, 480, 800', sizes: '(min-width: 750px) 500px, 240px', alt: section.settings.floating_media.alt
+        }}
+      {%- elsif has_floating_text -%}
+        {%- assign floating_text_preset = section.settings.floating_media_text_preset | default: 'paragraph' -%}
+        {%- assign floating_text_preset_mobile = section.settings.floating_media_text_preset_mobile -%}
+        {%- assign floating_text_alignment = section.settings.floating_media_text_alignment | default: 'center' -%}
+        <div
+          class="section-floating-media__text color-{{ section.settings.floating_media_color_scheme }} {{ floating_text_preset }}{% if floating_text_preset_mobile != blank %} mobile-preset-{{ floating_text_preset_mobile }}{% endif %}"
+          style="padding: {{ text_pad_y_rem }}rem {{ text_pad_x_rem }}rem; padding-top: {{ text_pad_y_rem | plus: 0.25 }}rem; --text-align: {{ floating_text_alignment }};"
+        >
+          {{ section.settings.floating_media_text }}
+        </div>
+      {%- endif -%}
     </div>
   {%- endif -%}
 
@@ -234,6 +264,109 @@
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  /* Text variant hugs its content rather than using the width slider. */
+  .section-floating-media.section-floating-media--text {
+    width: max-content;
+    max-width: 100%;
+  }
+
+  .section-floating-media__text {
+    /* Drive base.css preset rules (.h1.h1, .paragraph, …) which read
+       `color: var(--color, …)` — without this they fall through the invalid
+       fallback chain and inherit from the section instead of the local
+       color scheme set on this element. */
+    --color: var(--color-foreground);
+    display: block;
+    width: 100%;
+    background-color: var(--color-background);
+    color: var(--color);
+    text-align: var(--text-align, center);
+    box-sizing: border-box;
+    word-wrap: break-word;
+  }
+
+  @media screen and (max-width: 749px) {
+    .section-floating-media__text.mobile-preset-paragraph {
+      font-family: var(--font-paragraph--family);
+      font-style: var(--font-paragraph--style);
+      font-weight: var(--font-paragraph--weight);
+      font-size: var(--font-paragraph--size);
+      line-height: var(--font-paragraph--line-height);
+      letter-spacing: 0;
+      text-transform: var(--font-paragraph--case);
+    }
+
+    .section-floating-media__text.mobile-preset-h1 {
+      font-family: var(--font-h1--family);
+      font-style: var(--font-h1--style);
+      font-weight: var(--font-h1--weight);
+      font-size: var(--font-h1--size);
+      line-height: var(--font-h1--line-height);
+      letter-spacing: var(--font-h1--letter-spacing);
+      text-transform: var(--font-h1--case);
+    }
+
+    .section-floating-media__text.mobile-preset-h2 {
+      font-family: var(--font-h2--family);
+      font-style: var(--font-h2--style);
+      font-weight: var(--font-h2--weight);
+      font-size: var(--font-h2--size);
+      line-height: var(--font-h2--line-height);
+      letter-spacing: var(--font-h2--letter-spacing);
+      text-transform: var(--font-h2--case);
+    }
+
+    .section-floating-media__text.mobile-preset-h3 {
+      font-family: var(--font-h3--family);
+      font-style: var(--font-h3--style);
+      font-weight: var(--font-h3--weight);
+      font-size: var(--font-h3--size);
+      line-height: var(--font-h3--line-height);
+      letter-spacing: var(--font-h3--letter-spacing);
+      text-transform: var(--font-h3--case);
+    }
+
+    .section-floating-media__text.mobile-preset-h4 {
+      font-family: var(--font-h4--family);
+      font-style: var(--font-h4--style);
+      font-weight: var(--font-h4--weight);
+      font-size: var(--font-h4--size);
+      line-height: var(--font-h4--line-height);
+      letter-spacing: var(--font-h4--letter-spacing);
+      text-transform: var(--font-h4--case);
+    }
+
+    .section-floating-media__text.mobile-preset-h5 {
+      font-family: var(--font-h5--family);
+      font-style: var(--font-h5--style);
+      font-weight: var(--font-h5--weight);
+      font-size: var(--font-h5--size);
+      line-height: var(--font-h5--line-height);
+      letter-spacing: var(--font-h5--letter-spacing);
+      text-transform: var(--font-h5--case);
+    }
+
+    .section-floating-media__text.mobile-preset-h6 {
+      font-family: var(--font-h6--family);
+      font-style: var(--font-h6--style);
+      font-weight: var(--font-h6--weight);
+      font-size: var(--font-h6--size);
+      line-height: var(--font-h6--line-height);
+      letter-spacing: var(--font-h6--letter-spacing);
+      text-transform: var(--font-h6--case);
+    }
+
+    .section-floating-media__text.mobile-preset-h7 {
+      font-family: var(--font-h7--family);
+      font-style: var(--font-h7--style);
+      font-weight: var(--font-h7--weight);
+      font-size: var(--font-h7--size);
+      line-height: var(--font-h7--line-height);
+      letter-spacing: var(--font-h7--letter-spacing);
+      text-transform: var(--font-h7--case);
+    }
   }
 
   .section-floating-media--v-top {

@@ -278,7 +278,14 @@
       "Bash(node scripts/search_docs.mjs \"pageCreate mutation\" --model claude-opus-4-7 --client-name claude-code --client-version 1.0.0)",
       "Bash(node scripts/validate.mjs --code 'mutation CreatePage\\($page: PageCreateInput!\\) { pageCreate\\(page: $page\\) { page { id title handle } userErrors { code field message } } }' --model claude-opus-4-7 --client-name claude-code --client-version 1.0.0 --artifact-id bmc-page-create-001 --revision 1)",
       "Bash(node scripts/search_docs.mjs \"pageUpdate mutation\" --model claude-opus-4-7 --client-name claude-code --client-version 1.0.0)",
-      "Bash(node scripts/validate.mjs --code 'mutation UpdatePage\\($id: ID!, $page: PageUpdateInput!\\) { pageUpdate\\(id: $id, page: $page\\) { page { id title handle } userErrors { code field message } } }' --model claude-opus-4-7 --client-name claude-code --client-version 1.0.0 --artifact-id bmc-page-update-001 --revision 1)"
+      "Bash(node scripts/validate.mjs --code 'mutation UpdatePage\\($id: ID!, $page: PageUpdateInput!\\) { pageUpdate\\(id: $id, page: $page\\) { page { id title handle } userErrors { code field message } } }' --model claude-opus-4-7 --client-name claude-code --client-version 1.0.0 --artifact-id bmc-page-update-001 --revision 1)",
+      "Bash(git -C \".claude/worktrees/wonderful-pascal-b9e929\" status --short)",
+      "Bash(git -C \".claude/worktrees/wonderful-pascal-b9e929\" log --oneline -5)",
+      "Bash(git -C \".claude/worktrees/wonderful-pascal-b9e929\" diff blocks/_blog-post-card.liquid)",
+      "Bash(git worktree *)",
+      "Bash(git branch *)",
+      "Bash(findstr /i \"claude worktree\")",
+      "Bash(git rm *)"
     ]
   }
 }
