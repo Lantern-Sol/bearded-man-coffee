@@ -245,6 +245,14 @@
       "visible_if": "{{ section.settings.icons_style != 'none' and section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
     },
     {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show pagination dots",
+      "info": "Adds slider dots beneath the carousel and locks slides flush to the page width (no peek of the next slide).",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
+    },
+    {
       "type": "header",
       "content": "t:content.section_layout"
     },
@@ -352,6 +360,17 @@
                 "padding-block-start": 8,
                 "padding-block-end": 0
               }
+            },
+            "button": {
+              "type": "_blog-post-card-button",
+              "name": "Read article button",
+              "static": true,
+              "settings": {
+                "label": "Read article",
+                "style_class": "button",
+                "width_mobile": "custom",
+                "custom_width_mobile": 100
+              }
             }
           }
         }
@@ -364,6 +383,7 @@
         "mobile_card_size": "60cqw",
         "icons_style": "arrow",
         "icons_shape": "circle",
+        "show_dots": true,
         "gap": 12,
         "padding-block-start": 48,
         "padding-block-end": 48
@@ -414,6 +434,17 @@
               "settings": {
                 "padding-block-start": 8,
                 "padding-block-end": 0
+              }
+            },
+            "button": {
+              "type": "_blog-post-card-button",
+              "name": "Read article button",
+              "static": true,
+              "settings": {
+                "label": "Read article",
+                "style_class": "button",
+                "width_mobile": "custom",
+                "custom_width_mobile": 100
               }
             }
           }
@@ -476,6 +507,17 @@
               "settings": {
                 "padding-block-start": 8,
                 "padding-block-end": 0
+              }
+            },
+            "button": {
+              "type": "_blog-post-card-button",
+              "name": "Read article button",
+              "static": true,
+              "settings": {
+                "label": "Read article",
+                "style_class": "button",
+                "width_mobile": "custom",
+                "custom_width_mobile": 100
               }
             }
           }

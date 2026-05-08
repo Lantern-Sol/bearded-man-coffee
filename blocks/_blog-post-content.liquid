@@ -6,8 +6,18 @@
 
 {% stylesheet %}
   .blog-post-content {
+    --normal-content-width: 800px;
     max-width: var(--normal-content-width);
     margin: 0 auto;
+    li {
+      line-height: 2.3;
+    }
+    h5 {
+      font-size: 1.125rem;
+      font-family: var(--font-body--family);
+      text-transform: none;
+      margin-block: 1.5rem 1rem;
+    }
   }
 {% endstylesheet %}
 

@@ -81,7 +81,15 @@
         echo '--resource-list-column-gap-desktop: ' | append: columns_gap | append: 'px;'
         echo '--column-count: ' | append: columns | append: ';'
         echo '--column-count-mobile: 1;'
-        echo '--mobile-card-size: ' | append: mobile_card_size | append: ';'
+        if settings.show_dots
+          # When dots are on we lock the carousel to exact column counts on
+          # both breakpoints (no peek of the next slide). Mobile shows two
+          # cards flush with the page-content-width.
+          echo '--peek-next-slide-size: 0px;'
+          echo '--mobile-card-size: calc((100% - ' | append: columns_gap | append: 'px) / 2);'
+        else
+          echo '--mobile-card-size: ' | append: mobile_card_size | append: ';'
+        endif
       endcapture
 
     when 'editorial'
@@ -98,7 +106,7 @@
 <div
   class="
     resource-list
-    {% if settings.layout_type == 'carousel' %}
+    {% if settings.layout_type == 'carousel' and settings.show_dots != true %}
       force-full-width
     {% endif %}
     {% if settings.carousel_on_mobile and settings.layout_type != 'carousel' %}
@@ -124,7 +132,8 @@
         slides: list_items_array,
         slide_count: slide_count,
         settings: settings,
-        slide_width_max: slide_width_max
+        slide_width_max: slide_width_max,
+        show_dots: settings.show_dots
       %}
 
     {% when 'editorial' %}
@@ -170,7 +179,8 @@
       slides: list_items_array,
       slide_count: slide_count,
       settings: settings,
-      slide_width_max: slide_width_max
+      slide_width_max: slide_width_max,
+      show_dots: settings.show_dots
     %}
   </div>
 {% endif %}

@@ -8,7 +8,7 @@
 %}
 
 <div
-  class="blog-post-featured-image blog-post-featured-image--{{ block.id }} blog-post-featured-image--height-{{ block_settings.height }} spacing-style size-style"
+  class="blog-post-featured-image blog-post-content blog-post-featured-image--{{ block.id }} blog-post-featured-image--height-{{ block_settings.height }} spacing-style size-style"
   style="
     --ratio: {% case block_settings.image_ratio %}
       {% when 'landscape' %}16 / 9
@@ -49,6 +49,12 @@
     display: block;
     position: relative;
     width: var(--width);
+  }
+
+  .blog-post-featured-image.blog-post-content {
+    --normal-content-width: 800px;
+    max-width: var(--normal-content-width);
+    margin-inline: auto;
   }
 
   .blog-post-featured-image.size-style {

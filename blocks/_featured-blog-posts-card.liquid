@@ -21,6 +21,14 @@
   if section.settings.layout_type == 'editorial'
     assign truncate_description = false
   endif
+
+  assign show_tag = block_settings.show_tag
+  assign show_button = block_settings.show_button
+
+  assign first_tag = ''
+  if onboarding == false and article.tags.size > 0
+    assign first_tag = article.tags | first
+  endif
 %}
 
 {% capture image %}
@@ -55,6 +63,10 @@
     should_truncate: truncate_description,
     onboarding_text: display_description
   %}
+{% endcapture %}
+
+{% capture button %}
+  {% content_for 'block', id: 'button', type: '_blog-post-card-button' %}
 {% endcapture %}
 
 <div
@@ -92,9 +104,22 @@
     {% endif %}
 
     <div class="featured-blog-posts-card__content layout-panel-flex--column">
+      {%- if show_tag and first_tag != blank -%}
+        <a
+          class="blog-post-card__tag"
+          href="{{ blog.url }}/tagged/{{ first_tag | handleize }}"
+        >{{ first_tag }}</a>
+      {%- endif -%}
+
       <h4>{{ title }}</h4>
       {{ details }}
       {{ description }}
+
+      {%- if show_button -%}
+        <div class="blog-post-card__button-wrapper">
+          {{ button }}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </div>
@@ -145,6 +170,41 @@
   .featured-blog-posts-card__content h4 {
     margin: 0;
   }
+
+  .featured-blog-posts-card__content .blog-post-card__tag {
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #C7893A;
+    text-decoration: none;
+    margin-block-end: 0.25rem;
+    align-self: flex-start;
+  }
+
+  .featured-blog-posts-card__content .blog-post-card__button-wrapper {
+    align-self: flex-start;
+    margin-block-start: 0.75rem;
+    display: inline-flex;
+    pointer-events: auto;
+  }
+
+  /*
+   * On mobile, stretch the wrapper so a button configured with
+   * width_mobile: custom 100% actually fills the card content area,
+   * and keep the label on a single line.
+   */
+  @media screen and (max-width: 749px) {
+    .featured-blog-posts-card__content .blog-post-card__button-wrapper {
+      align-self: stretch;
+      display: flex;
+      margin-block-start: 1rem;
+    }
+
+    .featured-blog-posts-card__content .blog-post-card__button-wrapper > a {
+      white-space: nowrap;
+      justify-content: center;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -185,6 +245,28 @@
       "step": 1,
       "unit": "px",
       "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Category tag"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tag",
+      "label": "Show category tag",
+      "info": "Displays the article's first tag above the title.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show \"Read article\" button",
+      "info": "Customize the label, style, and width on the nested Read article button block.",
+      "default": true
     },
     {
       "type": "header",

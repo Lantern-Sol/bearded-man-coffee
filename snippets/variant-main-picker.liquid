@@ -15,6 +15,32 @@
     else
       assign strikethrough_color_mix = '#fff'
     endif
+
+    # Default variant for initial render. On the coffee PDP with no ?variant= URL
+    # param, prefer the first available 12 oz variant (most popular size) over
+    # Shopify's first-available default.
+    assign default_variant = product_resource.selected_or_first_available_variant
+
+    if template.suffix == 'coffee' and product.id == product_resource.id and product_resource.selected_variant == blank
+      assign preferred_variant = blank
+      for v in product_resource.variants
+        if v.available and v.options contains '12 oz'
+          assign preferred_variant = v
+          break
+        endif
+      endfor
+      if preferred_variant == blank
+        for v in product_resource.variants
+          if v.options contains '12 oz'
+            assign preferred_variant = v
+            break
+          endif
+        endfor
+      endif
+      if preferred_variant != blank
+        assign default_variant = preferred_variant
+      endif
+    endif
   %}
   <variant-picker
     class="variant-picker spacing-style variant-picker--{{ block_settings.alignment }}"
@@ -67,7 +93,11 @@
             </span>
           </div>
         {%- elsif variant_style == 'swatch' or block_settings.variant_style == 'buttons' -%}
-          {%- assign fieldset_index = forloop.index0 -%}
+          {%- liquid
+            assign fieldset_index = forloop.index0
+            assign default_option_index = product_option.position | minus: 1
+            assign default_value_at_position = default_variant.options[default_option_index]
+          -%}
           <fieldset
             class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}"
             data-fieldset-index="{{ fieldset_index }}"
@@ -84,6 +114,13 @@
               {% if product_option_value.size > longest_value and option_id_attribute %}
                 {% assign longest_value = product_option_value.size %}
               {% endif %}
+              {%- liquid
+                if product_option_value.name == default_value_at_position
+                  assign is_selected_default = true
+                else
+                  assign is_selected_default = false
+                endif
+              -%}
               <label
                 class="variant-option__button-label{% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}"
               >
@@ -105,7 +142,7 @@
                   {% if product_option_value.variant.id %}
                     data-variant-id="{{ product_option_value.variant.id }}"
                   {% endif %}
-                  {% if product_option_value.selected %}
+                  {% if is_selected_default %}
                     data-current-checked="true"
                     checked
                   {% else %}
@@ -168,6 +205,10 @@
             endif
           %}
 
+          {%- liquid
+            assign default_option_index = product_option.position | minus: 1
+            assign default_value_at_position = default_variant.options[default_option_index]
+          -%}
           <div class="variant-option variant-option--dropdowns">
             <label for="Option-{{ block.id }}-{{ forloop.index0 }}">{{ product_option.name | escape }}</label>
             <div
@@ -184,13 +225,20 @@
                 class="variant-option__select"
               >
                 {%- for product_option_value in product_option.values -%}
+                  {%- liquid
+                    if product_option_value.name == default_value_at_position
+                      assign is_selected_default = true
+                    else
+                      assign is_selected_default = false
+                    endif
+                  -%}
                   <option
                     value="{{ product_option_value | escape }}"
                     data-input-id="{{ product_option.position }}-{{ forloop.index0 }}"
                     data-option-value-id="{{ product_option_value.id }}"
                     data-variant-id="{{ product_option_value.variant.id }}"
                     data-connected-product-url="{{ product_option_value.product_url }}"
-                    {% if product_option_value.selected %}
+                    {% if is_selected_default %}
                       selected="selected"
                     {% endif %}
                   >
@@ -216,7 +264,7 @@
       {%- endfor -%}
 
       <script type="application/json">
-        {{ product_resource.selected_or_first_available_variant | json }}
+        {{ default_variant | json }}
       </script>
       {%- comment -%}
         Full variants table for client-side availability recomputation. Shopify's

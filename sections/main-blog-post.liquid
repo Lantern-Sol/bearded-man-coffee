@@ -14,7 +14,9 @@
     "
   >
     <header>
+      {%- content_for 'block', id: 'blog-post-tag', type: '_blog-post-tag' %}
       {%- content_for 'block', id: 'blog-post-title', type: 'text' %}
+      {%- content_for 'block', id: 'blog-post-excerpt', type: 'text' %}
       {%- content_for 'block', id: 'blog-post-details', type: '_blog-post-info-text' %}
     </header>
 

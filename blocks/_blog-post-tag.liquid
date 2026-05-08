@@ -1,0 +1,106 @@
+{%- doc -%}
+  Renders the blog post tag block (first article tag) styled like the
+  blog-post-card__tag used on article cards.
+{%- enddoc -%}
+
+{%- liquid
+  assign block_settings = block.settings
+  assign first_tag = ''
+  if article.tags.size > 0
+    assign first_tag = article.tags | first
+  endif
+-%}
+
+{%- if first_tag != blank -%}
+  <div
+    class="blog-post-tag spacing-style justify-{{ block_settings.alignment }}"
+    style="{% render 'spacing-style', settings: block_settings %}"
+    {{ block.shopify_attributes }}
+  >
+    <a
+      class="blog-post-card__tag"
+      href="{{ blog.url }}/tagged/{{ first_tag | handleize }}"
+    >{{ first_tag }}</a>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .blog-post-tag {
+    display: flex;
+    width: 100%;
+  }
+
+  .blog-post-tag .blog-post-card__tag {
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #C7893A;
+    text-decoration: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Tag",
+  "settings": [
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "use_mobile_padding",
+      "label": "Use mobile padding",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start-mobile",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.use_mobile_padding }}"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end-mobile",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8,
+      "visible_if": "{{ block.settings.use_mobile_padding }}"
+    }
+  ]
+}
+{% endschema %}

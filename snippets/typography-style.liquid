@@ -23,6 +23,14 @@
     --color: {{ settings.color }};
   {%- endif -%}
   {%- comment -%}
+    Always emit --text-wrap when the block exposes a wrap setting, so
+    presets like rte / paragraph / hN still respect the merchant's
+    pretty / balance / nowrap choice (not only the custom preset).
+  {%- endcomment -%}
+  {%- if settings.wrap != blank -%}
+    --text-wrap: {{ settings.wrap }};
+  {%- endif -%}
+  {%- comment -%}
     Emit mobile-only typography vars whenever the mobile preset is custom.
     The mobile_font_size / mobile_custom_line_height settings are gated
     in the schema by type_preset_mobile == 'custom', so this is the single

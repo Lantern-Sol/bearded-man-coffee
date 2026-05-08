@@ -1,0 +1,33 @@
+{%- doc -%}
+  Returns the default URL to link to for a product card / title / details link.
+  For coffee products (template suffix `coffee`) we point at the first available
+  12 oz variant so the PDP loads with 12 oz preselected, instead of Shopify's
+  first-available variant (2.5 oz, the smallest size). All other products fall
+  through to `selected_or_first_available_variant.url`.
+
+  @param {object} product - The product object.
+{%- enddoc -%}
+{%- liquid
+  assign target_variant = product.selected_or_first_available_variant
+  if product.template_suffix == 'coffee'
+    assign preferred = blank
+    for v in product.variants
+      if v.available and v.options contains '12 oz'
+        assign preferred = v
+        break
+      endif
+    endfor
+    if preferred == blank
+      for v in product.variants
+        if v.options contains '12 oz'
+          assign preferred = v
+          break
+        endif
+      endfor
+    endif
+    if preferred != blank
+      assign target_variant = preferred
+    endif
+  endif
+  echo target_variant.url
+-%}

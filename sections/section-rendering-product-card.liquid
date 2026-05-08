@@ -17,8 +17,11 @@
     endif
   endif
 
-  assign url = product.selected_or_first_available_variant.url
-  unless url
+  capture url
+    render 'product-default-url', product: product
+  endcapture
+  assign url = url | strip
+  unless url != blank
     assign url = product.first_available_variant.url
   endunless
   unless url
