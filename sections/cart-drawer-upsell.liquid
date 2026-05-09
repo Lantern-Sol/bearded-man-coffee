@@ -1,0 +1,74 @@
+{%- doc -%}
+  Renders a single recommended product card for the cart drawer upsell.
+  Fetched via /recommendations/products?section_id=cart-drawer-upsell&product_id=X&intent=related&limit=1
+{%- enddoc -%}
+
+{% liquid
+  assign upsell_product = recommendations.products.first
+%}
+
+{%- if recommendations.performed and upsell_product != blank -%}
+  {%- assign variant = upsell_product.selected_or_first_available_variant -%}
+
+  <div class="cart-drawer-upsell__card">
+    <div class="cart-drawer-upsell__heading">
+      <p class="cart-drawer-upsell__title">YOU MIGHT ALSO LIKE</p>
+    </div>
+
+    <div class="cart-drawer-upsell__row">
+      <a href="{{ upsell_product.url }}" class="cart-drawer-upsell__media">
+        {%- if upsell_product.featured_media -%}
+          {{ upsell_product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', class: 'cart-drawer-upsell__image' }}
+        {%- endif -%}
+      </a>
+
+      <div class="cart-drawer-upsell__info">
+        <a href="{{ upsell_product.url }}" class="cart-drawer-upsell__name">
+          {{- upsell_product.title -}}
+        </a>
+
+        {%- if upsell_product.has_only_default_variant == false -%}
+          <p class="cart-drawer-upsell__variant">
+            {%- for option in variant.options_with_values -%}
+              <span>{{ option.name }}:</span>
+              <span>{{ option.value }}</span>{%- if forloop.last == false %}, {% endif -%}
+            {%- endfor -%}
+          </p>
+        {%- endif -%}
+
+        <p class="cart-drawer-upsell__price">
+          {%- if upsell_product.compare_at_price > upsell_product.price -%}
+            <s>{{ upsell_product.compare_at_price | money }}</s>
+            <span>{{ upsell_product.price | money }}</span>
+          {%- else -%}
+            <span>{{ upsell_product.price | money }}</span>
+          {%- endif -%}
+        </p>
+      </div>
+
+      <form
+        method="post"
+        action="{{ routes.cart_add_url }}"
+        class="cart-drawer-upsell__form"
+        data-product-id="{{ upsell_product.id }}"
+      >
+        <input type="hidden" name="id" value="{{ variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button
+          type="submit"
+          class="cart-drawer-upsell__button"
+          {% unless variant.available %}disabled{% endunless %}
+        >
+          {%- if variant.available -%}ADD{%- else -%}SOLD OUT{%- endif -%}
+        </button>
+      </form>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Cart drawer upsell",
+  "settings": []
+}
+{% endschema %}

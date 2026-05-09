@@ -286,7 +286,10 @@
       "Bash(git branch *)",
       "Bash(findstr /i \"claude worktree\")",
       "Bash(git rm *)",
-      "Bash(findstr /i \"blog article\")"
+      "Bash(findstr /i \"blog article\")",
+      "Bash(shopify theme *)",
+      "Bash(curl -s -I http://127.0.0.1:9292/ -m 5)",
+      "Bash(taskkill //PID 25856 //F)"
     ]
   }
 }

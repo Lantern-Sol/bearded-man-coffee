@@ -2293,6 +2293,35 @@
       },
       {
         "type": "header",
+        "content": "Free shipping bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_free_shipping_enabled",
+        "label": "Show free shipping progress bar",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "info": "Amount in your store currency (e.g. 50 for $50). The bar fills as the cart subtotal approaches this amount.",
+        "default": "50",
+        "visible_if": "{{ settings.cart_free_shipping_enabled == true }}"
+      },
+      {
+        "type": "header",
+        "content": "Cart upsell"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_upsell_enabled",
+        "label": "Show \"You might also like\" upsell",
+        "info": "Recommends a related product based on the first item in the cart. Refreshes when cart changes.",
+        "default": true
+      },
+      {
+        "type": "header",
         "content": "t:content.product_media"
       },
       {
