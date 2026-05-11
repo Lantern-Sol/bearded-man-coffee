@@ -106,12 +106,23 @@
       fetchpriority="low"
     ></script>
     {%- comment -%}
-      Load the cart-items-component module unconditionally so the custom element is
-      defined whether the cart is empty or not. Otherwise add-to-cart morph never
-      runs from the empty state because event listeners are not attached.
+      Load all cart-drawer component modules unconditionally. Scripts injected
+      into the DOM later (via morph after add-to-cart from an empty cart) do
+      NOT execute, so the custom elements would stay unupgraded — qty +/-
+      buttons would be dead and the upsell would never fetch its card.
     {%- endcomment -%}
     <script
       src="{{ 'component-cart-items.js' | asset_url }}"
+      type="module"
+      fetchpriority="low"
+    ></script>
+    <script
+      src="{{ 'component-cart-quantity-selector.js' | asset_url }}"
+      type="module"
+      fetchpriority="low"
+    ></script>
+    <script
+      src="{{ 'cart-drawer-upsell.js' | asset_url }}"
       type="module"
       fetchpriority="low"
     ></script>
