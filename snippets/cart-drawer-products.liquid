@@ -106,20 +106,28 @@
                   {%- endfor -%}
                 {%- endif -%}
 
+                {%- liquid
+                  # Use line totals (qty * unit) so prices update with quantity changes.
+                  assign line_price = item.final_line_price
+                  assign original_line_price = item.original_line_price
+
+                  # If variant has a higher compare-at MSRP, use it as the strikethrough line price.
+                  assign compare_line_price = 0
+                  if item.variant.compare_at_price != null and item.variant.compare_at_price > item.variant.price
+                    assign compare_line_price = item.variant.compare_at_price | times: item.quantity
+                  endif
+                -%}
                 <div class="cart-drawer-items__price">
-                  {%- if item.original_price != item.final_price -%}
+                  {%- if compare_line_price > line_price -%}
                     <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
-                    {%- if item.variant.compare_at_price > item.original_price -%}
-                      <s>{{ item.variant.compare_at_price | money }}</s>
-                    {%- else -%}
-                      <s>{{ item.original_price | money }}</s>
-                    {%- endif -%}
-                    <text-component value="{{ item.final_price | money | strip_html }}">{{ item.final_price | money }}</text-component>
-                  {%- elsif item.variant.compare_at_price > item.original_price -%}
-                    <s>{{ item.variant.compare_at_price | money }}</s>
-                    <text-component value="{{ item.original_price | money | strip_html }}">{{ item.original_price | money }}</text-component>
+                    <s>{{ compare_line_price | money }}</s>
+                    <text-component value="{{ line_price | money | strip_html }}">{{ line_price | money }}</text-component>
+                  {%- elsif line_price < original_line_price -%}
+                    <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
+                    <s>{{ original_line_price | money }}</s>
+                    <text-component value="{{ line_price | money | strip_html }}">{{ line_price | money }}</text-component>
                   {%- else -%}
-                    <text-component value="{{ item.original_price | money | strip_html }}">{{ item.original_price | money }}</text-component>
+                    <text-component value="{{ line_price | money | strip_html }}">{{ line_price | money }}</text-component>
                   {%- endif -%}
                 </div>
 
@@ -156,7 +164,8 @@
                     in_cart_quantity: item.quantity,
                     line_index: item.index,
                     class: 'cart-drawer-items__qty-selector',
-                    can_update_quantity: can_update_quantity
+                    can_update_quantity: can_update_quantity,
+                    min: 0
                   %}
                 </div>
               </div>
@@ -370,8 +379,12 @@
 
   .cart-drawer-items__qty-selector {
     --qty-border-color: #3d3a35;
+    --quantity-selector-width: 111px;
 
+    flex: none;
+    box-sizing: border-box;
     width: 111px;
+    min-width: 111px;
     height: auto;
     background-color: #fcfbf6;
     border: 1.5px solid var(--qty-border-color);
@@ -403,9 +416,12 @@
     margin: 0;
   }
 
-  .cart-drawer-items__qty-selector button {
+  .cart-drawer-items__qty-selector :is(.quantity-minus, .quantity-plus, button) {
     width: 24px;
     height: 24px;
+    min-width: 0;
+    min-height: 0;
+    flex-shrink: 0;
     background: transparent;
     border: none;
     color: #3d3a35;
@@ -416,7 +432,8 @@
     cursor: pointer;
   }
 
-  .cart-drawer-items__qty-selector button svg {
+  .cart-drawer-items__qty-selector button svg,
+  .cart-drawer-items__qty-selector button .svg-wrapper {
     width: 100%;
     height: 100%;
   }

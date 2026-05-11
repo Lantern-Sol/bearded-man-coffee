@@ -105,6 +105,16 @@
       type="module"
       fetchpriority="low"
     ></script>
+    {%- comment -%}
+      Load the cart-items-component module unconditionally so the custom element is
+      defined whether the cart is empty or not. Otherwise add-to-cart morph never
+      runs from the empty state because event listeners are not attached.
+    {%- endcomment -%}
+    <script
+      src="{{ 'component-cart-items.js' | asset_url }}"
+      type="module"
+      fetchpriority="low"
+    ></script>
 
     {% capture cart_drawer_header %}
       <div class="cart-drawer__header" id="cart-drawer-header">
@@ -204,7 +214,6 @@
                 aria-label="{{ 'accessibility.cart' | t }}"
               >
                 {% render 'cart-drawer-products' %}
-
                 {% render 'cart-drawer-upsell' %}
               </scroll-hint>
 
@@ -361,7 +370,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0 15px;
+    padding: 1.125rem 15px;
   }
 
   .cart-drawer__heading {

@@ -8,7 +8,12 @@
 %}
 
 {%- if recommendations.performed and upsell_product != blank -%}
-  {%- assign variant = upsell_product.selected_or_first_available_variant -%}
+  {%- liquid
+    assign variant = upsell_product.selected_or_first_available_variant
+    # Prefer the variant's own image so what's shown matches what gets added.
+    # Falls back to the product's featured media for variants without their own image.
+    assign display_media = variant.featured_media | default: upsell_product.featured_media
+  -%}
 
   <div class="cart-drawer-upsell__card">
     <div class="cart-drawer-upsell__heading">
@@ -17,8 +22,8 @@
 
     <div class="cart-drawer-upsell__row">
       <a href="{{ upsell_product.url }}" class="cart-drawer-upsell__media">
-        {%- if upsell_product.featured_media -%}
-          {{ upsell_product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', class: 'cart-drawer-upsell__image' }}
+        {%- if display_media -%}
+          {{ display_media | image_url: width: 120 | image_tag: loading: 'lazy', class: 'cart-drawer-upsell__image' }}
         {%- endif -%}
       </a>
 
@@ -46,22 +51,23 @@
         </p>
       </div>
 
-      <form
-        method="post"
-        action="{{ routes.cart_add_url }}"
-        class="cart-drawer-upsell__form"
+      {%- comment -%}
+        Use a button instead of a <form action="/cart/add"> here. Third-party
+        widgets (e.g. Appstle subscriptions) scan `form[action*="cart/add"]` and
+        `[name="id"]` to identify "the" product form. Having an upsell form in the
+        DOM causes Appstle to match the wrong form and hide its widget. JS reads
+        data-variant-id and POSTs to /cart/add.js manually.
+      {%- endcomment -%}
+      <button
+        type="button"
+        class="cart-drawer-upsell__button"
+        data-cart-drawer-upsell-add
         data-product-id="{{ upsell_product.id }}"
+        data-variant-id="{{ variant.id }}"
+        {% unless variant.available %}disabled{% endunless %}
       >
-        <input type="hidden" name="id" value="{{ variant.id }}">
-        <input type="hidden" name="quantity" value="1">
-        <button
-          type="submit"
-          class="cart-drawer-upsell__button"
-          {% unless variant.available %}disabled{% endunless %}
-        >
-          {%- if variant.available -%}ADD{%- else -%}SOLD OUT{%- endif -%}
-        </button>
-      </form>
+        {%- if variant.available -%}ADD{%- else -%}SOLD OUT{%- endif -%}
+      </button>
     </div>
   </div>
 {%- endif -%}
