@@ -4,7 +4,7 @@
   style="
     --summary-font-family: var(--font-{{ block_settings.type_preset }}--family);
      --summary-font-style: var(--font-{{ block_settings.type_preset }}--style);
-     --summary-font-weight: var(--font-{{ block_settings.type_preset }}--weight);
+     --summary-font-weight: bold;
      --summary-font-size: var(--font-{{ block_settings.type_preset }}--size);
      --summary-font-line-height: var(--font-{{ block_settings.type_preset }}--line-height);
      --summary-font-case: var(--font-{{ block_settings.type_preset }}--case);
@@ -38,7 +38,7 @@
   }
 
   .accordion--dividers accordion-custom:first-child .details {
-    border-block-start: calc(var(--style-border-width) * var(--show-fallback-borders)) solid var(--color-border);
+    border-block-start: none;
   }
 
   .accordion--dividers accordion-custom:last-child .details {

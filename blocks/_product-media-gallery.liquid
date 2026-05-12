@@ -512,12 +512,20 @@
             >
               {% if media.media_type == 'image' %}
                 <drag-zoom-wrapper class="product-media__drag-zoom-wrapper">
-                  {%- render 'product-media',
-                    media: media,
-                    sizes: '100vw',
-                    loading: 'lazy',
-                    is_main_product_media: forloop.first
-                  -%}
+                  {%- comment -%}
+                    Inject ref="image" after rendering. Shopify's image_tag filter
+                    drops ref attribute values, so the snippet can't render the ref
+                    correctly. We wrap the output and replace the first <img tag.
+                  {%- endcomment -%}
+                  {%- capture zoom_product_media -%}
+                    {%- render 'product-media',
+                      media: media,
+                      sizes: '100vw',
+                      loading: 'lazy',
+                      is_main_product_media: forloop.first
+                    -%}
+                  {%- endcapture -%}
+                  {{- zoom_product_media | replace_first: '<img ', '<img ref="image" ' -}}
                 </drag-zoom-wrapper>
               {% else %}
                 {%- render 'product-media',

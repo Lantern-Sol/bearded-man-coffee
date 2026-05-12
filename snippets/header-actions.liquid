@@ -105,6 +105,27 @@
       type="module"
       fetchpriority="low"
     ></script>
+    {%- comment -%}
+      Load all cart-drawer component modules unconditionally. Scripts injected
+      into the DOM later (via morph after add-to-cart from an empty cart) do
+      NOT execute, so the custom elements would stay unupgraded — qty +/-
+      buttons would be dead and the upsell would never fetch its card.
+    {%- endcomment -%}
+    <script
+      src="{{ 'component-cart-items.js' | asset_url }}"
+      type="module"
+      fetchpriority="low"
+    ></script>
+    <script
+      src="{{ 'component-cart-quantity-selector.js' | asset_url }}"
+      type="module"
+      fetchpriority="low"
+    ></script>
+    <script
+      src="{{ 'cart-drawer-upsell.js' | asset_url }}"
+      type="module"
+      fetchpriority="low"
+    ></script>
 
     {% capture cart_drawer_header %}
       <div class="cart-drawer__header" id="cart-drawer-header">
@@ -204,7 +225,6 @@
                 aria-label="{{ 'accessibility.cart' | t }}"
               >
                 {% render 'cart-drawer-products' %}
-
                 {% render 'cart-drawer-upsell' %}
               </scroll-hint>
 
@@ -361,7 +381,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0 15px;
+    padding: 1.125rem 15px;
   }
 
   .cart-drawer__heading {

@@ -31,14 +31,14 @@ class CartDrawerUpsell extends HTMLElement {
     });
     this.#childObserver.observe(this, { childList: true });
 
-    this.addEventListener('submit', this.#handleSubmit);
+    this.addEventListener('click', this.#handleAddClick);
   }
 
   disconnectedCallback() {
     this.#abortController?.abort();
     this.#attrObserver?.disconnect();
     this.#childObserver?.disconnect();
-    this.removeEventListener('submit', this.#handleSubmit);
+    this.removeEventListener('click', this.#handleAddClick);
   }
 
   async #fetchRecommendation() {
@@ -82,15 +82,26 @@ class CartDrawerUpsell extends HTMLElement {
     }
   }
 
-  #handleSubmit = async (event) => {
-    const form = event.target;
-    if (!(form instanceof HTMLFormElement) || !form.classList.contains('cart-drawer-upsell__form')) return;
+  #handleAddClick = async (event) => {
+    const button = /** @type {HTMLElement|null} */ (event.target)?.closest?.('[data-cart-drawer-upsell-add]');
+    if (!button) return;
 
     event.preventDefault();
-    const button = form.querySelector('button[type="submit"]');
-    if (button) button.disabled = true;
+    if (button.hasAttribute('disabled') || button.dataset.busy === '1') return;
 
-    const formData = new FormData(form);
+    const variantId = button.dataset.variantId;
+    const productId = button.dataset.productId;
+    if (!variantId) return;
+
+    button.dataset.busy = '1';
+    button.setAttribute('disabled', '');
+
+    // Build FormData manually rather than `new FormData(form)`. No <form> on the
+    // page = no `form[action*="cart/add"]` for 3rd-party widgets (Appstle, etc.)
+    // to mistake for the product form.
+    const formData = new FormData();
+    formData.set('id', variantId);
+    formData.set('quantity', '1');
 
     const cartItemsComponents = document.querySelectorAll('cart-items-component');
     const sectionIds = [];
@@ -109,8 +120,6 @@ class CartDrawerUpsell extends HTMLElement {
     try {
       const response = await fetch(Theme.routes.cart_add_url, cfg);
       const data = await response.json();
-
-      const productId = form.dataset.productId || data.product_id?.toString();
 
       this.dispatchEvent(
         new CartAddEvent({}, productId || '', {
@@ -131,7 +140,8 @@ class CartDrawerUpsell extends HTMLElement {
     } catch (error) {
       console.error('cart-drawer-upsell add failed', error);
     } finally {
-      if (button) button.disabled = false;
+      button.removeAttribute('disabled');
+      delete button.dataset.busy;
     }
   };
 }
