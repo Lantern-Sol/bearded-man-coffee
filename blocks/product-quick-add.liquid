@@ -5,11 +5,27 @@
   if block_settings.inherit_color_scheme == false and block_settings.color_scheme != blank
     assign should_inherit = false
   endif
+
+  # `mode` controls whether this Quick-add opens the standard cart popup or
+  # the Build-a-box bundle popup. Three values:
+  #   auto    (default) — bundle if rendered inside a build-a-box section,
+  #                       normal otherwise. JS resolves this at click time.
+  #   normal  — always opens the standard cart popup.
+  #   bundle  — always opens the bundle popup (even outside a bundle section).
+  assign mode_value = block_settings.mode | default: 'auto'
+
+  # Render the flavour-notes metafield into a data attribute so the modal can
+  # pull it without scraping the DOM (which mis-fires on some card layouts and
+  # ends up showing the price). `strip_html` keeps any rich-text content as
+  # plain text; `escape` makes it safe inside an HTML attribute.
+  assign flavor_notes = product.metafields.custom.card_flavor_notes.value | strip_html | strip
 -%}
 
 <div
   class="product-quick-add-block spacing-style{% unless should_inherit %} color-{{ block_settings.color_scheme }}{% endunless %}"
   style="{% render 'spacing-style', settings: block_settings %}"
+  data-bundle-trigger="{{ mode_value }}"
+  data-product-flavor-notes="{{ flavor_notes | escape }}"
   {{ block.shopify_attributes }}
 >
   {%- unless product == blank -%}
@@ -96,6 +112,18 @@
     {
       "type": "paragraph",
       "content": "Renders a Choose or Add button that opens the quick-add modal. Only active on products assigned to a card (works inside product card blocks)."
+    },
+    {
+      "type": "select",
+      "id": "mode",
+      "label": "Mode",
+      "info": "\"Auto\" opens the bundle popup when the block is inside a Build-a-box section, the standard cart popup otherwise. Use \"Normal\" or \"Bundle\" to override.",
+      "options": [
+        { "value": "auto", "label": "Auto (recommended)" },
+        { "value": "normal", "label": "Normal (add to cart)" },
+        { "value": "bundle", "label": "Add to bundle" }
+      ],
+      "default": "auto"
     },
     {
       "type": "select",

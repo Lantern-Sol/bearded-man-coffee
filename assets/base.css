@@ -486,6 +486,15 @@ p:empty {
   grid-column: 2;
 }
 
+/* Narrow sections cap the center column at 720px (still shrinks to viewport on small screens). */
+.section--narrow {
+  --full-page-grid-central-column-width: min(720px, calc(100% - var(--page-margin) * 2));
+}
+
+.section--narrow>* {
+  grid-column: 2;
+}
+
 /* For full-width sections, content spans all columns */
 .section--full-width>* {
   grid-column: 1 / -1;
@@ -1691,7 +1700,7 @@ summary {
   align-items: center;
   cursor: pointer;
   list-style: none;
-  padding-block: var(--padding-sm);
+  padding-block: var(--padding-lg);
 }
 
 summary:hover {
