@@ -81,7 +81,6 @@
     flex-direction: column;
     gap: 0.5rem;
     justify-content: center;
-    flex: 1;
   }
 
   .blog-post-item .blog-post-card__image-container,
@@ -152,9 +151,10 @@
     padding-block-start: 0.75rem;
     width: fit-content;
     display: inline-flex;
+    padding-block: 14px;
 
     @media screen and (max-width: 749px) {
-      margin-block-start: 1rem;
+      padding-block-start: 1rem;
     }
   }
 {% endstylesheet %}
