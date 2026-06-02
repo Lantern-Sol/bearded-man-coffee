@@ -294,6 +294,25 @@
    */
   .blog-post-item {
     grid-column: span var(--col-span);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-post-item:not(.blog-post-item--horizontal) > .shopify-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-post-item:not(.blog-post-item--horizontal) .blog-post-card {
+    flex: 1;
+  }
+
+  .blog-post-item:not(.blog-post-item--horizontal) .blog-post-card__content-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   /**
