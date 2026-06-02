@@ -192,6 +192,24 @@
     }
   }
 
+  product-card:not(.product-card--horizontal) {
+    height: 100%;
+  }
+
+  product-card:not(.product-card--horizontal) > .product-card__content {
+    height: 100%;
+  }
+
+  product-card:not(.product-card--horizontal) > .product-card__content > .shopify-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  product-card:not(.product-card--horizontal) .product-quick-add-block {
+    margin-block-start: auto;
+  }
+
   /* When cards inside a resource list are horizontal, force the parent grid
      to a single column so cards stack vertically instead of fighting for
      space side-by-side. */
