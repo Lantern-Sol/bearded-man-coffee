@@ -517,7 +517,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h6>mountain berry is here</h6>",
+            "text": "<h6>Fu Man Chai is here</h6>",
             "mobile_text": "",
             "width": "fit-content",
             "max_width": "none",
