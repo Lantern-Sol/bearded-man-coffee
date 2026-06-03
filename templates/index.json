@@ -2242,7 +2242,7 @@
           "type": "button",
           "settings": {
             "label": "Start building",
-            "link": "shopify://collections/all",
+            "link": "shopify://pages/subscription",
             "open_in_new_tab": false,
             "style_class": "button",
             "width": "fit-content",
