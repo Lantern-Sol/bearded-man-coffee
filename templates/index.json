@@ -2513,6 +2513,8 @@
           "infusion",
           "seasonal"
         ],
+        "override_collection": "seasonal",
+        "override_url": "shopify://products/mountain-berry",
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "columns": 4,
