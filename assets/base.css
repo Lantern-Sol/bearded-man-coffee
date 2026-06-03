@@ -16,6 +16,12 @@ main#MainContent {
   overflow-x: hidden;
 }
 
+/* Override for PDP: clip doesn't create a scroll container,
+   allowing position: sticky to work on the media gallery. */
+main#MainContent:has(.product-information) {
+  overflow-x: clip;
+}
+
 :root {
   --hover-lift-amount: 4px;
   --hover-scale-amount: 1.03;
@@ -4755,6 +4761,13 @@ slideshow-controls[thumbnails][pagination-position='left'] .slideshow-controls__
  */
 .media-gallery--carousel {
   position: relative;
+}
+
+@media screen and (min-width: 750px) {
+  .media-gallery--carousel.sticky-content {
+    position: sticky;
+    top: var(--sticky-header-offset, var(--header-height, 0px));
+  }
 }
 
 .media-gallery--carousel slideshow-container {

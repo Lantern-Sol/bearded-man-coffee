@@ -545,7 +545,7 @@
                 "recommendation_type": "complementary",
                 "layout_type": "grid",
                 "carousel_on_mobile": false,
-                "max_products": 4,
+                "max_products": 2,
                 "columns_gap": 16,
                 "rows_gap": 16,
                 "icons_style": "arrow",
