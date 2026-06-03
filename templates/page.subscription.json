@@ -3013,7 +3013,7 @@
                 "text_Ew8GkX": {
                   "type": "text",
                   "settings": {
-                    "text": "",
+                    "text": "<p>Yes! As long as your upcoming order hasn't shipped yet, you can add or remove products at any time through the subscription portal. Simply click the <a href=\"https://vwzfnb-90.myshopify.com/apps/subscriptions\" target=\"_blank\" title=\"https://vwzfnb-90.myshopify.com/apps/subscriptions\"><strong>Manage Subscription</strong></a> link to access your account and customize your next shipment.</p>",
                     "mobile_text": "",
                     "width": "100%",
                     "max_width": "normal",
@@ -3069,7 +3069,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "",
+                    "text": "<p>We want your subscription to fit your needs, so you're free to swap products before your order ships. Simply log into the subscription portal using the <a href=\"https://vwzfnb-90.myshopify.com/apps/subscriptions\" target=\"_blank\" title=\"https://vwzfnb-90.myshopify.com/apps/subscriptions\"><strong>Manage Subscription</strong></a> link and make any desired changes to your upcoming order.</p>",
                     "mobile_text": "",
                     "width": "100%",
                     "max_width": "normal",
@@ -3125,7 +3125,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "",
+                    "text": "<p>Need a little extra time before your next delivery? No problem. You can easily skip or pause an upcoming shipment through the subscription portal. Just click the <a href=\"https://vwzfnb-90.myshopify.com/apps/subscriptions\" target=\"_blank\" title=\"https://vwzfnb-90.myshopify.com/apps/subscriptions\"><strong>Manage Subscription</strong></a> link and select the option that works best for you.</p>",
                     "mobile_text": "",
                     "width": "100%",
                     "max_width": "normal",
@@ -3181,7 +3181,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "",
+                    "text": "<p>While we're sad to see you go you can cancel your subscription at any time through the subscription portal. Simply click the <a href=\"https://vwzfnb-90.myshopify.com/apps/subscriptions\" target=\"_blank\" title=\"https://vwzfnb-90.myshopify.com/apps/subscriptions\"><strong>Manage Subscription</strong></a> link and press \"cancel subscription\" then follow the prompts to confirm your request. </p>",
                     "mobile_text": "",
                     "width": "100%",
                     "max_width": "normal",
