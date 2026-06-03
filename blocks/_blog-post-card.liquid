@@ -147,12 +147,14 @@
 
   .blog-post-card__button {
     align-self: var(--button-self-align, flex-start);
-    margin-block-start: 0.75rem;
+    margin-block-start: auto;
+    padding-block-start: 0.75rem;
     width: fit-content;
     display: inline-flex;
+    padding-block: 14px;
 
     @media screen and (max-width: 749px) {
-      margin-block-start: 1rem;
+      padding-block-start: 1rem;
     }
   }
 {% endstylesheet %}

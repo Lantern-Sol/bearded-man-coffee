@@ -222,7 +222,7 @@
           "name": "t:names.button",
           "settings": {
             "label": "subscribe now",
-            "link": "shopify://collections/coffee",
+            "link": "#subscribe",
             "open_in_new_tab": false,
             "style_class": "button",
             "width": "fit-content",
@@ -2860,7 +2860,7 @@
       ],
       "name": "Build a box",
       "settings": {
-        "min_items": 4,
+        "min_items": 2,
         "max_items": 4,
         "bar_title": "YOUR BUNDLE",
         "bar_cta": "ADD BUNDLE TO CART",
@@ -3384,7 +3384,7 @@
           "name": "t:names.button",
           "settings": {
             "label": "contact us",
-            "link": "shopify://collections/coffee",
+            "link": "shopify://pages/contact",
             "open_in_new_tab": false,
             "style_class": "button",
             "width": "fit-content",

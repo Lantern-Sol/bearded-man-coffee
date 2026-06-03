@@ -431,7 +431,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Shop COFFEE",
-                "link": "shopify://collections/all",
+                "link": "shopify://collections/coffee",
                 "open_in_new_tab": false,
                 "style_class": "button",
                 "width": "fit-content",
@@ -446,7 +446,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "SUBSCRIBE & SAVE",
-                "link": "shopify://collections/all",
+                "link": "shopify://pages/subscription",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
@@ -600,7 +600,7 @@
           "name": "t:names.button",
           "settings": {
             "label": "Shop now",
-            "link": "shopify://collections/all",
+            "link": "shopify://products/mountain-berry",
             "open_in_new_tab": false,
             "style_class": "button",
             "width": "fit-content",
@@ -848,6 +848,7 @@
                   "type": "product-quick-add",
                   "name": "Quick add",
                   "settings": {
+                    "mode": "auto",
                     "style_class": "button",
                     "show_icon": false,
                     "inherit_color_scheme": true,
@@ -1047,6 +1048,7 @@
                   "type": "product-quick-add",
                   "name": "Quick add",
                   "settings": {
+                    "mode": "auto",
                     "style_class": "button",
                     "show_icon": false,
                     "inherit_color_scheme": true,
@@ -1246,6 +1248,7 @@
                   "type": "product-quick-add",
                   "name": "Quick add",
                   "settings": {
+                    "mode": "auto",
                     "style_class": "button",
                     "show_icon": false,
                     "inherit_color_scheme": true,
@@ -1554,7 +1557,7 @@
               "type": "button",
               "settings": {
                 "label": "Learn more",
-                "link": "shopify://collections/all",
+                "link": "shopify://pages/our-story",
                 "open_in_new_tab": false,
                 "style_class": "button",
                 "width": "fit-content",
@@ -2239,7 +2242,7 @@
           "type": "button",
           "settings": {
             "label": "Start building",
-            "link": "shopify://collections/all",
+            "link": "shopify://pages/subscription",
             "open_in_new_tab": false,
             "style_class": "button",
             "width": "fit-content",
@@ -2706,7 +2709,7 @@
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
-                "link": "",
+                "link": "https://www.google.com/maps/place/Bearded+Man+Coffee/@39.3740376,-104.86165,17z/data=!4m6!3m5!1s0x876c82487e955555:0x9e0ad93a44bff3e8!8m2!3d39.3740339!4d-104.8590521!16s%2Fg%2F11hckrhh_1?entry=tts&g_ep=EgoyMDI2MDUzMS4wIPu8ASoASAFQAw%3D%3D&skid=10ae2938-8478-44bf-aeac-3a57ffa32812",
                 "open_in_new_tab": false,
                 "placeholder": "",
                 "padding-block-start": 40,
@@ -2858,7 +2861,7 @@
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
-                "link": "",
+                "link": "https://www.google.com/maps/place/Bearded+Man+Coffee/@39.3740376,-104.86165,17z/data=!4m6!3m5!1s0x876c82487e955555:0x9e0ad93a44bff3e8!8m2!3d39.3740339!4d-104.8590521!16s%2Fg%2F11hckrhh_1?entry=tts&g_ep=EgoyMDI2MDUzMS4wIPu8ASoASAFQAw%3D%3D&skid=10ae2938-8478-44bf-aeac-3a57ffa32812",
                 "open_in_new_tab": false,
                 "placeholder": "",
                 "padding-block-start": 40,
@@ -3010,7 +3013,7 @@
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
                 "gradient_direction": "to top",
-                "link": "",
+                "link": "https://www.google.com/maps/place/Bearded+Man+Coffee/@39.3740376,-104.86165,17z/data=!4m6!3m5!1s0x876c82487e955555:0x9e0ad93a44bff3e8!8m2!3d39.3740339!4d-104.8590521!16s%2Fg%2F11hckrhh_1?entry=tts&g_ep=EgoyMDI2MDUzMS4wIPu8ASoASAFQAw%3D%3D&skid=10ae2938-8478-44bf-aeac-3a57ffa32812",
                 "open_in_new_tab": false,
                 "placeholder": "",
                 "padding-block-start": 40,
