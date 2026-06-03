@@ -3384,7 +3384,7 @@
           "name": "t:names.button",
           "settings": {
             "label": "contact us",
-            "link": "shopify://collections/coffee",
+            "link": "shopify://pages/contact",
             "open_in_new_tab": false,
             "style_class": "button",
             "width": "fit-content",
