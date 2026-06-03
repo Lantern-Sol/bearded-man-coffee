@@ -58,10 +58,18 @@
   "
   {{- block.shopify_attributes -}}
 >
+  {%- liquid
+    assign card_url = collection.url
+    if section.settings.override_collection != blank and section.settings.override_url != blank
+      if collection.id == section.settings.override_collection.id
+        assign card_url = section.settings.override_url
+      endif
+    endif
+  -%}
   <a
     class="collection-card__link"
     {% unless onboarding %}
-      href="{{ collection.url }}"
+      href="{{ card_url }}"
     {% endunless %}
   >
     <span class="visually-hidden">{{ collection.title }}</span>
