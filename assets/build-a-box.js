@@ -216,7 +216,12 @@ class BuildABoxSection extends Component {
     const options = Array.isArray(productData?.options) ? productData.options : [];
 
     // State held on the modal element so re-renders can read it.
-    const initialVariant = variants.find((v) => v.available) || variants[0] || null;
+    // Prefer the first available "12 oz" variant (matches PDP coffee logic).
+    const initialVariant =
+      variants.find((v) => v.available && (v.option1 === '12 oz' || v.option2 === '12 oz' || v.option3 === '12 oz')) ||
+      variants.find((v) => v.available) ||
+      variants[0] ||
+      null;
     /** @type {(string | null)[]} */
     const selectedValues = [
       initialVariant?.option1 ?? null,
