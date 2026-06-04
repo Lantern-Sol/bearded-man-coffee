@@ -111,6 +111,7 @@
                 {%- assign rendered_count = rendered_count | plus: 1 -%}
               {%- endunless -%}
             {% endfor %}
+            {%- assign product_count = rendered_count -%}
           {% else %}
             {% for i in (1..max_items) %}
               <div class="collection-grid-block__slide resource-list__item">
@@ -164,6 +165,9 @@
             {%- assign rendered_count = rendered_count | plus: 1 -%}
           {%- endunless -%}
         {% endfor %}
+        {%- if rendered_count == 0 -%}
+          <p>{{ 'collections.general.no_matches' | t | default: 'No products found.' }}</p>
+        {%- endif -%}
       {% else %}
         {% for i in (1..max_items) %}
           <div class="resource-list__item">
