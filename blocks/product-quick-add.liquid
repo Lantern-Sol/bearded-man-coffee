@@ -18,7 +18,7 @@
   # pull it without scraping the DOM (which mis-fires on some card layouts and
   # ends up showing the price). `strip_html` keeps any rich-text content as
   # plain text; `escape` makes it safe inside an HTML attribute.
-  assign flavor_notes = product.metafields.custom.card_flavor_notes.value | strip_html | strip
+  assign flavor_notes = product.metafields.custom.card_flavor_notes.value | strip_html | strip | upcase
 -%}
 
 <div
