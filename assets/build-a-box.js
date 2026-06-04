@@ -1610,7 +1610,7 @@ if (!document.getElementById(STYLE_ID)) {
     }
 
     .bab-modal__commitment-note {
-      font-size: 12px;
+      font-size: 14px;
       color: var(--color-foreground, #3d3a35);
       opacity: 0.7;
       margin: 4px 0 0;
