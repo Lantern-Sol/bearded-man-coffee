@@ -2311,6 +2311,33 @@
       },
       {
         "type": "header",
+        "content": "Free gift tier"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_free_gift_enabled",
+        "label": "Show free gift progress tier",
+        "info": "When enabled, shows a second tier on the progress bar. A discount code is auto-applied at checkout when the threshold is met.",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_free_gift_threshold",
+        "label": "Free gift threshold",
+        "info": "Amount in your store currency (e.g. 100 for $100).",
+        "default": "100",
+        "visible_if": "{{ settings.cart_free_gift_enabled == true }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_free_gift_discount_code",
+        "label": "Discount code",
+        "info": "The discount code to auto-apply when the gift threshold is met (e.g. BEARDED-GIFT).",
+        "default": "BEARDED-GIFT",
+        "visible_if": "{{ settings.cart_free_gift_enabled == true }}"
+      },
+      {
+        "type": "header",
         "content": "Cart upsell"
       },
       {

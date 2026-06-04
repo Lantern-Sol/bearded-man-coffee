@@ -1,23 +1,60 @@
 {%- doc -%}
-  Free shipping progress bar shown at the top of the cart drawer.
-  Reads `settings.cart_free_shipping_threshold` (in store currency major units).
+  Two-tier progress bar shown at the top of the cart drawer.
+  Tier 1: Free shipping  — reads `settings.cart_free_shipping_threshold`.
+  Tier 2: Free gift       — reads `settings.cart_free_gift_threshold` + `settings.cart_free_gift_discount_code`.
 {%- enddoc -%}
 
 {% liquid
-  assign threshold_input = settings.cart_free_shipping_threshold | default: '50'
-  assign threshold_cents = threshold_input | times: 100.0 | round
-
-  if threshold_cents <= 0
-    assign threshold_cents = 5000
+  # ── Tier 1: free shipping ──
+  assign shipping_threshold_input = settings.cart_free_shipping_threshold | default: '50'
+  assign shipping_threshold_cents = shipping_threshold_input | times: 100.0 | round
+  if shipping_threshold_cents <= 0
+    assign shipping_threshold_cents = 5000
   endif
 
-  assign current = cart.total_price
-  assign remaining_cents = threshold_cents | minus: current
-  if remaining_cents < 0
-    assign remaining_cents = 0
+  # ── Tier 2: free gift ──
+  assign gift_enabled = settings.cart_free_gift_enabled
+  assign gift_threshold_input = settings.cart_free_gift_threshold | default: '100'
+  assign gift_threshold_cents = gift_threshold_input | times: 100.0 | round
+  if gift_threshold_cents <= 0
+    assign gift_threshold_cents = 10000
+  endif
+  assign gift_discount_code = settings.cart_free_gift_discount_code | default: 'BEARDED-GIFT'
+
+  # ── Current cart value ──
+  # Use original_total_price (before discounts) so the gift-tier discount ($0.01)
+  # doesn't create a feedback loop that drops the cart below the threshold.
+  assign current = cart.original_total_price
+
+  # ── Shipping tier calculations ──
+  assign shipping_remaining = shipping_threshold_cents | minus: current
+  if shipping_remaining < 0
+    assign shipping_remaining = 0
+  endif
+  assign shipping_met = false
+  if cart.item_count > 0 and shipping_remaining == 0
+    assign shipping_met = true
   endif
 
-  assign progress_percent = current | times: 1.0 | divided_by: threshold_cents | times: 100 | round
+  # ── Gift tier calculations ──
+  assign gift_remaining = gift_threshold_cents | minus: current
+  if gift_remaining < 0
+    assign gift_remaining = 0
+  endif
+  assign gift_met = false
+  if cart.item_count > 0 and gift_remaining == 0
+    assign gift_met = true
+  endif
+
+  # ── Progress bar ──
+  # The bar spans from $0 to the higher of the two thresholds.
+  if gift_enabled
+    assign bar_max = gift_threshold_cents
+  else
+    assign bar_max = shipping_threshold_cents
+  endif
+
+  assign progress_percent = current | times: 1.0 | divided_by: bar_max | times: 100 | round
   if progress_percent > 100
     assign progress_percent = 100
   endif
@@ -25,21 +62,35 @@
     assign progress_percent = 0
   endif
 
-  assign goal_met = false
-  if cart.item_count > 0 and remaining_cents == 0
-    assign goal_met = true
+  # Position of the shipping marker on the bar (as a %).
+  if gift_enabled
+    assign shipping_marker_pct = shipping_threshold_cents | times: 1.0 | divided_by: bar_max | times: 100 | round
+  else
+    assign shipping_marker_pct = 100
   endif
 %}
 
-<div class="cart-shipping-progress">
+<div
+  class="cart-shipping-progress"
+  data-gift-enabled="{{ gift_enabled }}"
+  data-gift-threshold-cents="{{ gift_threshold_cents }}"
+  data-gift-discount-code="{{ gift_discount_code | escape }}"
+  data-gift-met="{{ gift_met }}"
+>
+  {%- comment -%} ── Text messages ── {%- endcomment -%}
   <p class="cart-shipping-progress__text">
-    {%- if goal_met -%}
+    {%- if gift_enabled and gift_met -%}
+      <span>You&rsquo;ve unlocked </span><strong>free shipping</strong><span> + a </span><strong>free gift! 🎁</strong>
+    {%- elsif shipping_met and gift_enabled -%}
+      <span>Free shipping unlocked! Add </span><strong>{{ gift_remaining | money }}</strong><span> more for a </span><strong>free gift! 🎁</strong>
+    {%- elsif shipping_met -%}
       <span>You&rsquo;ve unlocked </span><strong>free shipping!</strong>
     {%- else -%}
-      <span>Add </span><strong>{{ remaining_cents | money }}</strong><span> to your order to </span><strong>unlock free shipping!</strong>
+      <span>Add </span><strong>{{ shipping_remaining | money }}</strong><span> to your order to </span><strong>unlock free shipping!</strong>
     {%- endif -%}
   </p>
 
+  {%- comment -%} ── Progress bar ── {%- endcomment -%}
   <div
     class="cart-shipping-progress__bar"
     role="progressbar"
@@ -51,7 +102,12 @@
     <span class="cart-shipping-progress__track"></span>
     <span class="cart-shipping-progress__fill"></span>
 
-    <span class="cart-shipping-progress__icon cart-shipping-progress__icon--truck" aria-hidden="true">
+    {%- comment -%} Truck icon — fixed at shipping milestone {%- endcomment -%}
+    <span
+      class="cart-shipping-progress__icon cart-shipping-progress__icon--truck{% if shipping_met %} cart-shipping-progress__icon--reached{% endif %}"
+      style="left: {{ shipping_marker_pct }}%;"
+      aria-hidden="true"
+    >
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10" fill="none">
         <path d="M1 1.5h7v5.25H1zM8 3h2.5l2 2v1.75H8z" stroke="currentColor" stroke-width="0.8" stroke-linejoin="round"/>
         <circle cx="3.25" cy="7.75" r="1" fill="currentColor"/>
@@ -59,7 +115,8 @@
       </svg>
     </span>
 
-    <span class="cart-shipping-progress__icon cart-shipping-progress__icon--gift" aria-hidden="true">
+    {%- comment -%} Gift icon — fixed at 100% {%- endcomment -%}
+    <span class="cart-shipping-progress__icon cart-shipping-progress__icon--gift{% if gift_met %} cart-shipping-progress__icon--reached{% endif %}" aria-hidden="true">
       <svg xmlns="http://www.w3.org/2000/svg" width="13" height="10" viewBox="0 0 13 10" fill="none">
         <path d="M1 4h11v5.5H1zM6.5 4v5.5M1 2h11v2H1zM6.5 2c-1-1.4 0-2 .8-1.4.6.5.4 1.4-.8 1.4Zm0 0c1-1.4 0-2-.8-1.4-.6.5-.4 1.4.8 1.4Z" stroke="currentColor" stroke-width="0.8" stroke-linejoin="round"/>
       </svg>
@@ -67,12 +124,67 @@
   </div>
 </div>
 
+{%- comment -%} ── Auto-apply / remove gift discount code ── {%- endcomment -%}
+{%- if gift_enabled -%}
+<script>
+  (function() {
+    if (window.__giftTierInit) return;
+    window.__giftTierInit = true;
+
+    var STORAGE_KEY = 'bearded_gift_applied';
+    var applying = false;
+
+    function sync() {
+      if (applying) return;
+      var el = document.querySelector('.cart-shipping-progress[data-gift-enabled="true"]');
+      if (!el) return;
+
+      var code = el.dataset.giftDiscountCode;
+      var giftMet = el.dataset.giftMet === 'true';
+      var wasApplied = sessionStorage.getItem(STORAGE_KEY) === 'true';
+
+      if (giftMet && !wasApplied) {
+        applying = true;
+        fetch('/discount/' + encodeURIComponent(code))
+          .then(function() { sessionStorage.setItem(STORAGE_KEY, 'true'); })
+          .catch(function() {})
+          .finally(function() { applying = false; });
+      } else if (!giftMet && wasApplied) {
+        applying = true;
+        fetch('/discount/clear')
+          .then(function() { sessionStorage.removeItem(STORAGE_KEY); })
+          .catch(function() {})
+          .finally(function() { applying = false; });
+      }
+    }
+
+    // Run on initial load
+    sync();
+
+    // Re-run whenever the cart drawer re-renders (morphSection updates data attributes)
+    var observer = new MutationObserver(function() { sync(); });
+    var target = document.querySelector('cart-items-component') || document.body;
+    observer.observe(target, { subtree: true, attributes: true, attributeFilter: ['data-gift-met'] });
+
+    // Also sync when the cart updates (items added/removed/changed)
+    document.addEventListener('theme:cart:update', function() {
+      setTimeout(sync, 500);
+    });
+    document.addEventListener('theme:cart:add', function() {
+      setTimeout(sync, 500);
+    });
+  })();
+</script>
+{%- endif -%}
+
 {% stylesheet %}
   .cart-shipping-progress {
     --progress-track-color: #f2edd7;
     --progress-fill-color: #c7893a;
     --progress-icon-bg: #f2edd7;
     --progress-icon-color: #3d3a35;
+    --progress-icon-reached-bg: #c7893a;
+    --progress-icon-reached-color: #fff;
 
     display: flex;
     flex-direction: column;
@@ -84,7 +196,7 @@
 
   .cart-shipping-progress__text {
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.4;
     color: #1b1b1b;
     text-align: center;
@@ -134,11 +246,17 @@
     color: var(--progress-icon-color);
     transform: translate(-50%, -50%);
     pointer-events: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .cart-shipping-progress__icon--reached {
+    background-color: var(--progress-icon-reached-bg);
+    border-color: var(--progress-icon-reached-bg);
+    color: var(--progress-icon-reached-color);
   }
 
   .cart-shipping-progress__icon--truck {
-    left: var(--progress, 0%);
-    transition: left 0.4s ease;
+    z-index: 1;
   }
 
   .cart-shipping-progress__icon--gift {
