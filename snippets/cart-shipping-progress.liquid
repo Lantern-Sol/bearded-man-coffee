@@ -134,6 +134,23 @@
     var STORAGE_KEY = 'bearded_gift_applied';
     var applying = false;
 
+    function refreshCart() {
+      var sections = [];
+      document.querySelectorAll('cart-items-component').forEach(function(el) {
+        if (el.dataset.sectionId) sections.push(el.dataset.sectionId);
+      });
+      if (!sections.length) return Promise.resolve();
+      return fetch('/cart/update.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ sections: sections.join(',') })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        document.dispatchEvent(new CustomEvent('theme:cart:update', { detail: data }));
+      });
+    }
+
     function sync() {
       if (applying) return;
       var el = document.querySelector('.cart-shipping-progress[data-gift-enabled="true"]');
@@ -146,13 +163,19 @@
       if (giftMet && !wasApplied) {
         applying = true;
         fetch('/discount/' + encodeURIComponent(code))
-          .then(function() { sessionStorage.setItem(STORAGE_KEY, 'true'); })
+          .then(function() {
+            sessionStorage.setItem(STORAGE_KEY, 'true');
+            return refreshCart();
+          })
           .catch(function() {})
           .finally(function() { applying = false; });
       } else if (!giftMet && wasApplied) {
         applying = true;
         fetch('/discount/clear')
-          .then(function() { sessionStorage.removeItem(STORAGE_KEY); })
+          .then(function() {
+            sessionStorage.removeItem(STORAGE_KEY);
+            return refreshCart();
+          })
           .catch(function() {})
           .finally(function() { applying = false; });
       }
@@ -161,10 +184,10 @@
     // Run on initial load
     sync();
 
-    // Re-run whenever the cart drawer re-renders (morphSection updates data attributes)
+    // Re-run whenever the cart drawer re-renders (morphSection replaces DOM nodes)
     var observer = new MutationObserver(function() { sync(); });
     var target = document.querySelector('cart-items-component') || document.body;
-    observer.observe(target, { subtree: true, attributes: true, attributeFilter: ['data-gift-met'] });
+    observer.observe(target, { subtree: true, childList: true });
 
     // Also sync when the cart updates (items added/removed/changed)
     document.addEventListener('theme:cart:update', function() {
