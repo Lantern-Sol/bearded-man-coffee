@@ -231,6 +231,51 @@
       "visible_if": "{{ block.settings.toggle_overlay and block.settings.overlay_style == 'gradient' }}"
     },
     {
+      "type": "header",
+      "content": "Content text & backdrop"
+    },
+    {
+      "type": "color",
+      "id": "content_text_color",
+      "label": "Text color override"
+    },
+    {
+      "type": "checkbox",
+      "id": "content_backdrop",
+      "label": "Show content backdrop",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "content_backdrop_color",
+      "label": "Backdrop color",
+      "alpha": true,
+      "default": "#000000B3",
+      "visible_if": "{{ block.settings.content_backdrop }}"
+    },
+    {
+      "type": "range",
+      "id": "content_backdrop_blur",
+      "label": "Backdrop blur",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 4,
+      "visible_if": "{{ block.settings.content_backdrop }}"
+    },
+    {
+      "type": "range",
+      "id": "content_backdrop_radius",
+      "label": "Backdrop corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 8,
+      "visible_if": "{{ block.settings.content_backdrop }}"
+    },
+    {
       "type": "range",
       "id": "border_radius",
       "label": "t:settings.border_radius",

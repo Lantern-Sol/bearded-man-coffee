@@ -68,8 +68,17 @@
       layout-panel-flex
       layout-panel-flex--{{ settings.content_direction | default: 'column' }}
       {% if settings.vertical_on_mobile %} mobile-column{% endif %}
+      {% if settings.content_backdrop %} group-block-content--backdrop{% endif %}
     "
-    style="{% render 'layout-panel-style', settings: settings %}"
+    style="
+      {% render 'layout-panel-style', settings: settings %}
+      {% if settings.content_text_color != blank %}--color-foreground: {{ settings.content_text_color }}; color: {{ settings.content_text_color }};{% endif %}
+      {% if settings.content_backdrop %}
+        --content-backdrop-color: {{ settings.content_backdrop_color | default: '#000000B3' }};
+        --content-backdrop-blur: {{ settings.content_backdrop_blur | default: 4 }}px;
+        --content-backdrop-radius: {{ settings.content_backdrop_radius | default: 8 }}px;
+      {% endif %}
+    "
   >
     {{- children -}}
   </div>
@@ -92,5 +101,19 @@
   /* Needs the .group-block__link ~ to be specific enough to take effect. */
   .group-block__link ~ .group-block-content--design-mode {
     pointer-events: auto;
+  }
+
+  .group-block-content--backdrop {
+    background: var(--content-backdrop-color);
+    backdrop-filter: blur(var(--content-backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--content-backdrop-blur));
+    border-radius: var(--content-backdrop-radius);
+    padding: var(--padding-lg);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    height: auto;
   }
 {% endstylesheet %}
