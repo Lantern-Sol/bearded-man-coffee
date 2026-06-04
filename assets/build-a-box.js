@@ -236,7 +236,7 @@ class BuildABoxSection extends Component {
     // ctx.flavorNotes comes from `data-product-flavor-notes` (rendered by the
     // Quick-add block from `product.metafields.custom.card_flavor_notes`).
     // Fall back to DOM scraping only if the attribute wasn't there.
-    const flavorNotes = ctx.flavorNotes || this.#flavorNotesFromCard(ctx) || '';
+    const flavorNotes = (ctx.flavorNotes || this.#flavorNotesFromCard(ctx) || '').toUpperCase();
     const roastBadge = this.#roastBadgeFromCard(ctx);
     const imageSrcs = this.#productImageSrcs(productData, ctx);
 
@@ -669,6 +669,7 @@ class BuildABoxSection extends Component {
                     ${planOptionsHTML}
                   </div>
                 </div>
+                <p class="bab-modal__commitment-note">Minimum 2 Delivery Commitment</p>
                 <a href="#" class="bab-modal__details" tabindex="-1" aria-hidden="true" onclick="event.preventDefault();return false;">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                     <path d="M2.25 6L9 9.75L15.75 6L9 2.25L2.25 6Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" />
@@ -1606,6 +1607,14 @@ if (!document.getElementById(STYLE_ID)) {
       font-weight: 700;
       line-height: 1;
       margin: 0 0 4px;
+    }
+
+    .bab-modal__commitment-note {
+      font-size: 14px;
+      color: var(--color-foreground, #3d3a35);
+      opacity: 0.7;
+      margin: 4px 0 0;
+      font-style: italic;
     }
 
     .bab-modal__dropdown {
