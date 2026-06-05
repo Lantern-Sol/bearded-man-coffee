@@ -141,26 +141,30 @@
           "settings": {
             "width": "fit-content",
             "max_width": "normal",
+            "alignment": "left",
             "type_preset": "h4",
             "color": "var(--color-foreground)",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
-          }
+          },
+          "blocks": {}
         },
         "collection_description_dyn": {
           "type": "collection-description",
           "settings": {
             "width": "fit-content",
             "max_width": "none",
+            "alignment": "left",
             "type_preset": "rte",
             "color": "var(--color-foreground)",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
-          }
+          },
+          "blocks": {}
         }
       },
       "block_order": [
@@ -252,7 +256,7 @@
             "gradient_direction": "to top",
             "content_text_color": "",
             "content_backdrop": true,
-            "content_backdrop_color": "#0000003e",
+            "content_backdrop_color": "#0000003d",
             "content_backdrop_blur": 4,
             "content_backdrop_radius": 8,
             "border_radius": 0,
@@ -393,7 +397,7 @@
             "gradient_direction": "to top",
             "content_text_color": "",
             "content_backdrop": true,
-            "content_backdrop_color": "#0000003e",
+            "content_backdrop_color": "#0000003d",
             "content_backdrop_blur": 4,
             "content_backdrop_radius": 8,
             "border_radius": 0,
@@ -450,7 +454,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Our season coffee with bold berry flavor, built for spring. Try it hot or iced.</p>",
+                "text": "<p>Our newest seasonal. Spiced apple coffee with warm chai spices. Here for a limited time.</p>",
                 "mobile_text": "",
                 "width": "fit-content",
                 "max_width": "normal",
