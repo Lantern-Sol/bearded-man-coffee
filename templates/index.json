@@ -558,8 +558,8 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>our season coffe with Bold berry flavor, built for spring. Try it hot or iced.</p>",
-            "mobile_text": "<p>our season coffe with Bold berry flavor, built for spring. <br/>Try it hot or iced.</p>",
+            "text": "<p>Our newest seasonal. Spiced apple coffee with warm chai spices.</p>",
+            "mobile_text": "<p>Our newest seasonal. Spiced apple coffee with warm chai spices.</p>",
             "width": "fit-content",
             "max_width": "none",
             "alignment": "left",
