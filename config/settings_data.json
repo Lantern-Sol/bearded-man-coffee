@@ -80,6 +80,7 @@
     "show_add_discount_code": false,
     "show_installments": false,
     "show_accelerated_checkout_buttons": false,
+    "cart_free_shipping_threshold": "75",
     "drawer_drop_shadow": false,
     "icon_stroke": "thin",
     "input_border_width": 1,
