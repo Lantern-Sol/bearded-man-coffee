@@ -5415,7 +5415,7 @@ text-component {
 }
 
 .product-recommendations>* {
-  border: 1px solid #F2EDD7;
+  border: none;
 }
 
 .product-recommendations__skeleton-item {

@@ -59,29 +59,31 @@
         -%}
 
         {% for product in collection.products %}
-          {%- assign slot = slot | plus: 1 -%}
-          {%- if paginate.current_page == 1 -%}
-            {%- for skip in (1..20) -%}
-              {%- assign token = '|' | append: slot | append: '|' -%}
-              {%- if card_positions contains token -%}
-                {%- assign slot = slot | plus: 1 -%}
-              {%- else -%}
-                {%- break -%}
-              {%- endif -%}
-            {%- endfor -%}
+          {%- if product.available -%}
+            {%- assign slot = slot | plus: 1 -%}
+            {%- if paginate.current_page == 1 -%}
+              {%- for skip in (1..20) -%}
+                {%- assign token = '|' | append: slot | append: '|' -%}
+                {%- if card_positions contains token -%}
+                  {%- assign slot = slot | plus: 1 -%}
+                {%- else -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+            <li
+              id="{{ section.id }}-{{ product.id }}"
+              class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+              style="order: {{ slot }};"
+              data-page="{{ paginate.current_page }}"
+              data-product-id="{{ product.id }}"
+              ref="cards[]"
+            >
+              {% # theme-check-disable %}
+              {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
+              {% # theme-check-enable %}
+            </li>
           {%- endif -%}
-          <li
-            id="{{ section.id }}-{{ product.id }}"
-            class="product-grid__item product-grid__item--{{ forloop.index0 }}"
-            style="order: {{ slot }};"
-            data-page="{{ paginate.current_page }}"
-            data-product-id="{{ product.id }}"
-            ref="cards[]"
-          >
-            {% # theme-check-disable %}
-            {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: product %}
-            {% # theme-check-enable %}
-          </li>
         {% endfor %}
 
         {%- if paginate.current_page == 1 -%}
@@ -111,6 +113,7 @@
 
   .product-grid__item--featured-card {
     display: flex;
+    min-height: 31.75rem;
   }
 
   .product-grid__item--featured-card > .collection-featured-card,
