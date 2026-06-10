@@ -103,12 +103,14 @@
             {% for product in block.settings.collection.products %}
               {%- if rendered_count >= max_items -%}{%- break -%}{%- endif -%}
               {%- unless product.tags contains 'seasonal' -%}
-                <div class="collection-grid-block__slide resource-list__item">
-                  {% # theme-check-disable UniqueStaticBlockId %}
-                    {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: product %}
-                  {% # theme-check-enable UniqueStaticBlockId %}
-                </div>
-                {%- assign rendered_count = rendered_count | plus: 1 -%}
+                {%- if product.available -%}
+                  <div class="collection-grid-block__slide resource-list__item">
+                    {% # theme-check-disable UniqueStaticBlockId %}
+                      {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: product %}
+                    {% # theme-check-enable UniqueStaticBlockId %}
+                  </div>
+                  {%- assign rendered_count = rendered_count | plus: 1 -%}
+                {%- endif -%}
               {%- endunless -%}
             {% endfor %}
             {%- assign product_count = rendered_count -%}
@@ -157,12 +159,14 @@
         {% for product in block.settings.collection.products %}
           {%- if rendered_count >= max_items -%}{%- break -%}{%- endif -%}
           {%- unless product.tags contains 'seasonal' -%}
-            <div class="resource-list__item">
-              {% # theme-check-disable UniqueStaticBlockId %}
-                {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: product %}
-              {% # theme-check-enable UniqueStaticBlockId %}
-            </div>
-            {%- assign rendered_count = rendered_count | plus: 1 -%}
+            {%- if product.available -%}
+              <div class="resource-list__item">
+                {% # theme-check-disable UniqueStaticBlockId %}
+                  {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: product %}
+                {% # theme-check-enable UniqueStaticBlockId %}
+              </div>
+              {%- assign rendered_count = rendered_count | plus: 1 -%}
+            {%- endif -%}
           {%- endunless -%}
         {% endfor %}
         {%- if rendered_count == 0 -%}
