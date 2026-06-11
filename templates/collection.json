@@ -496,7 +496,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Shop now",
-                "link": "shopify://collections/all",
+                "link": "shopify://products/fu-man-chai",
                 "open_in_new_tab": false,
                 "style_class": "button",
                 "width": "fit-content",
