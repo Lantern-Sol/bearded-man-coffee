@@ -313,7 +313,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Subscribe to any blend and <br/><strong>SAVE UP TO 30% OFF.</strong></p>",
+                "text": "<p>Subscribe to any blend and <br/><strong>SAVE 15%.</strong></p>",
                 "mobile_text": "",
                 "width": "fit-content",
                 "max_width": "normal",
