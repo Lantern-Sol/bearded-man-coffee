@@ -104,6 +104,7 @@
             {% if link.current %}
               aria-current="page"
             {% endif %}
+            {% unless link.url contains request.host %}target="_blank" rel="noopener"{% endunless %}
             ref="menuitem"
           >
             <span class="menu-list__link-title">{{- link.title -}}</span>

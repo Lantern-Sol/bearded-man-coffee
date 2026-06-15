@@ -222,6 +222,7 @@
                                   {% if childlink.current %}
                                     aria-current="page"
                                   {% endif %}
+                                  {% unless childlink.url contains request.host %}target="_blank" rel="noopener"{% endunless %}
                                 >
                                   {% if render_link_image and link.levels == 1 %}
                                     {% render 'link-featured-image',
@@ -289,6 +290,7 @@
                                               {% if grandchildlink.current %}
                                                 aria-current="page"
                                               {% endif %}
+                                              {% unless grandchildlink.url contains request.host %}target="_blank" rel="noopener"{% endunless %}
                                             >
                                               {% if render_link_image %}
                                                 {% render 'link-featured-image',
@@ -317,6 +319,7 @@
                                     {% if childlink.current %}
                                       aria-current="page"
                                     {% endif %}
+                                    {% unless childlink.url contains request.host %}target="_blank" rel="noopener"{% endunless %}
                                   >
                                     <span class="menu-drawer__menu-item-text wrap-text">
                                       {{- childlink.title | escape -}}
@@ -350,6 +353,7 @@
                                           {% if grandchildlink.current %}
                                             aria-current="page"
                                           {% endif %}
+                                          {% unless grandchildlink.url contains request.host %}target="_blank" rel="noopener"{% endunless %}
                                         >
                                           {% if render_link_image %}
                                             {% render 'link-featured-image',
@@ -424,6 +428,7 @@
                     {% if link.current %}
                       aria-current="page"
                     {% endif %}
+                    {% unless link.url contains request.host %}target="_blank" rel="noopener"{% endunless %}
                   >
                     <span class="menu-drawer__menu-item-text wrap-text">{{ link.title | escape }}</span>
                   </a>
