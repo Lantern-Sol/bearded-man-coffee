@@ -421,7 +421,8 @@
       ],
       "custom_css": [
         "summary {padding-top: 0;}",
-        "@media only screen and (min-width: 750px) {.group-block-content {width: max-content; }}"
+        "@media only screen and (min-width: 750px) {.group-block-content {width: max-content; }}",
+        "@media only screen and (min-width: 750px) {.group-block-content:has(.email-signup-block) {max-width: 412px; }}"
       ],
       "name": "t:names.footer",
       "settings": {
