@@ -153,9 +153,7 @@
     var _gv = {{ gift_variant_id | json }};
     var isUpdating = false;
     var SAFETY_TIMEOUT = 10000;
-    var selfMorph = false;
     var debounceTimer = null;
-    var eventDebounceTimer = null;
 
     function getSectionIds() {
       var ids = [];
@@ -165,45 +163,24 @@
       return ids;
     }
 
-    // Replace section HTML directly in the DOM — no events dispatched.
-    // This avoids triggering the theme's own re-fetch cascade and
-    // keeps the cart icon bubble count intact.
-    function applySections(data) {
-      if (!data || !data.sections) return;
-      selfMorph = true;
-      for (var id in data.sections) {
-        var el = document.getElementById('shopify-section-' + id);
-        if (!el) continue;
-        var doc = new DOMParser().parseFromString(data.sections[id], 'text/html');
-        var fresh = doc.getElementById('shopify-section-' + id);
-        if (fresh) {
-          el.innerHTML = fresh.innerHTML;
-        }
-      }
-      // Update cart icon bubble count from /cart.js
-      fetch('/cart.js', { headers: { 'Accept': 'application/json' } })
-        .then(function(r) { return r.json(); })
-        .then(function(cart) {
-          document.querySelectorAll('[data-cart-count]').forEach(function(badge) {
-            badge.textContent = cart.item_count;
-            badge.toggleAttribute('hidden', cart.item_count === 0);
-          });
-          // Also try common cart-icon patterns
-          document.querySelectorAll('.cart-count, .cart-count-bubble, [ref="cartItemCount"]').forEach(function(badge) {
-            badge.textContent = cart.item_count;
-          });
-        })
-        .catch(function() {})
-        .finally(function() {
-          setTimeout(function() { selfMorph = false; }, 500);
-        });
+    function getSectionsParam() {
+      return getSectionIds().join(',');
     }
 
-    // Make a cart API call with bundled section rendering
+    // Dispatch the theme's native cart:update event so cart-items-component morphs the DOM
+    function dispatchCartUpdate(responseData) {
+      var evt = new CustomEvent('cart:update', {
+        bubbles: true,
+        detail: { data: responseData }
+      });
+      document.dispatchEvent(evt);
+    }
+
+    // Make a cart API call with bundled section rendering and morph the result
     function cartApiCall(url, payload) {
-      var sectionIds = getSectionIds().join(',');
-      if (sectionIds) {
-        payload.sections = sectionIds;
+      var sections = getSectionsParam();
+      if (sections) {
+        payload.sections = sections;
         payload.sections_url = window.location.pathname;
       }
       return fetch(url, {
@@ -213,7 +190,9 @@
       })
       .then(function(res) { return res.json(); })
       .then(function(data) {
-        applySections(data);
+        if (data.sections) {
+          dispatchCartUpdate(data);
+        }
         return data;
       });
     }
@@ -231,21 +210,22 @@
       .then(function(res) { return res.json(); })
       .then(function(cart) {
         var thresholdCents = parseInt(el.dataset.giftThresholdCents, 10);
-        var giftItems = [];
-        var rogueGiftItems = [];
+        var giftItems = [];       // items with _gift property
+        var rogueGiftItems = [];  // gift product added WITHOUT _gift property (manual/console abuse)
         var totalExcludingGift = 0;
 
         cart.items.forEach(function(item) {
           if (item.properties && item.properties._gift === 'true') {
             giftItems.push(item);
           } else if (item.variant_id === _gv) {
+            // Someone added the gift product directly (no _gift flag) — treat as rogue
             rogueGiftItems.push(item);
           } else {
             totalExcludingGift += item.original_line_price;
           }
         });
 
-        // Guard: batch-remove rogue gift items
+        // Guard: batch-remove rogue gift items (added via console, direct URL, etc.)
         if (rogueGiftItems.length > 0) {
           var updates = {};
           rogueGiftItems.forEach(function(item) { updates[item.key] = 0; });
@@ -286,14 +266,8 @@
     }
 
     function debouncedSync() {
-      if (selfMorph) return;
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(sync, 600);
-    }
-
-    function debouncedEventSync() {
-      clearTimeout(eventDebounceTimer);
-      eventDebounceTimer = setTimeout(sync, 500);
     }
 
     // Run on initial load
@@ -304,9 +278,15 @@
     var target = document.querySelector('cart-items-component') || document.body;
     observer.observe(target, { subtree: true, childList: true });
 
-    // Re-sync after cart changes from other components
-    document.addEventListener('cart:update', debouncedEventSync);
-    document.addEventListener('cart:add', debouncedEventSync);
+    // Re-sync after cart changes from other components.
+    // Use independent setTimeout (not debouncedSync) so MutationObserver
+    // debounce resets during DOM morphing can't cancel these triggers.
+    document.addEventListener('cart:update', function() {
+      setTimeout(sync, 500);
+    });
+    document.addEventListener('cart:add', function() {
+      setTimeout(sync, 500);
+    });
   })();
 </script>
 {%- endif -%}
