@@ -56,11 +56,35 @@
       });
     }
 
+    function resolveVariant() {
+      var el = getProgressBar();
+      if (!el || _gv) return Promise.resolve(_gv);
+      var handle = el.dataset.giftHandle;
+      if (!handle) return Promise.resolve(null);
+      return fetch('/products/' + handle + '.js', { headers: { 'Accept': 'application/json' } })
+        .then(function(res) { return res.ok ? res.json() : Promise.reject(res.status); })
+        .then(function(product) {
+          var v = product.variants.find(function(v) { return v.available; }) || product.variants[0];
+          if (v) _gv = v.id;
+          return _gv;
+        })
+        .catch(function() { return null; });
+    }
+
     function sync() {
       if (isUpdating) return;
 
       var el = getProgressBar();
-      if (!el || !_gv) return;
+      if (!el) return;
+
+      if (!_gv) {
+        isUpdating = true;
+        resolveVariant().then(function(id) {
+          isUpdating = false;
+          if (id) sync();
+        });
+        return;
+      }
 
       isUpdating = true;
       var safetyTimer = setTimeout(function() { isUpdating = false; }, SAFETY_TIMEOUT);
