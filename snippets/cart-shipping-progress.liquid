@@ -279,14 +279,16 @@
     observer.observe(target, { subtree: true, childList: true });
 
     // Re-sync after cart changes from other components.
-    // Use independent setTimeout (not debouncedSync) so MutationObserver
-    // debounce resets during DOM morphing can't cancel these triggers.
-    document.addEventListener('cart:update', function() {
-      setTimeout(sync, 500);
-    });
-    document.addEventListener('cart:add', function() {
-      setTimeout(sync, 500);
-    });
+    // Use a separate debounce timer so MutationObserver debounce resets
+    // during DOM morphing can't cancel these triggers, while still preventing
+    // multiple rapid event triggers from spawning redundant timers.
+    var eventDebounceTimer = null;
+    function debouncedEventSync() {
+      clearTimeout(eventDebounceTimer);
+      eventDebounceTimer = setTimeout(sync, 500);
+    }
+    document.addEventListener('cart:update', debouncedEventSync);
+    document.addEventListener('cart:add', debouncedEventSync);
   })();
 </script>
 {%- endif -%}
