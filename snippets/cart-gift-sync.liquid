@@ -16,12 +16,21 @@
     var isUpdating = false;
     var SAFETY_TIMEOUT = 10000;
     var debounceTimer = null;
+    var selfTriggered = false;
+
+    // Expose internal state for debugging
+    Object.defineProperty(window, '__giftDebug', {
+      get: function() {
+        return { _gv: _gv, isUpdating: isUpdating, selfTriggered: selfTriggered, el: getProgressBar() };
+      }
+    });
 
     function getProgressBar() {
       return document.querySelector('.cart-shipping-progress[data-gift-enabled="true"][data-gift-handle]');
     }
 
     function notifyCartChanged() {
+      selfTriggered = true;
       var evt = new CustomEvent('cart:update', {
         bubbles: true,
         detail: {
@@ -31,6 +40,7 @@
         }
       });
       document.dispatchEvent(evt);
+      setTimeout(function() { selfTriggered = false; }, 50);
     }
 
     function cartApiCall(url, payload) {
@@ -142,12 +152,16 @@
     var target = document.querySelector('cart-items-component') || document.body;
     observer.observe(target, { subtree: true, childList: true });
 
-    // Re-sync after cart changes from other components
-    document.addEventListener('cart:update', function() {
-      setTimeout(sync, 500);
+    // Re-sync after cart changes from OTHER components (ignore our own events)
+    document.addEventListener('cart:update', function(e) {
+      if (selfTriggered) return;
+      var detail = e.detail || {};
+      var data = detail.data || {};
+      if (data.source === 'gift-tier-sync') return;
+      debouncedSync();
     });
     document.addEventListener('cart:add', function() {
-      setTimeout(sync, 500);
+      debouncedSync();
     });
   })();
 </script>
