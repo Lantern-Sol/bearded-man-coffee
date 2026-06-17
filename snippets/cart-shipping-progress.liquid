@@ -20,15 +20,11 @@
     assign gift_threshold_cents = 10000
   endif
 
-  # ── Gift product resolution ──
+  # ── Gift product handle ──
   # Theme-level product settings return a handle (string), not a product object.
-  # Use all_products[] to resolve to the actual product.
+  # We pass the handle to JS which resolves the variant via /products/{handle}.js
+  # because all_products[] has a 20-handle-per-page limit that causes silent failures.
   assign gift_product_handle = settings.cart_free_gift_product
-  assign gift_product = all_products[gift_product_handle]
-  assign gift_variant_id = ''
-  if gift_enabled and gift_product != blank
-    assign gift_variant_id = gift_product.first_available_variant.id | default: gift_product.variants.first.id
-  endif
 
   # ── Check if gift is already in cart ──
   assign gift_in_cart = false
@@ -95,6 +91,7 @@
   data-gift-threshold-cents="{{ gift_threshold_cents }}"
   data-gift-in-cart="{{ gift_in_cart }}"
   data-gift-met="{{ gift_met }}"
+  {% if gift_enabled and gift_product_handle != blank %}data-gift-handle="{{ gift_product_handle }}"{% endif %}
 >
   {%- comment -%} ── Text messages ── {%- endcomment -%}
   <p class="cart-shipping-progress__text">
@@ -142,154 +139,6 @@
     </span>
   </div>
 </div>
-
-{%- comment -%} ── Auto-add / remove gift product line item ── {%- endcomment -%}
-{%- if gift_enabled and gift_variant_id != blank -%}
-<script>
-  (function() {
-    if (window.__giftTierInit) return;
-    window.__giftTierInit = true;
-
-    var _gv = {{ gift_variant_id | json }};
-    var isUpdating = false;
-    var SAFETY_TIMEOUT = 10000;
-    var debounceTimer = null;
-
-    function getSectionIds() {
-      var ids = [];
-      document.querySelectorAll('cart-items-component').forEach(function(el) {
-        if (el.dataset.sectionId) ids.push(el.dataset.sectionId);
-      });
-      return ids;
-    }
-
-    function getSectionsParam() {
-      return getSectionIds().join(',');
-    }
-
-    // Dispatch the theme's native cart:update event so cart-items-component morphs the DOM
-    function dispatchCartUpdate(responseData) {
-      var evt = new CustomEvent('cart:update', {
-        bubbles: true,
-        detail: { data: responseData }
-      });
-      document.dispatchEvent(evt);
-    }
-
-    // Make a cart API call with bundled section rendering and morph the result
-    function cartApiCall(url, payload) {
-      var sections = getSectionsParam();
-      if (sections) {
-        payload.sections = sections;
-        payload.sections_url = window.location.pathname;
-      }
-      return fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (data.sections) {
-          dispatchCartUpdate(data);
-        }
-        return data;
-      });
-    }
-
-    function sync() {
-      if (isUpdating) return;
-
-      var el = document.querySelector('.cart-shipping-progress[data-gift-enabled="true"]');
-      if (!el || !_gv) return;
-
-      isUpdating = true;
-      var safetyTimer = setTimeout(function() { isUpdating = false; }, SAFETY_TIMEOUT);
-
-      fetch('/cart.js', { headers: { 'Accept': 'application/json' } })
-      .then(function(res) { return res.json(); })
-      .then(function(cart) {
-        var thresholdCents = parseInt(el.dataset.giftThresholdCents, 10);
-        var giftItems = [];       // items with _gift property
-        var rogueGiftItems = [];  // gift product added WITHOUT _gift property (manual/console abuse)
-        var totalExcludingGift = 0;
-
-        cart.items.forEach(function(item) {
-          if (item.properties && item.properties._gift === 'true') {
-            giftItems.push(item);
-          } else if (item.variant_id === _gv) {
-            // Someone added the gift product directly (no _gift flag) — treat as rogue
-            rogueGiftItems.push(item);
-          } else {
-            totalExcludingGift += item.original_line_price;
-          }
-        });
-
-        // Guard: batch-remove rogue gift items (added via console, direct URL, etc.)
-        if (rogueGiftItems.length > 0) {
-          var updates = {};
-          rogueGiftItems.forEach(function(item) { updates[item.key] = 0; });
-          return cartApiCall('/cart/update.js', { updates: updates });
-        }
-
-        var thresholdMet = cart.items.length > giftItems.length && totalExcludingGift >= thresholdCents;
-
-        // Batch-remove duplicate gifts — keep first only
-        if (giftItems.length > 1) {
-          var updates = {};
-          giftItems.slice(1).forEach(function(item) { updates[item.key] = 0; });
-          return cartApiCall('/cart/update.js', { updates: updates });
-        }
-
-        // Cap gift quantity to 1
-        if (giftItems.length === 1 && giftItems[0].quantity > 1) {
-          return cartApiCall('/cart/change.js', { id: giftItems[0].key, quantity: 1 });
-        }
-
-        // Add gift when threshold met
-        if (thresholdMet && giftItems.length === 0) {
-          return cartApiCall('/cart/add.js', {
-            items: [{ id: _gv, quantity: 1, properties: { _gift: 'true' } }]
-          });
-        }
-
-        // Remove gift when threshold not met
-        if (!thresholdMet && giftItems.length > 0) {
-          return cartApiCall('/cart/change.js', { id: giftItems[0].key, quantity: 0 });
-        }
-      })
-      .catch(function() {})
-      .finally(function() {
-        clearTimeout(safetyTimer);
-        isUpdating = false;
-      });
-    }
-
-    function debouncedSync() {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(sync, 600);
-    }
-
-    // Run on initial load
-    sync();
-
-    // Re-run whenever the cart drawer re-renders
-    var observer = new MutationObserver(function() { debouncedSync(); });
-    var target = document.querySelector('cart-items-component') || document.body;
-    observer.observe(target, { subtree: true, childList: true });
-
-    // Re-sync after cart changes from other components.
-    // Use independent setTimeout (not debouncedSync) so MutationObserver
-    // debounce resets during DOM morphing can't cancel these triggers.
-    document.addEventListener('cart:update', function() {
-      setTimeout(sync, 500);
-    });
-    document.addEventListener('cart:add', function() {
-      setTimeout(sync, 500);
-    });
-  })();
-</script>
-{%- endif -%}
 
 {% stylesheet %}
   .cart-shipping-progress {

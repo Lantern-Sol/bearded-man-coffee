@@ -233,6 +233,8 @@
               </div>
             {%- endif -%}
           </cart-items-component>
+          {%- comment -%} Gift sync script — MUST be outside cart-items-component to survive morphing {%- endcomment -%}
+          {% render 'cart-gift-sync' %}
         </div>
       </dialog>
     </cart-drawer-component>
