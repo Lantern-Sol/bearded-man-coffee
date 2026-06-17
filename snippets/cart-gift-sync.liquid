@@ -1,0 +1,154 @@
+{%- doc -%}
+  Auto-add / remove the free gift product line item.
+  IMPORTANT: This snippet MUST be rendered OUTSIDE of cart-items-component
+  so the <script> tag survives section morphing (script tags inserted via
+  DOM manipulation do not execute).
+  Reads data-gift-handle from .cart-shipping-progress (rendered inside the component).
+{%- enddoc -%}
+
+{%- if settings.cart_free_gift_enabled and settings.cart_free_gift_product != blank -%}
+<script>
+  (function() {
+    if (window.__giftTierInit) return;
+    window.__giftTierInit = true;
+
+    var _gv = null;
+    var isUpdating = false;
+    var SAFETY_TIMEOUT = 10000;
+    var debounceTimer = null;
+
+    function getProgressBar() {
+      return document.querySelector('.cart-shipping-progress[data-gift-enabled="true"][data-gift-handle]');
+    }
+
+    function notifyCartChanged() {
+      var evt = new CustomEvent('cart:update', {
+        bubbles: true,
+        detail: {
+          resource: null,
+          sourceId: 'gift-tier-sync',
+          data: { source: 'gift-tier-sync' }
+        }
+      });
+      document.dispatchEvent(evt);
+    }
+
+    function cartApiCall(url, payload) {
+      return fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        notifyCartChanged();
+        return data;
+      });
+    }
+
+    function sync() {
+      if (isUpdating) return;
+
+      var el = getProgressBar();
+      if (!el || !_gv) return;
+
+      isUpdating = true;
+      var safetyTimer = setTimeout(function() { isUpdating = false; }, SAFETY_TIMEOUT);
+
+      fetch('/cart.js', { headers: { 'Accept': 'application/json' } })
+      .then(function(res) { return res.json(); })
+      .then(function(cart) {
+        var thresholdCents = parseInt(el.dataset.giftThresholdCents, 10);
+        var giftItems = [];
+        var rogueGiftItems = [];
+        var totalExcludingGift = 0;
+
+        cart.items.forEach(function(item) {
+          if (item.properties && item.properties._gift === 'true') {
+            giftItems.push(item);
+          } else if (item.variant_id === _gv) {
+            rogueGiftItems.push(item);
+          } else {
+            totalExcludingGift += item.original_line_price;
+          }
+        });
+
+        if (rogueGiftItems.length > 0) {
+          var updates = {};
+          rogueGiftItems.forEach(function(item) { updates[item.key] = 0; });
+          return cartApiCall('/cart/update.js', { updates: updates });
+        }
+
+        var thresholdMet = cart.items.length > giftItems.length && totalExcludingGift >= thresholdCents;
+
+        if (giftItems.length > 1) {
+          var updates = {};
+          giftItems.slice(1).forEach(function(item) { updates[item.key] = 0; });
+          return cartApiCall('/cart/update.js', { updates: updates });
+        }
+
+        if (giftItems.length === 1 && giftItems[0].quantity > 1) {
+          return cartApiCall('/cart/change.js', { id: giftItems[0].key, quantity: 1 });
+        }
+
+        if (thresholdMet && giftItems.length === 0) {
+          return cartApiCall('/cart/add.js', {
+            items: [{ id: _gv, quantity: 1, properties: { _gift: 'true' } }]
+          });
+        }
+
+        if (!thresholdMet && giftItems.length > 0) {
+          return cartApiCall('/cart/change.js', { id: giftItems[0].key, quantity: 0 });
+        }
+      })
+      .catch(function() {})
+      .finally(function() {
+        clearTimeout(safetyTimer);
+        isUpdating = false;
+      });
+    }
+
+    function debouncedSync() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(sync, 600);
+    }
+
+    function init() {
+      var el = getProgressBar();
+      if (!el) return;
+
+      var handle = el.dataset.giftHandle;
+      if (!handle) return;
+
+      fetch('/products/' + handle + '.js', { headers: { 'Accept': 'application/json' } })
+        .then(function(res) { return res.ok ? res.json() : Promise.reject(res.status); })
+        .then(function(product) {
+          var v = product.variants.find(function(v) { return v.available; }) || product.variants[0];
+          if (v) _gv = v.id;
+          sync();
+        })
+        .catch(function() {});
+    }
+
+    // Wait for DOM then initialize
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+    // Re-run whenever the cart drawer re-renders
+    var observer = new MutationObserver(function() { debouncedSync(); });
+    var target = document.querySelector('cart-items-component') || document.body;
+    observer.observe(target, { subtree: true, childList: true });
+
+    // Re-sync after cart changes from other components
+    document.addEventListener('cart:update', function() {
+      setTimeout(sync, 500);
+    });
+    document.addEventListener('cart:add', function() {
+      setTimeout(sync, 500);
+    });
+  })();
+</script>
+{%- endif -%}
