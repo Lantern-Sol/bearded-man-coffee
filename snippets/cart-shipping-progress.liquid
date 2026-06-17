@@ -155,34 +155,24 @@
     var SAFETY_TIMEOUT = 10000;
     var debounceTimer = null;
 
-    function getSectionIds() {
-      var ids = [];
-      document.querySelectorAll('cart-items-component').forEach(function(el) {
-        if (el.dataset.sectionId) ids.push(el.dataset.sectionId);
-      });
-      return ids;
-    }
-
-    function getSectionsParam() {
-      return getSectionIds().join(',');
-    }
-
-    // Dispatch the theme's native cart:update event so cart-items-component morphs the DOM
-    function dispatchCartUpdate(responseData) {
+    // Dispatch cart:update WITHOUT section HTML so cart-items-component
+    // falls back to its own sectionRenderer.renderSection() re-fetch.
+    // This is more reliable than bundling sections in the Cart API response
+    // because the theme's own re-fetch + morph pipeline handles all edge cases.
+    function notifyCartChanged() {
       var evt = new CustomEvent('cart:update', {
         bubbles: true,
-        detail: { data: responseData }
+        detail: {
+          resource: null,
+          sourceId: 'gift-tier-sync',
+          data: { source: 'gift-tier-sync' }
+        }
       });
       document.dispatchEvent(evt);
     }
 
-    // Make a cart API call with bundled section rendering and morph the result
+    // Make a cart API call, then notify all cart components to re-render
     function cartApiCall(url, payload) {
-      var sections = getSectionsParam();
-      if (sections) {
-        payload.sections = sections;
-        payload.sections_url = window.location.pathname;
-      }
       return fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -190,9 +180,7 @@
       })
       .then(function(res) { return res.json(); })
       .then(function(data) {
-        if (data.sections) {
-          dispatchCartUpdate(data);
-        }
+        notifyCartChanged();
         return data;
       });
     }
