@@ -45,29 +45,51 @@
             assign can_update_quantity = item.instructions.can_update_quantity | default: true, allow_false: true
             assign can_remove = item.instructions.can_remove | default: true, allow_false: true
             assign line_number = item.index | plus: 1
+            assign is_gift_item = false
+            if item.properties['_gift'] == 'true'
+              assign is_gift_item = true
+            endif
           -%}
           <li
-            class="cart-drawer-items__item{% if item.parent_relationship.parent != null %} cart-drawer-items__item--nested{% endif %}"
+            class="cart-drawer-items__item{% if item.parent_relationship.parent != null %} cart-drawer-items__item--nested{% endif %}{% if is_gift_item %} cart-drawer-items__item--gift{% endif %}"
             ref="cartItemRows[]"
             data-key="{{ item.key }}"
             data-parent-key="{{ item.parent_relationship.parent.key }}"
           >
             <div class="cart-drawer-items__main">
-              <a href="{{ item.url }}" class="cart-drawer-items__media">
-                {%- if item.image -%}
-                  {{ item.image | image_url: width: 240 | image_tag:
-                    loading: 'lazy',
-                    width: 60,
-                    height: 60,
-                    class: 'cart-drawer-items__image'
-                  }}
-                {%- endif -%}
-              </a>
+              {%- if is_gift_item -%}
+                <div class="cart-drawer-items__media">
+                  {%- if item.image -%}
+                    {{ item.image | image_url: width: 240 | image_tag:
+                      loading: 'lazy',
+                      width: 60,
+                      height: 60,
+                      class: 'cart-drawer-items__image'
+                    }}
+                  {%- endif -%}
+                </div>
+              {%- else -%}
+                <a href="{{ item.url }}" class="cart-drawer-items__media">
+                  {%- if item.image -%}
+                    {{ item.image | image_url: width: 240 | image_tag:
+                      loading: 'lazy',
+                      width: 60,
+                      height: 60,
+                      class: 'cart-drawer-items__image'
+                    }}
+                  {%- endif -%}
+                </a>
+              {%- endif -%}
 
               <div class="cart-drawer-items__info">
-                <a href="{{ item.url }}" class="cart-drawer-items__title">
-                  {{- item.product.title -}}
-                </a>
+                {%- if is_gift_item -%}
+                  <span class="cart-drawer-items__title">{{- item.product.title -}}</span>
+                  <span class="cart-drawer-items__gift-badge">🎁 Gift with purchase</span>
+                {%- else -%}
+                  <a href="{{ item.url }}" class="cart-drawer-items__title">
+                    {{- item.product.title -}}
+                  </a>
+                {%- endif -%}
 
                 {%- if item.product.has_only_default_variant == false and item.item_components.size == 0 -%}
                   {%- for option in item.options_with_values -%}
@@ -118,7 +140,9 @@
                   endif
                 -%}
                 <div class="cart-drawer-items__price">
-                  {%- if compare_line_price > line_price -%}
+                  {%- if is_gift_item -%}
+                    <span class="cart-drawer-items__price-free">FREE</span>
+                  {%- elsif compare_line_price > line_price -%}
                     <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
                     <s>{{ compare_line_price | money }}</s>
                     <text-component value="{{ line_price | money | strip_html }}">{{ line_price | money }}</text-component>
@@ -146,6 +170,7 @@
                 {%- endif -%}
               </div>
 
+              {%- unless is_gift_item -%}
               <div class="cart-drawer-items__controls">
                 <button
                   type="button"
@@ -169,6 +194,7 @@
                   %}
                 </div>
               </div>
+              {%- endunless -%}
             </div>
 
             <div
@@ -484,5 +510,22 @@
     margin: 0;
     font-family: 'Inter', sans-serif;
     font-size: 14px;
+  }
+
+  .cart-drawer-items__gift-badge {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 1;
+    color: #c7893a;
+    letter-spacing: 0.04em;
+  }
+
+  .cart-drawer-items__price-free {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #c7893a;
   }
 {% endstylesheet %}

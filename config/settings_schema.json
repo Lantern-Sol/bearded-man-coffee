@@ -6,7 +6,7 @@
     "theme_author": "Lantern Sol",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
     "theme_support_url": "https://support.shopify.com/"
-  },
+  }, 
   {
     "name": "t:names.logo_and_favicon",
     "settings": [
@@ -2317,7 +2317,7 @@
         "type": "checkbox",
         "id": "cart_free_gift_enabled",
         "label": "Show free gift progress tier",
-        "info": "When enabled, shows a second tier on the progress bar. A discount code is auto-applied at checkout when the threshold is met.",
+        "info": "When enabled, shows a second tier on the progress bar. The selected gift product is auto-added to the cart when the threshold is met.",
         "default": true
       },
       {
@@ -2329,12 +2329,10 @@
         "visible_if": "{{ settings.cart_free_gift_enabled == true }}"
       },
       {
-        "type": "text",
-        "id": "cart_free_gift_discount_code",
-        "label": "Discount code",
-        "info": "The discount code to auto-apply when the gift threshold is met (e.g. BEARDED-GIFT).",
-        "default": "BEARDED-GIFT",
-        "visible_if": "{{ settings.cart_free_gift_enabled == true }}"
+        "type": "product",
+        "id": "cart_free_gift_product",
+        "label": "Gift product",
+        "info": "Select the product to auto-add when the gift threshold is met. Product should be priced at $0 and hidden from the catalog."
       },
       {
         "type": "header",
