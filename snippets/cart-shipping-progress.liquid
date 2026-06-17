@@ -153,7 +153,9 @@
     var _gv = {{ gift_variant_id | json }};
     var isUpdating = false;
     var SAFETY_TIMEOUT = 10000;
+    var selfCooldown = false;
     var debounceTimer = null;
+    var eventDebounceTimer = null;
 
     function getSectionIds() {
       var ids = [];
@@ -163,24 +165,23 @@
       return ids;
     }
 
-    function getSectionsParam() {
-      return getSectionIds().join(',');
-    }
-
-    // Dispatch the theme's native cart:update event so cart-items-component morphs the DOM
+    // Dispatch the theme's native cart:update event so cart-items-component morphs the DOM.
+    // Set cooldown to ignore the events and mutations our own dispatch triggers.
     function dispatchCartUpdate(responseData) {
+      selfCooldown = true;
       var evt = new CustomEvent('cart:update', {
         bubbles: true,
         detail: { data: responseData }
       });
       document.dispatchEvent(evt);
+      setTimeout(function() { selfCooldown = false; }, 2000);
     }
 
     // Make a cart API call with bundled section rendering and morph the result
     function cartApiCall(url, payload) {
-      var sections = getSectionsParam();
-      if (sections) {
-        payload.sections = sections;
+      var sectionIds = getSectionIds().join(',');
+      if (sectionIds) {
+        payload.sections = sectionIds;
         payload.sections_url = window.location.pathname;
       }
       return fetch(url, {
@@ -210,15 +211,14 @@
       .then(function(res) { return res.json(); })
       .then(function(cart) {
         var thresholdCents = parseInt(el.dataset.giftThresholdCents, 10);
-        var giftItems = [];       // items with _gift property
-        var rogueGiftItems = [];  // gift product added WITHOUT _gift property (manual/console abuse)
+        var giftItems = [];
+        var rogueGiftItems = [];
         var totalExcludingGift = 0;
 
         cart.items.forEach(function(item) {
           if (item.properties && item.properties._gift === 'true') {
             giftItems.push(item);
           } else if (item.variant_id === _gv) {
-            // Someone added the gift product directly (no _gift flag) — treat as rogue
             rogueGiftItems.push(item);
           } else {
             totalExcludingGift += item.original_line_price;
@@ -266,8 +266,15 @@
     }
 
     function debouncedSync() {
+      if (selfCooldown) return;
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(sync, 600);
+    }
+
+    function debouncedEventSync() {
+      if (selfCooldown) return;
+      clearTimeout(eventDebounceTimer);
+      eventDebounceTimer = setTimeout(sync, 500);
     }
 
     // Run on initial load
@@ -278,15 +285,7 @@
     var target = document.querySelector('cart-items-component') || document.body;
     observer.observe(target, { subtree: true, childList: true });
 
-    // Re-sync after cart changes from other components.
-    // Use a separate debounce timer so MutationObserver debounce resets
-    // during DOM morphing can't cancel these triggers, while still preventing
-    // multiple rapid event triggers from spawning redundant timers.
-    var eventDebounceTimer = null;
-    function debouncedEventSync() {
-      clearTimeout(eventDebounceTimer);
-      eventDebounceTimer = setTimeout(sync, 500);
-    }
+    // Re-sync after cart changes from other components
     document.addEventListener('cart:update', debouncedEventSync);
     document.addEventListener('cart:add', debouncedEventSync);
   })();
