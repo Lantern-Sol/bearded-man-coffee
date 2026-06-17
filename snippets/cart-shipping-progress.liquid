@@ -1,7 +1,7 @@
 {%- doc -%}
   Two-tier progress bar shown at the top of the cart drawer.
   Tier 1: Free shipping  — reads `settings.cart_free_shipping_threshold`.
-  Tier 2: Free gift       — reads `settings.cart_free_gift_threshold` + `settings.cart_free_gift_discount_code`.
+  Tier 2: Free gift       — reads `settings.cart_free_gift_threshold` + `settings.cart_free_gift_product`.
 {%- enddoc -%}
 
 {% liquid
@@ -19,12 +19,31 @@
   if gift_threshold_cents <= 0
     assign gift_threshold_cents = 10000
   endif
-  assign gift_discount_code = settings.cart_free_gift_discount_code | default: 'BEARDED-GIFT'
+
+  # ── Gift product resolution ──
+  # Theme-level product settings return a handle (string), not a product object.
+  # Use all_products[] to resolve to the actual product.
+  assign gift_product_handle = settings.cart_free_gift_product
+  assign gift_product = all_products[gift_product_handle]
+  assign gift_variant_id = ''
+  if gift_enabled and gift_product != blank
+    assign gift_variant_id = gift_product.first_available_variant.id | default: gift_product.variants.first.id
+  endif
+
+  # ── Check if gift is already in cart ──
+  assign gift_in_cart = false
+  assign cart_total_excluding_gift = 0
+  for item in cart.items
+    if item.properties['_gift'] == 'true'
+      assign gift_in_cart = true
+    else
+      assign cart_total_excluding_gift = cart_total_excluding_gift | plus: item.original_line_price
+    endif
+  endfor
 
   # ── Current cart value ──
-  # Use original_total_price (before discounts) so the gift-tier discount ($0.01)
-  # doesn't create a feedback loop that drops the cart below the threshold.
-  assign current = cart.original_total_price
+  # Use total excluding gift items so the $0 gift doesn't affect threshold calculation.
+  assign current = cart_total_excluding_gift
 
   # ── Shipping tier calculations ──
   assign shipping_remaining = shipping_threshold_cents | minus: current
@@ -74,7 +93,7 @@
   class="cart-shipping-progress"
   data-gift-enabled="{{ gift_enabled }}"
   data-gift-threshold-cents="{{ gift_threshold_cents }}"
-  data-gift-discount-code="{{ gift_discount_code | escape }}"
+  data-gift-in-cart="{{ gift_in_cart }}"
   data-gift-met="{{ gift_met }}"
 >
   {%- comment -%} ── Text messages ── {%- endcomment -%}
@@ -124,78 +143,144 @@
   </div>
 </div>
 
-{%- comment -%} ── Auto-apply / remove gift discount code ── {%- endcomment -%}
-{%- if gift_enabled -%}
+{%- comment -%} ── Auto-add / remove gift product line item ── {%- endcomment -%}
+{%- if gift_enabled and gift_variant_id != blank -%}
 <script>
   (function() {
     if (window.__giftTierInit) return;
     window.__giftTierInit = true;
 
-    var STORAGE_KEY = 'bearded_gift_applied';
-    var applying = false;
+    var _gv = {{ gift_variant_id | json }};
+    var isUpdating = false;
+    var SAFETY_TIMEOUT = 10000;
+    var debounceTimer = null;
 
-    function refreshCart() {
-      var sections = [];
+    function getSectionIds() {
+      var ids = [];
       document.querySelectorAll('cart-items-component').forEach(function(el) {
-        if (el.dataset.sectionId) sections.push(el.dataset.sectionId);
+        if (el.dataset.sectionId) ids.push(el.dataset.sectionId);
       });
-      if (!sections.length) return Promise.resolve();
-      return fetch('/cart/update.js', {
+      return ids;
+    }
+
+    function getSectionsParam() {
+      return getSectionIds().join(',');
+    }
+
+    // Dispatch the theme's native cart:update event so cart-items-component morphs the DOM
+    function dispatchCartUpdate(responseData) {
+      var evt = new CustomEvent('cart:update', {
+        bubbles: true,
+        detail: { data: responseData }
+      });
+      document.dispatchEvent(evt);
+    }
+
+    // Make a cart API call with bundled section rendering and morph the result
+    function cartApiCall(url, payload) {
+      var sections = getSectionsParam();
+      if (sections) {
+        payload.sections = sections;
+        payload.sections_url = window.location.pathname;
+      }
+      return fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ sections: sections.join(',') })
+        body: JSON.stringify(payload)
       })
       .then(function(res) { return res.json(); })
       .then(function(data) {
-        document.dispatchEvent(new CustomEvent('theme:cart:update', { detail: data }));
+        if (data.sections) {
+          dispatchCartUpdate(data);
+        }
+        return data;
       });
     }
 
     function sync() {
-      if (applying) return;
+      if (isUpdating) return;
+
       var el = document.querySelector('.cart-shipping-progress[data-gift-enabled="true"]');
-      if (!el) return;
+      if (!el || !_gv) return;
 
-      var code = el.dataset.giftDiscountCode;
-      var giftMet = el.dataset.giftMet === 'true';
-      var wasApplied = sessionStorage.getItem(STORAGE_KEY) === 'true';
+      isUpdating = true;
+      var safetyTimer = setTimeout(function() { isUpdating = false; }, SAFETY_TIMEOUT);
 
-      if (giftMet && !wasApplied) {
-        applying = true;
-        fetch('/discount/' + encodeURIComponent(code))
-          .then(function() {
-            sessionStorage.setItem(STORAGE_KEY, 'true');
-            return refreshCart();
-          })
-          .catch(function() {})
-          .finally(function() { applying = false; });
-      } else if (!giftMet && wasApplied) {
-        applying = true;
-        fetch('/discount/clear')
-          .then(function() {
-            sessionStorage.removeItem(STORAGE_KEY);
-            return refreshCart();
-          })
-          .catch(function() {})
-          .finally(function() { applying = false; });
-      }
+      fetch('/cart.js', { headers: { 'Accept': 'application/json' } })
+      .then(function(res) { return res.json(); })
+      .then(function(cart) {
+        var thresholdCents = parseInt(el.dataset.giftThresholdCents, 10);
+        var giftItems = [];       // items with _gift property
+        var rogueGiftItems = [];  // gift product added WITHOUT _gift property (manual/console abuse)
+        var totalExcludingGift = 0;
+
+        cart.items.forEach(function(item) {
+          if (item.properties && item.properties._gift === 'true') {
+            giftItems.push(item);
+          } else if (item.variant_id === _gv) {
+            // Someone added the gift product directly (no _gift flag) — treat as rogue
+            rogueGiftItems.push(item);
+          } else {
+            totalExcludingGift += item.original_line_price;
+          }
+        });
+
+        // Guard: batch-remove rogue gift items (added via console, direct URL, etc.)
+        if (rogueGiftItems.length > 0) {
+          var updates = {};
+          rogueGiftItems.forEach(function(item) { updates[item.key] = 0; });
+          return cartApiCall('/cart/update.js', { updates: updates });
+        }
+
+        var thresholdMet = cart.items.length > giftItems.length && totalExcludingGift >= thresholdCents;
+
+        // Batch-remove duplicate gifts — keep first only
+        if (giftItems.length > 1) {
+          var updates = {};
+          giftItems.slice(1).forEach(function(item) { updates[item.key] = 0; });
+          return cartApiCall('/cart/update.js', { updates: updates });
+        }
+
+        // Cap gift quantity to 1
+        if (giftItems.length === 1 && giftItems[0].quantity > 1) {
+          return cartApiCall('/cart/change.js', { id: giftItems[0].key, quantity: 1 });
+        }
+
+        // Add gift when threshold met
+        if (thresholdMet && giftItems.length === 0) {
+          return cartApiCall('/cart/add.js', {
+            items: [{ id: _gv, quantity: 1, properties: { _gift: 'true' } }]
+          });
+        }
+
+        // Remove gift when threshold not met
+        if (!thresholdMet && giftItems.length > 0) {
+          return cartApiCall('/cart/change.js', { id: giftItems[0].key, quantity: 0 });
+        }
+      })
+      .catch(function() {})
+      .finally(function() {
+        clearTimeout(safetyTimer);
+        isUpdating = false;
+      });
+    }
+
+    function debouncedSync() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(sync, 600);
     }
 
     // Run on initial load
     sync();
 
-    // Re-run whenever the cart drawer re-renders (morphSection replaces DOM nodes)
-    var observer = new MutationObserver(function() { sync(); });
+    // Re-run whenever the cart drawer re-renders
+    var observer = new MutationObserver(function() { debouncedSync(); });
     var target = document.querySelector('cart-items-component') || document.body;
     observer.observe(target, { subtree: true, childList: true });
 
-    // Also sync when the cart updates (items added/removed/changed)
-    document.addEventListener('theme:cart:update', function() {
-      setTimeout(sync, 500);
-    });
-    document.addEventListener('theme:cart:add', function() {
-      setTimeout(sync, 500);
-    });
+    // Re-sync after cart changes from other components
+    document.addEventListener('cart:update', debouncedSync);
+    document.addEventListener('cart:add', debouncedSync);
   })();
 </script>
 {%- endif -%}

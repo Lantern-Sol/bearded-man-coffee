@@ -122,9 +122,15 @@
 
           <tbody role="rowgroup">
             {% for item in cart.items %}
+              {%- liquid
+                assign is_gift_item = false
+                if item.properties['_gift'] == 'true'
+                  assign is_gift_item = true
+                endif
+              -%}
               <tr
                 role="row"
-                class="cart-items__table-row{% if item.parent_relationship.parent != null %} cart-items__nested-line{% endif %}{% unless item.unit_price_measurement %} cart-items__table-row--full-width-variants{% endunless %}"
+                class="cart-items__table-row{% if item.parent_relationship.parent != null %} cart-items__nested-line{% endif %}{% unless item.unit_price_measurement %} cart-items__table-row--full-width-variants{% endunless %}{% if is_gift_item %} cart-items__table-row--gift{% endif %}"
                 ref="cartItemRows[]"
                 data-parent-key="{{ item.parent_relationship.parent.key }}"
                 data-key="{{ item.key }}"
@@ -149,15 +155,26 @@
                         assign ratio = item.image.aspect_ratio
                       endif
                     %}
-                    <a
-                      href="{{ item.url }}"
-                      class="cart-items__media-container"
-                      style="--ratio:{{ ratio }};"
-                    >
-                      {%- liquid
-                        echo item.image | image_url: width: 250 | image_tag: class: 'cart-items__media-image border-style', style: border_override
-                      -%}
-                    </a>
+                    {%- if is_gift_item -%}
+                      <div
+                        class="cart-items__media-container"
+                        style="--ratio:{{ ratio }};"
+                      >
+                        {%- liquid
+                          echo item.image | image_url: width: 250 | image_tag: class: 'cart-items__media-image border-style', style: border_override
+                        -%}
+                      </div>
+                    {%- else -%}
+                      <a
+                        href="{{ item.url }}"
+                        class="cart-items__media-container"
+                        style="--ratio:{{ ratio }};"
+                      >
+                        {%- liquid
+                          echo item.image | image_url: width: 250 | image_tag: class: 'cart-items__media-image border-style', style: border_override
+                        -%}
+                      </a>
+                    {%- endif -%}
                   {%- endif %}
                 </td>
                 <td
@@ -167,16 +184,23 @@
                 >
                   <div class="cart-items__product-info">
                     <p>
-                      <a
-                        href="{{ item.url }}"
-                        class="cart-items__title"
-                        {% if item.parent_relationship.parent != null %}
-                          aria-label="{{ 'accessibility.nested_product' | t: product_title: item.product.title, parent_title: item.parent_relationship.parent.title | escape }}"
-                        {% endif %}
-                      >
-                        {{- item.product.title -}}
-                      </a>
+                      {%- if is_gift_item -%}
+                        <span class="cart-items__title">{{- item.product.title -}}</span>
+                      {%- else -%}
+                        <a
+                          href="{{ item.url }}"
+                          class="cart-items__title"
+                          {% if item.parent_relationship.parent != null %}
+                            aria-label="{{ 'accessibility.nested_product' | t: product_title: item.product.title, parent_title: item.parent_relationship.parent.title | escape }}"
+                          {% endif %}
+                        >
+                          {{- item.product.title -}}
+                        </a>
+                      {%- endif -%}
                     </p>
+                    {%- if is_gift_item -%}
+                      <p class="cart-items__gift-badge">🎁 Gift with purchase</p>
+                    {%- endif -%}
                     {% if item.product.vendor and block_settings.vendor %}
                       <p>
                         {{ item.product.vendor }}
@@ -298,6 +322,9 @@
                   role="cell"
                   headers="quantity"
                 >
+                  {%- if is_gift_item -%}
+                    <span class="cart-items__gift-qty">1</span>
+                  {%- else -%}
                   {% # Here I want to pass some arguments to the quantity block so it knows which value should the input be set to. Though quantity block could be a snippet instead %}
                   {% assign can_update_quantity = item.instructions.can_update_quantity
                     | default: true, allow_false: true
@@ -332,6 +359,7 @@
                       <span class="visually-hidden">{{ 'accessibility.remove' | t }}</span>
                     </button>
                   </div>
+                  {%- endif -%}
                 </td>
                 <td
                   class="cart-items__error hidden"
@@ -366,11 +394,15 @@
                   role="cell"
                   headers="productTotal"
                 >
-                  <text-component value="{{ price | strip_html }}">{{ price }}</text-component>
-                  {%- if item.unit_price_measurement -%}
-                    <div class="cart-items__price-unit cart-secondary-typography">
-                      {% render 'unit-price', price: unit_price, measurement: item.unit_price_measurement %}
-                    </div>
+                  {%- if is_gift_item -%}
+                    <span class="cart-items__price-free">FREE</span>
+                  {%- else -%}
+                    <text-component value="{{ price | strip_html }}">{{ price }}</text-component>
+                    {%- if item.unit_price_measurement -%}
+                      <div class="cart-items__price-unit cart-secondary-typography">
+                        {% render 'unit-price', price: unit_price, measurement: item.unit_price_measurement %}
+                      </div>
+                    {%- endif -%}
                   {%- endif -%}
                 </td>
               </tr>
@@ -928,5 +960,23 @@
       filter: none;
       opacity: 1;
     }
+  }
+
+  .cart-items__gift-badge {
+    font-weight: 700;
+    font-size: var(--font-size--sm);
+    color: #c7893a;
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
+  .cart-items__price-free {
+    font-weight: 700;
+    color: #c7893a;
+  }
+
+  .cart-items__gift-qty {
+    font-size: var(--font-size--sm);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
   }
 {% endstylesheet %}
