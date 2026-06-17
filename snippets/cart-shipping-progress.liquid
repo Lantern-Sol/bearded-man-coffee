@@ -153,7 +153,7 @@
     var _gv = {{ gift_variant_id | json }};
     var isUpdating = false;
     var SAFETY_TIMEOUT = 10000;
-    var selfCooldown = false;
+    var selfMorph = false;
     var debounceTimer = null;
     var eventDebounceTimer = null;
 
@@ -165,19 +165,41 @@
       return ids;
     }
 
-    // Dispatch the theme's native cart:update event so cart-items-component morphs the DOM.
-    // Set cooldown to ignore the events and mutations our own dispatch triggers.
-    function dispatchCartUpdate(responseData) {
-      selfCooldown = true;
-      var evt = new CustomEvent('cart:update', {
-        bubbles: true,
-        detail: { data: responseData }
-      });
-      document.dispatchEvent(evt);
-      setTimeout(function() { selfCooldown = false; }, 2000);
+    // Replace section HTML directly in the DOM — no events dispatched.
+    // This avoids triggering the theme's own re-fetch cascade and
+    // keeps the cart icon bubble count intact.
+    function applySections(data) {
+      if (!data || !data.sections) return;
+      selfMorph = true;
+      for (var id in data.sections) {
+        var el = document.getElementById('shopify-section-' + id);
+        if (!el) continue;
+        var doc = new DOMParser().parseFromString(data.sections[id], 'text/html');
+        var fresh = doc.getElementById('shopify-section-' + id);
+        if (fresh) {
+          el.innerHTML = fresh.innerHTML;
+        }
+      }
+      // Update cart icon bubble count from /cart.js
+      fetch('/cart.js', { headers: { 'Accept': 'application/json' } })
+        .then(function(r) { return r.json(); })
+        .then(function(cart) {
+          document.querySelectorAll('[data-cart-count]').forEach(function(badge) {
+            badge.textContent = cart.item_count;
+            badge.toggleAttribute('hidden', cart.item_count === 0);
+          });
+          // Also try common cart-icon patterns
+          document.querySelectorAll('.cart-count, .cart-count-bubble, [ref="cartItemCount"]').forEach(function(badge) {
+            badge.textContent = cart.item_count;
+          });
+        })
+        .catch(function() {})
+        .finally(function() {
+          setTimeout(function() { selfMorph = false; }, 500);
+        });
     }
 
-    // Make a cart API call with bundled section rendering and morph the result
+    // Make a cart API call with bundled section rendering
     function cartApiCall(url, payload) {
       var sectionIds = getSectionIds().join(',');
       if (sectionIds) {
@@ -191,9 +213,7 @@
       })
       .then(function(res) { return res.json(); })
       .then(function(data) {
-        if (data.sections) {
-          dispatchCartUpdate(data);
-        }
+        applySections(data);
         return data;
       });
     }
@@ -225,7 +245,7 @@
           }
         });
 
-        // Guard: batch-remove rogue gift items (added via console, direct URL, etc.)
+        // Guard: batch-remove rogue gift items
         if (rogueGiftItems.length > 0) {
           var updates = {};
           rogueGiftItems.forEach(function(item) { updates[item.key] = 0; });
@@ -266,13 +286,12 @@
     }
 
     function debouncedSync() {
-      if (selfCooldown) return;
+      if (selfMorph) return;
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(sync, 600);
     }
 
     function debouncedEventSync() {
-      if (selfCooldown) return;
       clearTimeout(eventDebounceTimer);
       eventDebounceTimer = setTimeout(sync, 500);
     }
