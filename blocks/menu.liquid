@@ -85,7 +85,7 @@
           <ul class="list-unstyled">
             {% for link in menu.links %}
               <li class="menu__item {{ block_settings.link_preset }}">
-                <a href="{{ link.url }}" {% unless link.url contains request.host %}target="_blank" rel="noopener"{% endunless %}>
+                <a href="{{ link.url }}" {% if link.url contains 'http' %}{% unless link.url contains request.host %}target="_blank" rel="noopener"{% endunless %}{% endif %}>
                   {{ link.title }}
                 </a>
               </li>
