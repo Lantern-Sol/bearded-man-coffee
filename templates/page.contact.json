@@ -110,7 +110,7 @@
     "form": {
       "type": "section",
       "blocks": {
-        "forms_inline_p6xwQP": {
+        "forms_inline_pGBpxb": {
           "type": "shopify://apps/forms/blocks/inline/8744a304-fcb1-4347-b211-bb6b4759a76a",
           "settings": {
             "form_id": "1035973",
@@ -129,6 +129,7 @@
         },
         "contact_form_UwiCkQ": {
           "type": "contact-form",
+          "disabled": true,
           "settings": {
             "width": "custom",
             "custom_width": 50,
@@ -160,10 +161,9 @@
         }
       },
       "block_order": [
-        "forms_inline_p6xwQP",
+        "forms_inline_pGBpxb",
         "contact_form_UwiCkQ"
       ],
-      "disabled": true,
       "name": "t:names.contact_form",
       "settings": {
         "content_direction": "column",
