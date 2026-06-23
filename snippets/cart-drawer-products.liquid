@@ -138,6 +138,27 @@
                   if item.variant.compare_at_price != null and item.variant.compare_at_price > item.variant.price
                     assign compare_line_price = item.variant.compare_at_price | times: item.quantity
                   endif
+
+                  # Subscription discount: Shopify bakes the selling plan discount into both
+                  # original_line_price and final_line_price, so they match. Use the variant's
+                  # full price (before selling plan) to show the original struck-through price.
+                  assign has_subscription_discount = false
+                  assign subscription_original_line_price = 0
+                  assign subscription_save_percent = 0
+                  if item.selling_plan_allocation
+                    assign subscription_original_line_price = item.variant.price | times: item.quantity
+                    if subscription_original_line_price > line_price
+                      assign has_subscription_discount = true
+                      # Pull the discount % directly from the selling plan config instead of
+                      # back-calculating from prices (avoids rounding truncation, e.g. 14.97% → 14%).
+                      assign sub_price_adj = item.selling_plan_allocation.selling_plan.price_adjustments.first
+                      if sub_price_adj.value_type == 'percentage'
+                        assign subscription_save_percent = sub_price_adj.value
+                      else
+                        assign subscription_save_percent = 0
+                      endif
+                    endif
+                  endif
                 -%}
                 <div class="cart-drawer-items__price">
                   {%- if is_gift_item -%}
@@ -146,6 +167,13 @@
                     <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
                     <s>{{ compare_line_price | money }}</s>
                     <text-component value="{{ line_price | money | strip_html }}">{{ line_price | money }}</text-component>
+                  {%- elsif has_subscription_discount -%}
+                    <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
+                    <s>{{ subscription_original_line_price | money }}</s>
+                    <text-component value="{{ line_price | money | strip_html }}">{{ line_price | money }}</text-component>
+                    {%- if subscription_save_percent > 0 -%}
+                      <span class="cart-drawer-items__save-badge">Save {{ subscription_save_percent }}%</span>
+                    {%- endif -%}
                   {%- elsif line_price < original_line_price -%}
                     <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
                     <s>{{ original_line_price | money }}</s>
@@ -520,6 +548,20 @@
     line-height: 1;
     color: #c7893a;
     letter-spacing: 0.04em;
+  }
+
+  .cart-drawer-items__save-badge {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 1;
+    color: #fcfbf6;
+    background-color: #c7893a;
+    padding: 3px 6px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
   }
 
   .cart-drawer-items__price-free {
