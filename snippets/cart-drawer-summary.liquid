@@ -3,42 +3,31 @@
 {%- enddoc -%}
 
 {%- liquid
-  assign show_compare = false
-  if cart.original_total_price > cart.total_price
-    assign show_compare = true
-  endif
-
-  # Calculate subscription savings: Shopify bakes selling plan discounts into
-  # both original_total_price and total_price, so they match. Sum up the
-  # difference between variant.price and final_price for subscription items.
-  assign subscription_total_savings = 0
+  # Calculate the true original subtotal using variant prices for subscription
+  # items (Shopify bakes selling plan discounts into original_line_price, so we
+  # need variant.price to get the real pre-discount amount). This handles both
+  # subscription discounts and regular discounts (codes, automatic) together.
+  assign cart_original_total = 0
   for item in cart.items
     if item.selling_plan_allocation
-      assign full_item_line_price = item.variant.price | times: item.quantity
-      assign item_sub_savings = full_item_line_price | minus: item.final_line_price
-      if item_sub_savings > 0
-        assign subscription_total_savings = subscription_total_savings | plus: item_sub_savings
-      endif
+      assign item_original_price = item.variant.price | times: item.quantity
+    else
+      assign item_original_price = item.original_line_price
     endif
+    assign cart_original_total = cart_original_total | plus: item_original_price
   endfor
-  assign show_subscription_compare = false
-  if subscription_total_savings > 0 and show_compare == false
-    assign show_subscription_compare = true
-    assign cart_total_before_sub = cart.total_price | plus: subscription_total_savings
+
+  assign show_compare = false
+  if cart_original_total > cart.total_price
+    assign show_compare = true
   endif
 
   if settings.currency_code_enabled_cart_total
     assign total_price_display = cart.total_price | money_with_currency
-    assign original_price_display = cart.original_total_price | money_with_currency
-    if show_subscription_compare
-      assign sub_original_price_display = cart_total_before_sub | money_with_currency
-    endif
+    assign original_price_display = cart_original_total | money_with_currency
   else
     assign total_price_display = cart.total_price | money
-    assign original_price_display = cart.original_total_price | money
-    if show_subscription_compare
-      assign sub_original_price_display = cart_total_before_sub | money
-    endif
+    assign original_price_display = cart_original_total | money
   endif
 -%}
 
@@ -48,8 +37,6 @@
     <span class="cart-drawer-summary__values">
       {%- if show_compare -%}
         <s class="cart-drawer-summary__original">{{ original_price_display }}</s>
-      {%- elsif show_subscription_compare -%}
-        <s class="cart-drawer-summary__original">{{ sub_original_price_display }}</s>
       {%- endif -%}
       <text-component
         ref="cartTotal"
