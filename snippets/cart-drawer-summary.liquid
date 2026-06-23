@@ -3,17 +3,31 @@
 {%- enddoc -%}
 
 {%- liquid
+  # Calculate the true original subtotal using variant prices for subscription
+  # items (Shopify bakes selling plan discounts into original_line_price, so we
+  # need variant.price to get the real pre-discount amount). This handles both
+  # subscription discounts and regular discounts (codes, automatic) together.
+  assign cart_original_total = 0
+  for item in cart.items
+    if item.selling_plan_allocation
+      assign item_original_price = item.variant.price | times: item.quantity
+    else
+      assign item_original_price = item.original_line_price
+    endif
+    assign cart_original_total = cart_original_total | plus: item_original_price
+  endfor
+
   assign show_compare = false
-  if cart.original_total_price > cart.total_price
+  if cart_original_total > cart.total_price
     assign show_compare = true
   endif
 
   if settings.currency_code_enabled_cart_total
     assign total_price_display = cart.total_price | money_with_currency
-    assign original_price_display = cart.original_total_price | money_with_currency
+    assign original_price_display = cart_original_total | money_with_currency
   else
     assign total_price_display = cart.total_price | money
-    assign original_price_display = cart.original_total_price | money
+    assign original_price_display = cart_original_total | money
   endif
 -%}
 
