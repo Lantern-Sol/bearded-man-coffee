@@ -409,7 +409,7 @@
                 "text_Lc4yFr": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>The name <strong>Bearded Man Coffee</strong> was chosen deliberately to represent an uncommon standard of excellence and stewardship. Much more than facial artistry, expression or fashion, the beard has, for centuries, been associated with rugged masculinity and chivalry.</p><p>Our values trace back to a time when nature provided both sustenance and adventure, inspiration and sanity. We exist to inspire that pursuit through a craft coffee experience while preserving its possibility via environmental stewardship.</p>",
+                    "text": "<p>The name <strong>Bearded Man Coffee</strong> was chosen deliberately to represent an uncommon standard of excellence and stewardship. To us, it stands for the kind of person who earns their mornings and does things the hard way because it's the right way.</p><p>Our values trace back to a time when nature provided both sustenance and adventure, inspiration and sanity. We exist to inspire that pursuit through a craft coffee experience while preserving its possibility via environmental stewardship.</p>",
                     "mobile_text": "",
                     "width": "100%",
                     "max_width": "none",
@@ -1854,6 +1854,8 @@
           "infusion",
           "seasonal"
         ],
+        "override_collection": "",
+        "override_url": "",
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "columns": 4,
