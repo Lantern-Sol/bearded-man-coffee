@@ -762,6 +762,7 @@
                 "tab_WNbWNV": {
                   "type": "_tab",
                   "name": "Additional information",
+                  "disabled": true,
                   "settings": {
                     "tab_label": "Additional information",
                     "padding-block-start": 0,
