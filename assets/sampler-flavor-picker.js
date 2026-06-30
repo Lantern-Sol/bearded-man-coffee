@@ -173,15 +173,22 @@ class SamplerFlavorPicker extends HTMLElement {
         this.#moveFocus(options, -1, openDropdown);
         break;
 
-      case 'Home':
+      case 'Home': {
         e.preventDefault();
-        this.#setFocus(options, 0, openDropdown);
+        const firstEnabled = options.findIndex((o) => o.getAttribute('aria-disabled') !== 'true');
+        if (firstEnabled >= 0) this.#setFocus(options, firstEnabled, openDropdown);
         break;
+      }
 
-      case 'End':
+      case 'End': {
         e.preventDefault();
-        this.#setFocus(options, options.length - 1, openDropdown);
+        let lastEnabled = -1;
+        for (let i = options.length - 1; i >= 0; i--) {
+          if (options[i].getAttribute('aria-disabled') !== 'true') { lastEnabled = i; break; }
+        }
+        if (lastEnabled >= 0) this.#setFocus(options, lastEnabled, openDropdown);
         break;
+      }
 
       case 'Enter':
         e.preventDefault();
@@ -308,14 +315,16 @@ class SamplerFlavorPicker extends HTMLElement {
       // Remove old thumbnail if any
       trigger.querySelector('.sampler-picker__trigger-thumb')?.remove();
 
-      const img = document.createElement('img');
-      img.className = 'sampler-picker__trigger-thumb';
-      img.src = coffee.image;
-      img.alt = '';
-      img.width = 24;
-      img.height = 24;
-      img.loading = 'lazy';
-      trigger.insertBefore(img, textSpan);
+      if (coffee.image) {
+        const img = document.createElement('img');
+        img.className = 'sampler-picker__trigger-thumb';
+        img.src = coffee.image;
+        img.alt = '';
+        img.width = 24;
+        img.height = 24;
+        img.loading = 'lazy';
+        trigger.insertBefore(img, textSpan);
+      }
 
       textSpan.textContent = coffee.title;
     }
@@ -402,11 +411,13 @@ class SamplerFlavorPicker extends HTMLElement {
   // ---------------------------------------------------------------------------
 
   #escAttr(str) {
-    return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    if (!str) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   #escHTML(str) {
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    if (!str) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 }
 
