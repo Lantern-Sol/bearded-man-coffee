@@ -30,7 +30,7 @@ class HeaderMenu extends Component {
   #deactivateTimer = null;
 
   /** Milliseconds to wait before actually closing the submenu. */
-  static DEACTIVATE_DELAY_MS = 200;
+  static DEACTIVATE_DELAY_MS = 450;
 
   connectedCallback() {
     super.connectedCallback();
@@ -220,12 +220,14 @@ class HeaderMenu extends Component {
     // Don't deactivate if the overflow menu or overflow list is still being hovered
     if (this.overflowListHovered || this.overflowMenu?.matches(':hover')) return;
 
+    // Don't deactivate if the pointer is over the submenu or the parent menu item
+    const submenu = findSubmenu(item);
+    if (submenu?.matches(':hover') || item.parentElement?.matches(':hover')) return;
+
     this.headerComponent?.style.setProperty('--submenu-height', '0px');
     this.#setFullOpenHeaderHeight(0);
     this.style.setProperty('--submenu-opacity', '0');
     this.dataset.overflowExpanded = 'false';
-
-    const submenu = findSubmenu(item);
 
     this.#state.activeItem = null;
     this.ariaExpanded = 'false';

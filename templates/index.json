@@ -2464,7 +2464,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Learn more",
-                "link": "shopify://products/fu-man-chai",
+                "link": "",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
