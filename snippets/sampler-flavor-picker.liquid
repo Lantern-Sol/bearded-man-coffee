@@ -35,8 +35,11 @@
               <option value="" disabled selected>Select a coffee…</option>
               {%- for coffee in coffee_products -%}
                 {%- unless coffee.handle == 'sampler-six' -%}
-                  <option value="{{ coffee.title | escape }}">
-                    {{ coffee.title }}
+                  <option
+                    value="{{ coffee.title | escape }}"
+                    {% unless coffee.available %}disabled{% endunless %}
+                  >
+                    {{ coffee.title }}{% unless coffee.available %} - Sold out{% endunless %}
                   </option>
                 {%- endunless -%}
               {%- endfor -%}
