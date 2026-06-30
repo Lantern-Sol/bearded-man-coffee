@@ -74,13 +74,26 @@
   >
     <span class="visually-hidden">{{ collection.title }}</span>
   </a>
-  <div class="collection-card__inner">
+  <div class="collection-card__inner" data-card-url="{{ card_url }}">
     {{ card_image }}
     <div class="collection-card__content layout-panel-flex--column">
       {{ children }}
     </div>
   </div>
 </div>
+<script>
+  (function() {
+    var inner = document.currentScript.previousElementSibling.querySelector('.collection-card__inner');
+    if (!inner) return;
+    var url = inner.getAttribute('data-card-url');
+    if (!url) return;
+    inner.querySelectorAll('a[role="link"][aria-disabled="true"]').forEach(function(btn) {
+      btn.setAttribute('href', url);
+      btn.removeAttribute('role');
+      btn.removeAttribute('aria-disabled');
+    });
+  })();
+</script>
 
 {% stylesheet %}
   .collection-card {

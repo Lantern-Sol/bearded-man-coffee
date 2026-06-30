@@ -127,9 +127,15 @@ function syncCard(card) {
     : null;
 
   if (!target) {
-    // No matching filter — restore the default by reapplying the first available
-    // variant. (The morph already restored server-rendered defaults, so we only
-    // need to act when a filter is set.)
+    // No roast filter active. If any other variant filter IS active (e.g. size
+    // or grind), Shopify may have set product.featured_media to a non-default
+    // variant (sample/5lb). Force the first variant's image so the 12oz always
+    // shows in collection grids.
+    const params = new URLSearchParams(window.location.search);
+    const hasVariantFilter = [...params.keys()].some((k) => k.startsWith(FILTER_PARAM_PREFIX));
+    if (hasVariantFilter && variants[0]) {
+      applyVariantToCard(card, variants[0]);
+    }
     return;
   }
 

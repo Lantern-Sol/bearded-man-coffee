@@ -759,45 +759,9 @@
                     "text_7FLipP"
                   ]
                 },
-                "tab_WNbWNV": {
-                  "type": "_tab",
-                  "name": "Additional information",
-                  "disabled": true,
-                  "settings": {
-                    "tab_label": "Additional information",
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {
-                    "product_weight_dimensions_Y6336D": {
-                      "type": "product-weight-dimensions",
-                      "settings": {
-                        "show_weight": true,
-                        "weight_label": "Weight",
-                        "show_dimensions": true,
-                        "dimensions_label": "Dimensions",
-                        "dimensions_source": "variant",
-                        "dimensions_metafield": "custom.dimensions",
-                        "type_preset": "",
-                        "row_gap": 16,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
-                    }
-                  },
-                  "block_order": [
-                    "product_weight_dimensions_Y6336D"
-                  ]
-                }
               },
               "block_order": [
-                "tab_8pkVxm",
-                "tab_WNbWNV"
+                "tab_8pkVxm"
               ]
             },
             "product_recommendations_h7c9at": {

@@ -1,0 +1,181 @@
+{%- doc -%}
+  Renders 6 flavor dropdown selectors for the Sampler Six product.
+  Each dropdown becomes a line item property (Flavor 1 … Flavor 6).
+
+  Must be rendered inside a product template. Reads from the "coffee"
+  collection to build the option list dynamically.
+
+  @param {object} product - The current product
+  @param {object} section - The section object
+{%- enddoc -%}
+
+{%- liquid
+  assign coffee_collection = collections['coffee']
+  assign coffee_products = coffee_collection.products
+-%}
+
+<sampler-flavor-picker class="sampler-picker" data-count="6">
+  <fieldset class="sampler-picker__fieldset">
+    <legend class="sampler-picker__legend">Pick Your 6 Coffees</legend>
+    <p class="sampler-picker__subtitle">Choose a flavor for each of the 6 sample bags in your Sampler Six.</p>
+
+    <div class="sampler-picker__grid">
+      {%- for i in (1..6) -%}
+        <div class="sampler-picker__slot" data-slot="{{ i }}">
+          <label class="sampler-picker__label" for="sampler-flavor-{{ i }}-{{ section.id }}">
+            Flavor {{ i }}
+          </label>
+          <div class="sampler-picker__select-wrapper">
+            <select
+              class="sampler-picker__select"
+              id="sampler-flavor-{{ i }}-{{ section.id }}"
+              data-flavor-index="{{ i }}"
+              required
+            >
+              <option value="" disabled selected>Select a coffee…</option>
+              {%- for coffee in coffee_products -%}
+                {%- unless coffee.handle == 'sampler-six' -%}
+                  <option
+                    value="{{ coffee.title | escape }}"
+                    {% unless coffee.available %}disabled{% endunless %}
+                  >
+                    {{ coffee.title }}{% unless coffee.available %} - Sold out{% endunless %}
+                  </option>
+                {%- endunless -%}
+              {%- endfor -%}
+            </select>
+            <svg class="sampler-picker__caret" aria-hidden="true" focusable="false" viewBox="0 0 10 6">
+              {%- render 'icon', icon: 'caret' -%}
+            </svg>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <p class="sampler-picker__error" hidden>Please select a coffee for every slot before adding to cart.</p>
+  </fieldset>
+</sampler-flavor-picker>
+
+<script src="{{ 'sampler-flavor-picker.js' | asset_url }}" type="module"></script>
+
+{% stylesheet %}
+  .sampler-picker {
+    display: block;
+    width: 100%;
+  }
+
+  .sampler-picker__fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sampler-picker__legend {
+    font-family: var(--font-primary--family);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  .sampler-picker__subtitle {
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground-secondary, rgb(var(--color-foreground-rgb) / 0.7));
+    margin: 0 0 1rem;
+  }
+
+  .sampler-picker__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .sampler-picker__slot {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .sampler-picker__label {
+    display: block;
+    font-size: var(--font-size--sm);
+    font-weight: 500;
+    white-space: nowrap;
+    min-width: 4.5rem;
+    color: var(--color-foreground);
+  }
+
+  .sampler-picker__select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+
+  .sampler-picker__select-wrapper:hover {
+    border-color: var(--color-variant-hover-border, var(--color-foreground));
+  }
+
+  .sampler-picker__select-wrapper:has(:focus-visible) {
+    outline: var(--focus-outline-width, 2px) solid currentcolor;
+    outline-offset: var(--focus-outline-offset, 2px);
+  }
+
+  .sampler-picker__select {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    width: 100%;
+    padding: var(--padding-md, 0.625rem) var(--padding-lg, 0.875rem);
+    padding-right: calc(var(--padding-lg, 0.875rem) + 1.25rem);
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground);
+    cursor: pointer;
+  }
+
+  .sampler-picker__select:focus-visible {
+    outline: none;
+  }
+
+  .sampler-picker__caret {
+    position: absolute;
+    right: var(--padding-md, 0.625rem);
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--icon-size-2xs, 0.625rem);
+    height: var(--icon-size-2xs, 0.625rem);
+    pointer-events: none;
+  }
+
+  .sampler-picker__slot[data-filled="true"] .sampler-picker__select-wrapper {
+    border-color: var(--color-foreground);
+  }
+
+  .sampler-picker__error {
+    color: rgb(var(--color-error-rgb, 204 0 0) / 1);
+    font-size: var(--font-size--sm);
+    margin-top: 0.75rem;
+  }
+
+  .sampler-picker__error:not([hidden]) {
+    animation: sampler-shake 0.3s ease;
+  }
+
+  @keyframes sampler-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+
+  @media screen and (max-width: 749px) {
+    .sampler-picker__grid {
+      margin-bottom: 1rem;
+    }
+  }
+{% endstylesheet %}
