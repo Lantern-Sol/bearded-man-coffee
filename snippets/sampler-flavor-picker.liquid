@@ -14,6 +14,24 @@
   assign coffee_products = coffee_collection.products
 -%}
 
+<script type="application/json" data-sampler-coffees>
+  [
+    {%- assign sampler_first = true -%}
+    {%- for coffee in coffee_products -%}
+      {%- unless coffee.handle == 'sampler-six' -%}
+        {%- unless sampler_first -%},{%- endunless -%}
+        {
+          "title": {{ coffee.title | json }},
+          "image": {{ coffee.featured_image | image_url: width: 80, height: 80, crop: 'center' | json }},
+          "description": {{ coffee.description | strip_html | truncate: 100 | json }},
+          "available": {{ coffee.available }}
+        }
+        {%- assign sampler_first = false -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  ]
+</script>
+
 <sampler-flavor-picker class="sampler-picker" data-count="6">
   <fieldset class="sampler-picker__fieldset">
     <legend class="sampler-picker__legend">Pick Your 6 Coffees</legend>
@@ -22,31 +40,23 @@
     <div class="sampler-picker__grid">
       {%- for i in (1..6) -%}
         <div class="sampler-picker__slot" data-slot="{{ i }}">
-          <label class="sampler-picker__label" for="sampler-flavor-{{ i }}-{{ section.id }}">
+          <label class="sampler-picker__label" id="sampler-label-{{ i }}-{{ section.id }}">
             Flavor {{ i }}
           </label>
-          <div class="sampler-picker__select-wrapper">
-            <select
-              class="sampler-picker__select"
-              id="sampler-flavor-{{ i }}-{{ section.id }}"
-              data-flavor-index="{{ i }}"
-              required
-            >
-              <option value="" disabled selected>Select a coffee…</option>
-              {%- for coffee in coffee_products -%}
-                {%- unless coffee.handle == 'sampler-six' -%}
-                  <option
-                    value="{{ coffee.title | escape }}"
-                    {% unless coffee.available %}disabled{% endunless %}
-                  >
-                    {{ coffee.title }}{% unless coffee.available %} - Sold out{% endunless %}
-                  </option>
-                {%- endunless -%}
-              {%- endfor -%}
-            </select>
-            <svg class="sampler-picker__caret" aria-hidden="true" focusable="false" viewBox="0 0 10 6">
-              {%- render 'icon', icon: 'caret' -%}
-            </svg>
+          <div class="sampler-picker__dropdown" data-flavor-index="{{ i }}">
+            <button type="button" class="sampler-picker__trigger"
+              role="combobox" aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-controls="sampler-listbox-{{ i }}-{{ section.id }}"
+              aria-labelledby="sampler-label-{{ i }}-{{ section.id }}">
+              <span class="sampler-picker__trigger-text">Select a coffee…</span>
+              <svg class="sampler-picker__caret" aria-hidden="true" focusable="false" viewBox="0 0 10 6">
+                {%- render 'icon', icon: 'caret' -%}
+              </svg>
+            </button>
+            <ul role="listbox" id="sampler-listbox-{{ i }}-{{ section.id }}"
+              class="sampler-picker__listbox" hidden>
+            </ul>
           </div>
         </div>
       {%- endfor -%}
@@ -106,41 +116,52 @@
     color: var(--color-foreground);
   }
 
-  .sampler-picker__select-wrapper {
+  /* --- Custom dropdown --- */
+  .sampler-picker__dropdown {
     position: relative;
+    flex: 1;
+  }
+
+  .sampler-picker__trigger {
     display: flex;
     align-items: center;
-    flex: 1;
+    gap: 0.5rem;
+    width: 100%;
     border: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
     border-radius: var(--style-border-radius-inputs, 4px);
-    overflow: hidden;
-    transition: border-color 0.2s ease;
-  }
-
-  .sampler-picker__select-wrapper:hover {
-    border-color: var(--color-variant-hover-border, var(--color-foreground));
-  }
-
-  .sampler-picker__select-wrapper:has(:focus-visible) {
-    outline: var(--focus-outline-width, 2px) solid currentcolor;
-    outline-offset: var(--focus-outline-offset, 2px);
-  }
-
-  .sampler-picker__select {
-    appearance: none;
-    border: 0;
     background: transparent;
-    width: 100%;
     padding: var(--padding-md, 0.625rem) var(--padding-lg, 0.875rem);
     padding-right: calc(var(--padding-lg, 0.875rem) + 1.25rem);
     font-family: var(--font-body--family);
     font-size: var(--font-size--sm);
     color: var(--color-foreground);
     cursor: pointer;
+    text-align: left;
+    transition: border-color 0.2s ease;
   }
 
-  .sampler-picker__select:focus-visible {
-    outline: none;
+  .sampler-picker__trigger:hover {
+    border-color: var(--color-variant-hover-border, var(--color-foreground));
+  }
+
+  .sampler-picker__trigger:focus-visible {
+    outline: var(--focus-outline-width, 2px) solid currentcolor;
+    outline-offset: var(--focus-outline-offset, 2px);
+  }
+
+  .sampler-picker__trigger-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .sampler-picker__trigger-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .sampler-picker__caret {
@@ -151,10 +172,89 @@
     width: var(--icon-size-2xs, 0.625rem);
     height: var(--icon-size-2xs, 0.625rem);
     pointer-events: none;
+    transition: transform 0.2s ease;
   }
 
-  .sampler-picker__slot[data-filled="true"] .sampler-picker__select-wrapper {
+  .sampler-picker__trigger[aria-expanded="true"] .sampler-picker__caret {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .sampler-picker__dropdown[data-filled] .sampler-picker__trigger {
     border-color: var(--color-foreground);
+  }
+
+  /* --- Listbox --- */
+  .sampler-picker__listbox {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0.25rem 0;
+    list-style: none;
+    background: var(--color-background);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+    border-radius: var(--style-border-radius-inputs, 4px);
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.12);
+    max-height: 280px;
+    overflow-y: auto;
+    z-index: var(--layer-overlay, 16);
+  }
+
+  /* --- Option --- */
+  .sampler-picker__option {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .sampler-picker__option:hover,
+  .sampler-picker__option[data-focused="true"] {
+    background: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  .sampler-picker__option[aria-selected="true"] {
+    background: rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .sampler-picker__option[aria-disabled="true"] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .sampler-picker__option-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .sampler-picker__option-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+
+  .sampler-picker__option-title {
+    font-size: var(--font-size--sm);
+    font-weight: 500;
+    color: var(--color-foreground);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sampler-picker__option-desc {
+    font-size: 0.75rem;
+    color: var(--color-foreground-secondary, rgb(var(--color-foreground-rgb) / 0.6));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .sampler-picker__error {
@@ -176,6 +276,10 @@
   @media screen and (max-width: 749px) {
     .sampler-picker__grid {
       margin-bottom: 1rem;
+    }
+
+    .sampler-picker__listbox {
+      max-height: 220px;
     }
   }
 {% endstylesheet %}
