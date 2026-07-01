@@ -501,7 +501,7 @@
         "floating_media_width": 120,
         "floating_media_anchor": "bottom-center",
         "floating_media_offset_x": 0,
-        "floating_media_offset_y": 0,
+        "floating_media_offset_y": -12,
         "floating_media_rotation": 0,
         "floating_media_hide_mobile": false,
         "use_floating_media_mobile_settings": true,
