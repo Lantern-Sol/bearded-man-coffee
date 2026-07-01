@@ -12,11 +12,17 @@
   assign has_only_video_mobile = false
   assign has_mobile_override = false
 
+  # Collection hero image override: use collection metafield if available, fall back to section setting
+  assign hero_image_1 = section.settings.image_1
+  if request.page_type == 'collection' and collection.metafields.custom.collection_hero_image.value != blank
+    assign hero_image_1 = collection.metafields.custom.collection_hero_image.value
+  endif
+
   # Desktop media checks
   # For each media slot, check if the media is not blank and the media type matches the slot
   # Need to check both (1) media picker is not blank AND (2) section.setting.media_type because user can toggle between different media types to display, but choosing "Image" doesn't clear a saved "Video" in the theme editor.
   # The alternate setting (section.settings.image_1 when "Video" is selected) is only visually hidden in theme editor.
-  if section.settings.image_1 != blank and section.settings.media_type_1 == 'image'
+  if hero_image_1 != blank and section.settings.media_type_1 == 'image'
     assign media_1 = 'image'
     assign media_count = media_count | plus: 1
   endif
@@ -153,13 +159,13 @@
         height="{{ mobile_image_1.height }}"
       >
       {{
-        section.settings.image_1
+        hero_image_1
         | image_url: width: 3840
         | image_tag:
-          width: section.settings.image_1.width,
+          width: hero_image_1.width,
           widths: widths,
-          height: section.settings.image_1.height,
-          alt: section.settings.image_1.alt,
+          height: hero_image_1.height,
+          alt: hero_image_1.alt,
           class: 'hero__media',
           sizes: sizes,
           fetchpriority: fetch_priority,
@@ -169,13 +175,13 @@
   {%- elsif media_1 == 'image' -%}
     <div class="{{ media_wrapper_desktop_class }}">
       {{
-        section.settings.image_1
+        hero_image_1
         | image_url: width: 3840
         | image_tag:
-          width: section.settings.image_1.width,
+          width: hero_image_1.width,
           widths: widths,
-          height: section.settings.image_1.height,
-          alt: section.settings.image_1.alt,
+          height: hero_image_1.height,
+          alt: hero_image_1.alt,
           class: 'hero__media',
           sizes: sizes,
           fetchpriority: fetch_priority,
@@ -354,12 +360,12 @@
 {% capture media_blurred %}
   {% if media_1 == 'image' %}
     {{
-      section.settings.image_1
+      hero_image_1
       | image_url: width: 3840
       | image_tag:
-        width: section.settings.image_1.width,
+        width: hero_image_1.width,
         widths: widths,
-        height: section.settings.image_1.height,
+        height: hero_image_1.height,
         alt: '',
         class: 'hero__media',
         sizes: sizes
@@ -452,11 +458,11 @@
               sizes: sizes
             }}
         {% elsif media_1 == 'image' %}
-          {{ section.settings.image_1
+          {{ hero_image_1
             | image_url: width: 1600
-            | image_tag: width: section.settings.image_1.width,
+            | image_tag: width: hero_image_1.width,
               widths: widths,
-              height: section.settings.image_1.height,
+              height: hero_image_1.height,
               alt: '',
               class: 'hero__media',
               sizes: sizes
@@ -532,7 +538,7 @@
     {%- endif -%}
     <div
       class="hero__media-grid{% if section.settings.parallax_effect %} parallax{% endif %}{% if section.settings.hide_media_on_mobile %} hidden--mobile{% endif %}"
-      style="--hero-media-count: {{ media_count }};--hero-media-count-mobile: {{ media_count_mobile }};{%- if section.settings.image_1 != blank -%} --hero-media-aspect-ratio: {{ section.settings.image_1.aspect_ratio }};{% endif %}"
+      style="--hero-media-count: {{ media_count }};--hero-media-count-mobile: {{ media_count_mobile }};{%- if hero_image_1 != blank -%} --hero-media-aspect-ratio: {{ hero_image_1.aspect_ratio }};{% endif %}"
       data-testid="hero-media-wrapper"
     >
       {% liquid
