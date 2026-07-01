@@ -23,7 +23,7 @@
         {%- liquid
           assign sampler_image = coffee.featured_image
           for variant in coffee.variants
-            if variant.title contains '12' and variant.image != blank
+            if variant.option1 == '12 oz' and variant.image != blank
               assign sampler_image = variant.image
               break
             endif
