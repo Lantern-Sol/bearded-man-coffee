@@ -1861,7 +1861,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<p>no Commitment</p>",
+                "text": "<p>Flexibility</p>",
                 "mobile_text": "",
                 "width": "100%",
                 "max_width": "normal",
