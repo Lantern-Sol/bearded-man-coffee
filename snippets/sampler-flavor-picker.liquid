@@ -23,7 +23,7 @@
         {%- liquid
           assign sampler_image = coffee.featured_image
           for variant in coffee.variants
-            if variant.option1 == '12 oz' and variant.image != blank
+            if variant.option1 == '2.5 oz' and variant.image != blank
               assign sampler_image = variant.image
               break
             endif
@@ -33,21 +33,7 @@
           "title": {{ coffee.title | json }},
           "image": {{ sampler_image | image_url: width: 80, height: 80, crop: 'center' | json }},
           "description": {{ coffee.description | strip_html | truncate: 100 | json }},
-          "available": {{ coffee.available }},
-          "_debug_variant_count": {{ coffee.variants.size }},
-          "_debug_images_count": {{ coffee.images.size }},
-          "_debug_variants": [
-            {%- for v in coffee.variants -%}
-              {%- unless forloop.first -%},{%- endunless -%}
-              { "title": {{ v.title | json }}, "option1": {{ v.option1 | json }}, "has_image": {{ v.image | json | size | at_least: 3 }} }
-            {%- endfor -%}
-          ],
-          "_debug_images_alt": [
-            {%- for img in coffee.images -%}
-              {%- unless forloop.first -%},{%- endunless -%}
-              {{ img.alt | json }}
-            {%- endfor -%}
-          ]
+          "available": {{ coffee.available }}
         }
         {%- assign sampler_first = false -%}
       {%- endunless -%}
