@@ -14,8 +14,8 @@
 
   # Collection hero image override: use collection metafield if available, fall back to section setting
   assign hero_image_1 = section.settings.image_1
-  if request.page_type == 'collection' and collection.metafields.custom.collection_hero_image.value != blank
-    assign hero_image_1 = collection.metafields.custom.collection_hero_image.value
+  if request.page_type == 'collection' and collection.metafields.custom.collection_page_featured_image.value != blank
+    assign hero_image_1 = collection.metafields.custom.collection_page_featured_image.value
   endif
 
   # Desktop media checks
